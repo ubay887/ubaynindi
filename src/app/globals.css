@@ -1,26 +1,453 @@
 @import "tailwindcss";
 
+/**
+ * Palette: Sage Mist — adem, nyaman dibaca lama
+ * Soft mist greens + cool cream, deep ink for body, bronze-gold only as accent.
+ * Target WCAG AA for body (≥4.5) and large titles (≥3).
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Core greens — cooler, less muddy */
+  --sage: #4f6d4c;
+  --sage-deep: #2e3f2c;
+  --sage-mid: #5f7d5b;
+  --sage-soft: #8aa886;
+  --sage-mist: #eef3eb;
+  --sage-haze: #e2ebe0;
+
+  /* Cool cream (less yellow = less eye fatigue) */
+  --cream: #f7f6f2;
+  --cream-2: #eef0eb;
+
+  --blush: #c9a59b;
+  /* Deeper bronze so large gold text clears AA large (3:1) on cream */
+  --gold: #8f7348;
+  --gold-light: #b89a6a;
+
+  /* Stronger readable ink / muted */
+  --ink: #2a322c;
+  --muted: #556058;
+
+  --color-primary: var(--sage);
+  --color-primary-dark: var(--sage-deep);
+  --color-primary-light: var(--sage-soft);
+  --color-primary-soft: var(--sage-mid);
+  --color-cream: var(--cream);
+  --color-cream-soft: var(--cream-2);
+  --color-blush: var(--blush);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-light);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --background: var(--cream);
+  --foreground: var(--ink);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-primary: var(--color-primary);
+  --color-primary-dark: var(--color-primary-dark);
+  --color-primary-light: var(--color-primary-light);
+  --color-primary-soft: var(--color-primary-soft);
+  --color-cream: var(--color-cream);
+  --color-cream-soft: var(--color-cream-soft);
+  --color-blush: var(--color-blush);
+  --color-gold: var(--color-gold);
+  --color-gold-soft: var(--color-gold-soft);
+  --color-ink: var(--color-ink);
+  --color-muted: var(--color-muted);
+  --font-sans: var(--font-body);
+  --font-serif: var(--font-display);
+  --font-script: var(--font-script);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-body), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body.invitation-locked {
+  overflow: hidden;
+  height: 100dvh;
+  touch-action: none;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--sage) 26%, transparent);
+  color: var(--sage-deep);
+}
+
+/* Soft wash over full-bleed illustrations */
+.illust-wash {
+  background:
+    radial-gradient(
+      ellipse 85% 55% at 50% 36%,
+      rgba(247, 246, 242, 0.14) 0%,
+      transparent 60%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(247, 246, 242, 0.28) 0%,
+      rgba(247, 246, 242, 0.06) 28%,
+      rgba(247, 246, 242, 0.14) 55%,
+      rgba(247, 246, 242, 0.96) 100%
+    );
+}
+
+/* ── Section backgrounds — soft rhythm, no dark walls ── */
+
+/* Airy cream with soft dots */
+.section-cream {
+  background-color: var(--cream);
+  background-image:
+    radial-gradient(rgba(47, 63, 44, 0.035) 1px, transparent 1px),
+    radial-gradient(
+      ellipse 90% 55% at 50% 0%,
+      rgba(143, 168, 134, 0.08),
+      transparent 65%
+    );
+  background-size:
+    20px 20px,
+    100% 100%;
+}
+
+/* Soft sage mist — events, accents */
+.section-sage {
+  background:
+    radial-gradient(
+      ellipse 80% 50% at 50% 0%,
+      rgba(255, 255, 255, 0.55),
+      transparent 55%
+    ),
+    linear-gradient(180deg, #e9f0e7 0%, var(--sage-mist) 45%, #dfe8dc 100%);
+}
+
+/* Cool soft band for countdown — light, adem (not solid dark green) */
+.section-sage-soft {
+  background:
+    radial-gradient(
+      ellipse 70% 60% at 50% 100%,
+      rgba(143, 168, 134, 0.18),
+      transparent 60%
+    ),
+    linear-gradient(180deg, #e6efe4 0%, #d8e4d5 50%, #d0ddd0 100%);
+}
+
+/* Very soft story band */
+.section-story {
+  background:
+    radial-gradient(
+      ellipse 90% 50% at 50% 0%,
+      rgba(255, 255, 255, 0.4),
+      transparent 50%
+    ),
+    linear-gradient(180deg, #e4ede2 0%, #d5e2d3 55%, #cddbc9 100%);
+}
+
+/* Keep deep only for footer band if needed */
+.section-sage-deep {
+  background: linear-gradient(180deg, #4a6347 0%, #3a5238 55%, #2e412c 100%);
+  color: var(--cream);
+}
+
+/* Double-border pill CTA */
+.btn-double {
+  border: 2px double color-mix(in srgb, var(--sage-deep) 70%, var(--gold) 30%);
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--sage-deep);
+  box-shadow: 0 8px 22px -12px rgba(46, 63, 44, 0.28);
+}
+
+.btn-double:hover {
+  background: #fff;
+  transform: translateY(-1px);
+}
+
+.btn-double-solid {
+  border: 2px double rgba(247, 246, 242, 0.45);
+  background: var(--sage-deep);
+  color: var(--cream);
+  box-shadow: 0 10px 26px -12px rgba(46, 63, 44, 0.45);
+}
+
+.btn-double-solid:hover {
+  background: var(--sage);
+  transform: translateY(-1px);
+}
+
+.btn-double-on-sage {
+  border: 2px double color-mix(in srgb, var(--sage-deep) 55%, transparent);
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--sage-deep);
+}
+
+/* Oval event frame — elegant, content stays in safe middle band */
+.oval-frame {
+  border-radius: 50% / 22%;
+  background: linear-gradient(
+    165deg,
+    rgba(255, 255, 255, 0.97) 0%,
+    rgba(250, 248, 243, 0.98) 55%,
+    rgba(247, 246, 242, 0.96) 100%
+  );
+  border: 1.5px solid color-mix(in srgb, var(--gold) 40%, transparent);
+  box-shadow:
+    0 0 0 5px color-mix(in srgb, var(--cream) 45%, transparent),
+    0 22px 44px -22px rgba(46, 63, 44, 0.2);
+  /* clip only decoration; keep vertical room for text */
+  overflow: visible;
+}
+
+.event-card-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* Countdown cells — dark text on soft sage (readable, calm) */
+.count-cell {
+  border: 1px solid color-mix(in srgb, var(--sage-deep) 18%, transparent);
+  border-radius: 0.65rem;
+  background: rgba(255, 255, 255, 0.55);
+  color: var(--sage-deep);
+  box-shadow: 0 8px 20px -14px rgba(46, 63, 44, 0.18);
+  backdrop-filter: blur(6px);
+}
+
+/* Speech bubble story card */
+.story-bubble {
+  position: relative;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 1.1rem;
+  border: 1px solid color-mix(in srgb, var(--sage-deep) 8%, transparent);
+  box-shadow: 0 12px 28px -16px rgba(46, 63, 44, 0.18);
+}
+
+.story-bubble::before {
+  content: "";
+  position: absolute;
+  left: -6px;
+  top: 1.35rem;
+  width: 12px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.92);
+  transform: rotate(45deg);
+  border-radius: 2px;
+  border-left: 1px solid color-mix(in srgb, var(--sage-deep) 8%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--sage-deep) 8%, transparent);
+}
+
+.gold-rule {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--gold-light),
+    transparent
+  );
+}
+
+.ornament-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+}
+
+.ornament-line::before,
+.ornament-line::after {
+  content: "";
+  height: 1px;
+  width: 2.25rem;
+  background: linear-gradient(90deg, transparent, var(--gold-light));
+}
+
+.ornament-line::after {
+  background: linear-gradient(90deg, var(--gold-light), transparent);
+}
+
+.ornament-line .dot {
+  width: 5px;
+  height: 5px;
+  rotate: 45deg;
+  background: var(--gold);
+  opacity: 0.85;
+}
+
+.name-shadow {
+  text-shadow:
+    0 1px 0 rgba(247, 246, 242, 0.55),
+    0 8px 24px rgba(247, 246, 242, 0.45);
+}
+
+.guest-block {
+  border-top: 1px solid color-mix(in srgb, var(--sage-deep) 12%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--sage-deep) 12%, transparent);
+}
+
+/* Thin glassy guest plate on cover */
+.guest-glass {
+  background: rgba(247, 246, 242, 0.42);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow:
+    0 12px 32px -18px rgba(46, 63, 44, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(12px) saturate(1.15);
+  -webkit-backdrop-filter: blur(12px) saturate(1.15);
+}
+
+/* Ampersand — serif, high contrast (script & often vanishes on art) */
+.ampersand {
+  font-family: var(--font-display), "Cormorant Infant", Georgia, serif;
+  font-size: 2.35rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--sage-deep);
+  text-shadow:
+    0 1px 0 rgba(247, 246, 242, 0.7),
+    0 2px 10px rgba(247, 246, 242, 0.45);
+}
+
+.ampersand-sm {
+  font-size: 1.65rem;
+}
+
+@keyframes soft-pulse {
+  0%,
+  100% {
+    box-shadow: 0 8px 22px -12px rgba(46, 63, 44, 0.32);
+  }
+  50% {
+    box-shadow:
+      0 10px 26px -10px rgba(46, 63, 44, 0.38),
+      0 0 0 8px rgba(79, 109, 76, 0.07);
+  }
+}
+
+.btn-pulse {
+  animation: soft-pulse 2.6s ease-in-out infinite;
+}
+
+.scroll-soft {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--sage) 45%, transparent) transparent;
+}
+
+.scroll-soft::-webkit-scrollbar {
+  width: 3px;
+}
+
+.scroll-soft::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--sage) 50%, transparent);
+  border-radius: 99px;
+}
+
+.field-input {
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+.field-input:focus {
+  border-color: color-mix(in srgb, var(--sage) 40%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--sage) 12%, transparent);
+  background: #fff;
+}
+
+.panel,
+.glass,
+.glass-strong,
+.panel-solid,
+.soft-card {
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid color-mix(in srgb, var(--sage-deep) 8%, transparent);
+  box-shadow: 0 14px 36px -20px rgba(46, 63, 44, 0.14);
+}
+
+.section-pad {
+  padding-block: clamp(3.25rem, 7vw, 5rem);
+  padding-inline: 1.25rem;
+}
+
+/* ── Leaflet wedding map ── */
+.location-map-canvas {
+  z-index: 0;
+  background: #e8efe6;
+  font-family: var(--font-body), system-ui, sans-serif;
+}
+
+.location-map-canvas .leaflet-control-zoom a {
+  color: var(--sage-deep) !important;
+  border-color: rgba(46, 63, 44, 0.12) !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  width: 30px !important;
+  height: 30px !important;
+  line-height: 30px !important;
+  border-radius: 8px !important;
+}
+
+.location-map-canvas .leaflet-control-zoom {
+  border: none !important;
+  margin: 12px !important;
+  box-shadow: 0 8px 20px -10px rgba(46, 63, 44, 0.3) !important;
+  border-radius: 10px !important;
+  overflow: hidden;
+}
+
+.wedding-map-pin {
+  background: transparent !important;
+  border: none !important;
+}
+
+.wedding-map-pin .pin-wrap {
+  transform-origin: 50% 100%;
+  filter: drop-shadow(0 6px 10px rgba(46, 63, 44, 0.28));
+  transition: transform 0.25s ease;
+}
+
+.wedding-map-pin .pin-wrap.is-active {
+  transform: scale(1.12);
+  filter: drop-shadow(0 8px 14px rgba(46, 63, 44, 0.38));
+  animation: pin-bounce 1.8s ease-in-out infinite;
+}
+
+@keyframes pin-bounce {
+  0%,
+  100% {
+    transform: scale(1.12) translateY(0);
+  }
+  50% {
+    transform: scale(1.12) translateY(-4px);
+  }
+}
+
+.wedding-map-popup .leaflet-popup-content-wrapper {
+  border-radius: 12px;
+  box-shadow: 0 12px 28px -14px rgba(46, 63, 44, 0.35);
+  border: 1px solid rgba(46, 63, 44, 0.08);
+  padding: 2px 4px;
+}
+
+.wedding-map-popup .leaflet-popup-content {
+  margin: 10px 12px;
+}
+
+.wedding-map-popup .leaflet-popup-tip {
+  box-shadow: none;
 }
