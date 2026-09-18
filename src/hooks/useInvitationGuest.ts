@@ -26,29 +26,34 @@ export function useInvitationGuest(): GuestState {
     const c = (params.get("c") ?? "").trim();
     return /^\d{4}$/.test(c) ? c : null;
   }, [params]);
+  const toParam = useMemo(() => {
+    const to = (params.get("to") ?? "").trim();
+    return to.length > 0 ? to : null;
+  }, [params]);
   const sideFallback = useMemo(
     () => parseInviteSide(params.get("side")),
     [params],
   );
 
+  const initialName = toParam ?? "Tamu Undangan";
   const [state, setState] = useState<GuestState>({
-    name: "Tamu Undangan",
+    name: initialName,
     side: sideFallback,
     code: null,
     loading: Boolean(code),
     error: null,
-    resolved: false,
+    resolved: Boolean(toParam),
   });
 
   useEffect(() => {
     if (!code) {
       setState({
-        name: "Tamu Undangan",
+        name: toParam ?? "Tamu Undangan",
         side: sideFallback,
         code: null,
         loading: false,
         error: null,
-        resolved: false,
+        resolved: Boolean(toParam),
       });
       return;
     }

@@ -7,6 +7,8 @@ import type { Wish } from "@/types/wedding";
 import { Button } from "@/components/ui/Button";
 import { InView, SectionHead } from "@/components/motion/primitives";
 
+import { useInvitationGuest } from "@/hooks/useInvitationGuest";
+
 const STORAGE_KEY = "ubaynindi-wishes";
 
 const seedWishes: Wish[] = [
@@ -43,6 +45,7 @@ function saveWishes(list: Wish[]) {
 
 export function Wishes() {
   const { wishes } = wedding;
+  const guest = useInvitationGuest();
   const [list, setList] = useState<Wish[]>(seedWishes);
   const [name, setName] = useState("");
   const [anonymous, setAnonymous] = useState(false);
@@ -56,6 +59,12 @@ export function Wishes() {
   useEffect(() => {
     setList(loadWishes());
   }, []);
+
+  useEffect(() => {
+    if (guest.resolved && guest.name && guest.name !== "Tamu Undangan") {
+      setName((prev) => (prev ? prev : guest.name));
+    }
+  }, [guest.resolved, guest.name]);
 
   if (!wishes.enabled) return null;
 
@@ -81,7 +90,7 @@ export function Wishes() {
     const updated = [next, ...list];
     setList(updated);
     saveWishes(updated);
-    setName("");
+    setName(guest.resolved && guest.name !== "Tamu Undangan" ? guest.name : "");
     setAnonymous(false);
     setMessage("");
     setAttendance("hadir");
@@ -107,20 +116,18 @@ export function Wishes() {
   });
 
   return (
-    <section id="wishes" className="section-cream section-pad sm:px-8">
-      <div className="mx-auto max-w-[360px]">
+    <section id="wishes" className="relative section-cream section-pad px-6 pb-24 sm:px-8">
+      <div className="mx-auto max-w-[400px]">
         <SectionHead
           script="Wishes & RSVP"
-          title={wishes.title}
-          subtitle={wishes.subtitle}
+          title="Ucapan & Doa"
+          subtitle="Berikan doa dan ucapan terbaik untuk kami."
         />
 
         <InView>
-          <div className="mb-5 flex items-center justify-between rounded-xl border border-gold/20 bg-gradient-to-r from-cream via-white to-cream-2 px-4 py-3 shadow-xs">
-            <span className="text-xs font-semibold text-primary-dark">
-              Kehadiran Tamu
-            </span>
-            <span className="rounded-full bg-primary-dark px-3 py-1 text-[11px] font-bold text-cream">
+          <div className="mb-6 flex items-center justify-between rounded-2xl border border-primary/15 bg-white/75 px-4 py-3 text-xs text-muted shadow-sm backdrop-blur-sm">
+            <span className="font-medium text-primary-dark">Kehadiran Tamu</span>
+            <span className="rounded-full bg-primary-dark px-3 py-1 font-semibold text-white">
               {totalAttending} Konfirmasi Hadir
             </span>
           </div>
@@ -130,12 +137,19 @@ export function Wishes() {
             className="mb-7 space-y-4 rounded-2xl border border-gold/30 bg-white/80 p-5 shadow-[0_16px_40px_-24px_rgba(47,66,45,0.2)] backdrop-blur-sm"
           >
             <div>
-              <label
-                htmlFor="wish-name"
-                className="mb-1.5 block text-[11px] font-semibold tracking-wide text-primary-soft uppercase"
-              >
-                Nama Anda
-              </label>
+              <div className="mb-1.5 flex items-center justify-between">
+                <label
+                  htmlFor="wish-name"
+                  className="block text-[11px] font-semibold tracking-wide text-primary-soft uppercase"
+                >
+                  Nama Anda
+                </label>
+                {guest.resolved && guest.name !== "Tamu Undangan" && !anonymous && (
+                  <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10.5px] font-medium text-primary-dark">
+                    ✓ Otomatis terisi
+                  </span>
+                )}
+              </div>
               <input
                 id="wish-name"
                 value={anonymous ? "Anonim" : name}

@@ -1,1 +1,14 @@
-[]
+[
+  {
+    "code": "2489",
+    "name": "nazar",
+    "side": "pria",
+    "createdAt": "2026-09-18T10:47:45.449Z"
+  },
+  {
+    "code": "8497",
+    "name": "umar",
+    "side": "wanita",
+    "createdAt": "2026-09-18T10:45:52.592Z"
+  }
+]

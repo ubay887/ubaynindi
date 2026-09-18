@@ -48,46 +48,48 @@ function DesktopStickyPane({ guestName }: { guestName: string }) {
   const [first, second] = wedding.couple.displayNames.split(" & ");
 
   return (
-    <aside className="sticky top-6 hidden h-[calc(100vh-3rem)] overflow-hidden rounded-[2rem] border border-gold/30 bg-cream shadow-[0_24px_60px_-15px_rgba(31,45,34,0.35)] lg:flex lg:col-span-5 flex-col justify-between p-8 text-center relative z-20">
-      <Image
-        src="/ornaments/cover-bg.jpg"
-        alt=""
-        fill
-        priority
-        quality={90}
-        sizes="50vw"
-        className="object-cover object-[center_22%]"
-      />
-      <div className="absolute inset-0 illust-wash" />
-      <AmbientField density="high" />
+    <aside className="sticky top-6 hidden h-[calc(100vh-3rem)] overflow-hidden rounded-[2rem] border border-gold/30 bg-cream shadow-[0_24px_60px_-15px_rgba(31,45,34,0.35)] lg:flex lg:col-span-5 z-20">
+      <div className="relative flex h-full w-full flex-col justify-between p-8 text-center">
+        <Image
+          src="/ornaments/cover-bg.jpg"
+          alt=""
+          fill
+          priority
+          quality={90}
+          sizes="50vw"
+          className="object-cover object-[center_22%]"
+        />
+        <div className="absolute inset-0 illust-wash" />
+        <AmbientField density="high" />
 
-      <div className="relative z-10 flex flex-col items-center justify-center h-full">
-        <WaxSealCrest initials="UN" className="mb-4 scale-100" />
-        <p className="font-script text-[2.2rem] leading-none text-primary-dark">
-          The Wedding Of
-        </p>
-        <h1 className="mt-4 font-serif text-[3.2rem] font-bold uppercase leading-none tracking-[0.16em] text-primary-dark name-shadow">
-          {first}
-        </h1>
-        <p className="ampersand my-1 text-2xl" aria-hidden>
-          &amp;
-        </p>
-        <h1 className="font-serif text-[3.2rem] font-bold uppercase leading-none tracking-[0.16em] text-primary-dark name-shadow">
-          {second}
-        </h1>
-
-        <div className="ornament-line mx-auto my-5">
-          <span className="dot" />
-        </div>
-
-        {/* Guest Plate on Desktop */}
-        <div className="guest-glass gold-border-glow mx-auto w-full max-w-[280px] rounded-2xl p-4 mt-2">
-          <p className="text-[10px] tracking-[0.2em] text-muted uppercase font-semibold">
-            Kepada Yth.
+        <div className="relative z-10 flex flex-col items-center justify-center h-full">
+          <WaxSealCrest initials="UN" className="mb-4 scale-100" />
+          <p className="font-script text-[2.2rem] leading-none text-primary-dark">
+            The Wedding Of
           </p>
-          <p className="mt-1 font-serif text-lg font-bold text-primary-dark">
-            {guestName}
+          <h1 className="mt-4 font-serif text-[3.2rem] font-bold uppercase leading-none tracking-[0.16em] text-primary-dark name-shadow">
+            {first}
+          </h1>
+          <p className="ampersand my-1 text-2xl" aria-hidden>
+            &amp;
           </p>
+          <h1 className="font-serif text-[3.2rem] font-bold uppercase leading-none tracking-[0.16em] text-primary-dark name-shadow">
+            {second}
+          </h1>
+
+          <div className="ornament-line mx-auto my-5">
+            <span className="dot" />
+          </div>
+
+          {/* Guest Plate on Desktop */}
+          <div className="guest-glass gold-border-glow mx-auto w-full max-w-[280px] rounded-2xl p-4 mt-2">
+            <p className="text-[10px] tracking-[0.2em] text-muted uppercase font-semibold">
+              Kepada Yth.
+            </p>
+            <p className="mt-1 font-serif text-lg font-bold text-primary-dark">
+              {guestName}
+            </p>
+          </div>
         </div>
       </div>
     </aside>

@@ -7,6 +7,7 @@ import { parseInviteSide, sideLabel } from "@/lib/utils";
 type PageProps = {
   searchParams: Promise<{
     c?: string | string[];
+    to?: string | string[];
     side?: string | string[];
   }>;
 };
@@ -22,27 +23,34 @@ export async function generateMetadata({
   const params = await searchParams;
   const code = (pick(params.c) ?? "").trim();
   const guest = /^\d{4}$/.test(code) ? await findGuestByCode(code) : null;
+  const directName = (pick(params.to) ?? "").trim();
+  const guestName = guest?.name ?? (directName || null);
 
   const side = guest?.side ?? parseInviteSide(pick(params.side));
   const primary = getPrimaryEvent(side);
   const siteUrl = wedding.meta.siteUrl.replace(/\/$/, "");
   const sideText = sideLabel(side);
 
-  const title = guest
-    ? `Undangan untuk ${guest.name} · ${wedding.couple.displayNames}`
+  const title = guestName
+    ? `Undangan untuk ${guestName} · ${wedding.couple.displayNames}`
     : `${wedding.meta.title} · ${sideText}`;
 
-  const description = guest
-    ? `Kepada Yth. ${guest.name}. ${sideText} — ${primary.dateLabel}. ${wedding.meta.description}`
+  const description = guestName
+    ? `Kepada Yth. ${guestName}. ${sideText} — ${primary.dateLabel}. ${wedding.meta.description}`
     : `${sideText} — ${primary.dateLabel}. ${wedding.meta.description}`;
 
   const pageUrl = guest
     ? `${siteUrl}/?c=${guest.code}`
-    : `${siteUrl}/?side=${side}`;
+    : directName
+      ? `${siteUrl}/?to=${encodeURIComponent(directName)}`
+      : `${siteUrl}/?side=${side}`;
 
   const ogQ = new URLSearchParams();
   if (guest) {
     ogQ.set("c", guest.code);
+  } else if (directName) {
+    ogQ.set("to", directName);
+    ogQ.set("side", side);
   } else {
     ogQ.set("side", side);
   }
