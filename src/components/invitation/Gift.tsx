@@ -18,26 +18,26 @@ export function Gift() {
     const ok = await copyToClipboard(number);
     if (ok) {
       setCopied(number);
-      window.setTimeout(() => setCopied(null), 2000);
+      window.setTimeout(() => setCopied(null), 2500);
     }
   };
 
   return (
     <section id="gift" className="section-cream section-pad sm:px-8">
       <div className="mx-auto max-w-[360px]">
-        <SectionHead script="Wedding Gift" subtitle={gifts.note} />
+        <SectionHead script="Wedding Gift" title="Amplop Digital" subtitle={gifts.note} />
 
         <InView className="flex flex-col items-center">
           <Button
             type="button"
             size="md"
-            variant="double"
-            className="min-w-[160px]"
+            variant="double-solid"
+            className="btn-pulse min-w-[180px]"
             aria-expanded={open}
             aria-controls="gift-accounts"
             onClick={() => setOpen((v) => !v)}
           >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden>
               <rect
                 x="3"
                 y="6"
@@ -45,16 +45,16 @@ export function Gift() {
                 height="13"
                 rx="2"
                 stroke="currentColor"
-                strokeWidth="1.5"
+                strokeWidth="1.6"
               />
               <path
                 d="M3 10h18M8 14h4"
                 stroke="currentColor"
-                strokeWidth="1.5"
+                strokeWidth="1.6"
                 strokeLinecap="round"
               />
             </svg>
-            {open ? "Tutup" : "Klik di Sini"}
+            {open ? "Tutup Amplop" : "Transfer Amplop"}
           </Button>
           {!open ? (
             <p className="mt-3 text-center text-[11px] text-muted">
@@ -67,7 +67,7 @@ export function Gift() {
           {open ? (
             <motion.div
               id="gift-accounts"
-              className="mt-6 space-y-4 overflow-hidden"
+              className="mt-6 space-y-5 overflow-hidden"
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
@@ -76,56 +76,70 @@ export function Gift() {
               {gifts.accounts.map((acc) => (
                 <div
                   key={`${acc.bank}-${acc.accountNumber}`}
-                  className="relative overflow-hidden rounded-2xl border border-gold/25 bg-gradient-to-br from-[#2c3f2a] via-primary-dark to-[#4a6b47] px-5 py-6 text-cream shadow-[0_20px_44px_-18px_rgba(47,66,45,0.5)]"
+                  className="card-gold-shine relative overflow-hidden rounded-2xl border border-gold/30 bg-gradient-to-br from-[#1c2a1e] via-[#253628] to-[#172218] px-6 py-6 text-cream shadow-[0_20px_42px_-18px_rgba(31,45,34,0.4)]"
                 >
                   <div
-                    className="pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full opacity-30 blur-2xl"
+                    className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full opacity-25 blur-2xl"
                     style={{
                       background:
-                        "radial-gradient(circle, rgba(212,188,138,0.55), transparent 70%)",
+                        "radial-gradient(circle, rgba(176,159,131,0.6), transparent 70%)",
                     }}
                   />
 
-                  <div className="relative flex items-start justify-between">
+                  <div className="relative flex items-center justify-between">
                     <div>
-                      <p className="text-[10px] uppercase tracking-[0.2em] text-cream/50">
-                        Bank
-                      </p>
-                      <p className="mt-0.5 text-lg font-bold tracking-wide">
+                      <span className="text-[9.5px] font-bold uppercase tracking-[0.22em] text-gold-light">
+                        Digital Card
+                      </span>
+                      <p className="mt-0.5 font-serif text-xl font-bold tracking-wider text-white">
                         {acc.bank}
                       </p>
                     </div>
-                    <div className="h-7 w-10 rounded-md bg-gradient-to-br from-gold-soft/90 to-gold/55 shadow-inner" />
+                    {/* Metallic Microchip Visual */}
+                    <div className="flex h-7 w-9 items-center justify-center rounded-md border border-amber-200/30 bg-gradient-to-br from-[#b09f83] to-[#736246] shadow-inner">
+                      <div className="h-3 w-5 rounded-sm border border-amber-900/30 bg-amber-50/25" />
+                    </div>
                   </div>
 
-                  <div className="relative mt-5">
-                    <p className="text-[10px] uppercase tracking-[0.18em] text-cream/50">
-                      No. Rekening
+                  <div className="relative mt-6">
+                    <p className="text-[9.5px] uppercase tracking-[0.2em] text-cream/60">
+                      Nomor Rekening
                     </p>
-                    <p className="mt-1 font-mono text-[1.2rem] tracking-[0.12em]">
+                    <p className="mt-1 font-mono text-[1.25rem] font-semibold tracking-[0.14em] text-amber-100">
                       {acc.accountNumber}
                     </p>
                   </div>
 
-                  <div className="relative mt-3.5">
-                    <p className="text-[10px] uppercase tracking-[0.18em] text-cream/50">
-                      Atas Nama
-                    </p>
-                    <p className="mt-1 text-sm font-medium">{acc.accountName}</p>
+                  <div className="relative mt-4 flex items-end justify-between">
+                    <div>
+                      <p className="text-[9.5px] uppercase tracking-[0.2em] text-cream/60">
+                        Atas Nama
+                      </p>
+                      <p className="mt-0.5 font-serif text-sm font-semibold tracking-wide text-white">
+                        {acc.accountName}
+                      </p>
+                    </div>
+                    <Button
+                      size="sm"
+                      variant="double-on-sage"
+                      className="font-semibold shadow-md"
+                      onClick={() => handleCopy(acc.accountNumber)}
+                    >
+                      {copied === acc.accountNumber ? "Tersalin ✓" : "Salin No. Rek"}
+                    </Button>
                   </div>
-
-                  <Button
-                    size="sm"
-                    variant="double-on-sage"
-                    className="relative mt-5 w-full font-semibold"
-                    onClick={() => handleCopy(acc.accountNumber)}
-                  >
-                    {copied === acc.accountNumber
-                      ? "Tersalin ✓"
-                      : "Salin Rekening"}
-                  </Button>
                 </div>
               ))}
+
+              {copied ? (
+                <motion.div
+                  initial={{ opacity: 0, y: -6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="rounded-xl border border-gold/40 bg-gold/15 p-3 text-center text-xs font-semibold text-primary-dark"
+                >
+                  Nomor rekening telah berhasil disalin!
+                </motion.div>
+              ) : null}
             </motion.div>
           ) : null}
         </AnimatePresence>
@@ -133,3 +147,4 @@ export function Gift() {
     </section>
   );
 }
+

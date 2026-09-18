@@ -6,26 +6,27 @@
  * Target WCAG AA for body (≥4.5) and large titles (≥3).
  */
 :root {
-  /* Core greens — cooler, less muddy */
-  --sage: #4f6d4c;
-  --sage-deep: #2e3f2c;
-  --sage-mid: #5f7d5b;
-  --sage-soft: #8aa886;
-  --sage-mist: #eef3eb;
-  --sage-haze: #e2ebe0;
+  /* Harmonized Laurel Sage — adem & menyatu dengan gambar */
+  --sage: #4a5d4e;
+  --sage-deep: #1f2d22;
+  --sage-mid: #5d7162;
+  --sage-soft: #798c7d;
+  --sage-mist: #eaf0eb;
+  --sage-haze: #e0e7e1;
 
-  /* Cool cream (less yellow = less eye fatigue) */
+  /* Solid Warm Silk Cream — persis tone cover-bg.jpg & hero-bg.jpg */
   --cream: #f7f6f2;
-  --cream-2: #eef0eb;
+  --cream-2: #efece6;
 
   --blush: #c9a59b;
-  /* Deeper bronze so large gold text clears AA large (3:1) on cream */
-  --gold: #8f7348;
-  --gold-light: #b89a6a;
 
-  /* Stronger readable ink / muted */
-  --ink: #2a322c;
-  --muted: #556058;
+  /* Muted Earthy Bronze Gold — lembut, mewah & selaras dengan gambar */
+  --gold: #8e7a5a;
+  --gold-light: #b09f83;
+
+  /* High-Contrast Botanical Ink — tajam, jernih & nyaman dibaca */
+  --ink: #1f2d22;
+  --muted: #5f6f62;
 
   --color-primary: var(--sage);
   --color-primary-dark: var(--sage-deep);
@@ -385,6 +386,76 @@ body.invitation-locked {
   padding-inline: 1.25rem;
 }
 
+/* Gold Foil Metallic Utilities & Shimmer */
+.gold-text-gradient {
+  background: linear-gradient(135deg, #8e7a5a 0%, #b09f83 40%, #6e5c3d 75%, #8e7a5a 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine-gold 5s linear infinite;
+}
+
+.gold-border-glow {
+  border: 1px solid rgba(142, 122, 90, 0.35);
+  box-shadow: 0 8px 24px -10px rgba(31, 45, 34, 0.12), inset 0 0 8px rgba(142, 122, 90, 0.05);
+}
+
+/* Islamic Arch Frame Motif */
+.arch-frame {
+  border-radius: 120px 120px 24px 24px;
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.96) 0%, rgba(247, 246, 242, 0.98) 100%);
+  border: 1.5px solid rgba(142, 122, 90, 0.35);
+  box-shadow: 0 16px 40px -18px rgba(31, 45, 34, 0.15);
+}
+
+.card-gold-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-gold-shine::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 45%,
+    rgba(255, 255, 255, 0.15) 50%,
+    transparent 55%
+  );
+  transform: rotate(30deg);
+  animation: sweep-shine 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes shine-gold {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes sweep-shine {
+  0% { transform: translateX(-100%) rotate(30deg); }
+  20%, 100% { transform: translateX(100%) rotate(30deg); }
+}
+
+/* Audio Wave Visualizer */
+.bar-wave {
+  animation: bar-bounce 1.2s ease-in-out infinite alternate;
+}
+.bar-wave:nth-child(1) { animation-delay: 0.1s; }
+.bar-wave:nth-child(2) { animation-delay: 0.3s; }
+.bar-wave:nth-child(3) { animation-delay: 0.5s; }
+.bar-wave:nth-child(4) { animation-delay: 0.2s; }
+
+@keyframes bar-bounce {
+  0% { height: 4px; }
+  100% { height: 16px; }
+}
+
 /* ── Leaflet wedding map ── */
 .location-map-canvas {
   z-index: 0;
@@ -451,3 +522,4 @@ body.invitation-locked {
 .wedding-map-popup .leaflet-popup-tip {
   box-shadow: none;
 }
+

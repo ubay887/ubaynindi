@@ -6,6 +6,8 @@ import { wedding, getPrimaryEvent } from "@/config/wedding";
 import { useInviteSide } from "@/hooks/useInviteSide";
 import { sideLabel } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
+import { AmbientField } from "@/components/motion/AmbientField";
+import { WaxSealCrest } from "@/components/ui/Ornament";
 
 type CoverProps = {
   guestName: string;
@@ -41,6 +43,7 @@ export function Cover({ guestName, onOpen }: CoverProps) {
         className="object-cover object-[center_22%]"
       />
       <div className="absolute inset-0 illust-wash" />
+      <AmbientField density="high" />
 
       {/* Side vignette for focus — like framed manuscript */}
       <div
@@ -51,8 +54,17 @@ export function Cover({ guestName, onOpen }: CoverProps) {
         }}
       />
 
-      <div className="relative z-10 flex h-full flex-col items-center justify-center px-7 pb-10 pt-14">
+      <div className="relative z-10 flex h-full flex-col items-center justify-center px-7 pb-8 pt-10">
         <div className="w-full max-w-[320px] text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.7, ease, delay: 0.05 }}
+            className="mb-3"
+          >
+            <WaxSealCrest initials="UN" />
+          </motion.div>
+
           <motion.p
             className="text-[10px] font-semibold uppercase tracking-[0.22em] text-primary"
             initial={{ opacity: 0 }}
@@ -63,7 +75,7 @@ export function Cover({ guestName, onOpen }: CoverProps) {
           </motion.p>
 
           <motion.p
-            className="mt-2 font-script text-[2.05rem] leading-none text-primary-dark sm:text-[2.25rem]"
+            className="mt-1 font-script text-[2.05rem] leading-none text-primary-dark sm:text-[2.25rem]"
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease, delay: 0.15 }}
@@ -72,7 +84,7 @@ export function Cover({ guestName, onOpen }: CoverProps) {
           </motion.p>
 
           <motion.h1
-            className="mt-5 font-serif text-[2.85rem] font-semibold uppercase leading-[1.02] tracking-[0.18em] text-primary-dark name-shadow sm:text-[3.1rem]"
+            className="mt-4 font-serif text-[2.85rem] font-semibold uppercase leading-[1.02] tracking-[0.18em] text-primary-dark name-shadow sm:text-[3.1rem]"
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.85, ease, delay: 0.32 }}
@@ -100,7 +112,7 @@ export function Cover({ guestName, onOpen }: CoverProps) {
           </motion.h1>
 
           <motion.p
-            className="mt-4 text-[11px] font-medium tracking-[0.2em] text-primary uppercase"
+            className="mt-3 text-[11px] font-medium tracking-[0.2em] text-primary uppercase"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.75, duration: 0.55 }}
@@ -108,9 +120,9 @@ export function Cover({ guestName, onOpen }: CoverProps) {
             {primary.dateLabel}
           </motion.p>
 
-          {/* Guest plate — thin glassy panel */}
+          {/* Guest plate — thin glassy panel with gold border glow */}
           <motion.div
-            className="guest-glass mx-auto mt-8 w-full rounded-2xl px-5 py-5"
+            className="guest-glass gold-border-glow mx-auto mt-6 w-full rounded-2xl px-5 py-4"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease, delay: 0.9 }}
@@ -121,16 +133,16 @@ export function Cover({ guestName, onOpen }: CoverProps) {
             <p className="mt-0.5 text-[11px] text-muted">
               Bapak/Ibu/Saudara/i
             </p>
-            <p className="mt-2.5 font-serif text-[1.45rem] font-medium tracking-wide text-primary-dark">
+            <p className="mt-2 font-serif text-[1.45rem] font-medium tracking-wide text-primary-dark">
               {guestName}
             </p>
-            <p className="mt-2 text-[10px] leading-relaxed text-muted">
+            <p className="mt-1.5 text-[10px] leading-relaxed text-muted">
               *Mohon maaf jika ada kesalahan penulisan nama / gelar.
             </p>
           </motion.div>
 
           <motion.div
-            className="mt-8"
+            className="mt-6"
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, ease, delay: 1.1 }}
@@ -157,3 +169,4 @@ export function Cover({ guestName, onOpen }: CoverProps) {
     </motion.div>
   );
 }
+

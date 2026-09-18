@@ -12,6 +12,8 @@ import { wedding, getPrimaryEvent } from "@/config/wedding";
 import { useInviteSide } from "@/hooks/useInviteSide";
 import { sideLabel } from "@/lib/utils";
 import { InView } from "@/components/motion/primitives";
+import { AmbientField } from "@/components/motion/AmbientField";
+import { WaxSealCrest } from "@/components/ui/Ornament";
 
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
@@ -45,6 +47,7 @@ export function Hero() {
           className="scale-105 object-cover object-center"
         />
         <div className="absolute inset-0 illust-wash" />
+        <AmbientField density="low" scrollLinked />
       </motion.div>
 
       <motion.div
@@ -52,16 +55,17 @@ export function Hero() {
         style={reduce ? undefined : { y: yContent, opacity }}
       >
         <InView>
+          <WaxSealCrest initials="UN" className="mb-4 scale-90" />
           <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-primary">
             {sideLabel(side)}
           </p>
-          <p className="mt-2 font-script text-[2.15rem] text-primary-dark sm:text-[2.4rem]">
+          <p className="mt-1 font-script text-[2.15rem] text-primary-dark sm:text-[2.4rem]">
             The Wedding Of
           </p>
         </InView>
 
         <InView delay={0.08}>
-          <h1 className="mt-5 font-serif text-[3rem] font-semibold uppercase tracking-[0.18em] text-primary-dark name-shadow sm:text-[3.35rem]">
+          <h1 className="mt-4 font-serif text-[3rem] font-semibold uppercase tracking-[0.18em] text-primary-dark name-shadow sm:text-[3.35rem]">
             {first}
           </h1>
         </InView>
@@ -105,3 +109,4 @@ export function Hero() {
     </section>
   );
 }
+

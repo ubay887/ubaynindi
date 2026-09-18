@@ -15,12 +15,12 @@ import { InView, SectionHead } from "@/components/motion/primitives";
 
 function Unit({ value, label }: { value: number; label: string }) {
   return (
-    <div className="count-cell flex flex-1 flex-col items-center px-1 py-3.5">
+    <div className="count-cell flex flex-1 flex-col items-center rounded-xl border border-gold/30 bg-white/75 px-1 py-4 shadow-[0_12px_28px_-14px_rgba(46,63,44,0.22)] backdrop-blur-md">
       <div className="relative h-8 overflow-hidden">
         <AnimatePresence mode="popLayout" initial={false}>
           <motion.span
             key={value}
-            className="block font-serif text-[1.7rem] font-semibold tabular-nums leading-none text-primary-dark sm:text-[1.85rem]"
+            className="block font-serif text-[1.85rem] font-bold tabular-nums leading-none text-primary-dark sm:text-[2rem]"
             initial={{ y: 12, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -12, opacity: 0 }}
@@ -30,7 +30,7 @@ function Unit({ value, label }: { value: number; label: string }) {
           </motion.span>
         </AnimatePresence>
       </div>
-      <span className="mt-1.5 text-[9px] font-semibold uppercase tracking-[0.16em] text-muted">
+      <span className="mt-2 text-[9.5px] font-bold uppercase tracking-[0.18em] text-primary-soft">
         {label}
       </span>
     </div>

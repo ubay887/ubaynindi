@@ -213,12 +213,12 @@ export function LocationMap() {
                 </div>
               </div>
 
-              <div className="mt-5 flex flex-col gap-2.5 sm:flex-row sm:justify-center">
+              <div className="mt-5 flex flex-wrap gap-2 justify-center">
                 <Button
                   type="button"
                   variant="double"
-                  size="md"
-                  className="w-full sm:w-auto sm:min-w-[140px]"
+                  size="sm"
+                  className="flex-1 min-w-[120px]"
                   onClick={async () => {
                     const text = `${active.venue}\n${active.address}`;
                     const ok = await copyToClipboard(text);
@@ -239,8 +239,8 @@ export function LocationMap() {
                   target="_blank"
                   rel="noopener noreferrer"
                   variant="double-solid"
-                  size="md"
-                  className="w-full sm:w-auto sm:min-w-[160px]"
+                  size="sm"
+                  className="flex-1 min-w-[130px]"
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
                     <path
@@ -251,6 +251,16 @@ export function LocationMap() {
                     <circle cx="12" cy="10" r="2.4" stroke="currentColor" strokeWidth="1.6" />
                   </svg>
                   Google Maps
+                </LinkButton>
+                <LinkButton
+                  href={`https://waze.com/ul?ll=${active.lat},${active.lng}&navigate=yes`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  variant="outline"
+                  size="sm"
+                  className="flex-1 min-w-[110px]"
+                >
+                  Waze
                 </LinkButton>
               </div>
             </div>

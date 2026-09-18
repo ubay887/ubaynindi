@@ -23,6 +23,10 @@ import { Notes } from "@/components/invitation/Notes";
 import { Gift } from "@/components/invitation/Gift";
 import { Wishes } from "@/components/invitation/Wishes";
 import { Closing } from "@/components/invitation/Closing";
+import Image from "next/image";
+import { WaxSealCrest } from "@/components/ui/Ornament";
+import { AmbientField } from "@/components/motion/AmbientField";
+import { AuroraBg } from "@/components/motion/AuroraBg";
 
 /** Leaflet needs `window` — load map only on the client */
 const LocationMap = dynamic(
@@ -39,6 +43,56 @@ const LocationMap = dynamic(
     ),
   },
 );
+
+function DesktopStickyPane({ guestName }: { guestName: string }) {
+  const [first, second] = wedding.couple.displayNames.split(" & ");
+
+  return (
+    <aside className="sticky top-6 hidden h-[calc(100vh-3rem)] overflow-hidden rounded-[2rem] border border-gold/30 bg-cream shadow-[0_24px_60px_-15px_rgba(31,45,34,0.35)] lg:flex lg:col-span-5 flex-col justify-between p-8 text-center relative z-20">
+      <Image
+        src="/ornaments/cover-bg.jpg"
+        alt=""
+        fill
+        priority
+        quality={90}
+        sizes="50vw"
+        className="object-cover object-[center_22%]"
+      />
+      <div className="absolute inset-0 illust-wash" />
+      <AmbientField density="high" />
+
+      <div className="relative z-10 flex flex-col items-center justify-center h-full">
+        <WaxSealCrest initials="UN" className="mb-4 scale-100" />
+        <p className="font-script text-[2.2rem] leading-none text-primary-dark">
+          The Wedding Of
+        </p>
+        <h1 className="mt-4 font-serif text-[3.2rem] font-bold uppercase leading-none tracking-[0.16em] text-primary-dark name-shadow">
+          {first}
+        </h1>
+        <p className="ampersand my-1 text-2xl" aria-hidden>
+          &amp;
+        </p>
+        <h1 className="font-serif text-[3.2rem] font-bold uppercase leading-none tracking-[0.16em] text-primary-dark name-shadow">
+          {second}
+        </h1>
+
+        <div className="ornament-line mx-auto my-5">
+          <span className="dot" />
+        </div>
+
+        {/* Guest Plate on Desktop */}
+        <div className="guest-glass gold-border-glow mx-auto w-full max-w-[280px] rounded-2xl p-4 mt-2">
+          <p className="text-[10px] tracking-[0.2em] text-muted uppercase font-semibold">
+            Kepada Yth.
+          </p>
+          <p className="mt-1 font-serif text-lg font-bold text-primary-dark">
+            {guestName}
+          </p>
+        </div>
+      </div>
+    </aside>
+  );
+}
 
 function InvitationInner() {
   const guestName = useGuestName();
@@ -68,22 +122,35 @@ function InvitationInner() {
       {opened ? (
         <motion.main
           key="main"
-          className="min-h-dvh"
+          className="relative min-h-dvh overflow-hidden bg-[#efece6] py-0 lg:py-6"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
         >
-          <Hero />
-          <Verse />
-          <Couple />
-          <Countdown />
-          <Events />
-          <LoveStory />
-          <LocationMap />
-          <Notes />
-          <Gift />
-          <Wishes />
-          <Closing />
+          {/* Continuous atmospheric motion canvas */}
+          <div className="pointer-events-none fixed inset-0 z-0">
+            <AuroraBg variant="page" />
+            <AmbientField density="high" scrollLinked />
+          </div>
+
+          <div className="relative z-10 lg:grid lg:grid-cols-12 lg:max-w-6xl lg:mx-auto lg:gap-8 lg:px-6">
+            <DesktopStickyPane guestName={guestName} />
+
+            {/* Scrollable invitation column */}
+            <div className="lg:col-span-7 overflow-hidden rounded-none lg:rounded-[2rem] lg:border lg:border-gold/30 lg:bg-[#f7f6f2] lg:shadow-[0_24px_60px_-15px_rgba(31,45,34,0.28)]">
+              <Hero />
+              <Verse />
+              <Couple />
+              <Countdown />
+              <Events />
+              <LoveStory />
+              <LocationMap />
+              <Notes />
+              <Gift />
+              <Wishes />
+              <Closing />
+            </div>
+          </div>
         </motion.main>
       ) : null}
 

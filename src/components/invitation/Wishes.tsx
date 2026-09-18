@@ -47,11 +47,11 @@ export function Wishes() {
   const [name, setName] = useState("");
   const [anonymous, setAnonymous] = useState(false);
   const [message, setMessage] = useState("");
-  const [attendance, setAttendance] =
-    useState<Wish["attendance"]>("hadir");
+  const [attendance, setAttendance] = useState<Wish["attendance"]>("hadir");
   const [guestCount, setGuestCount] = useState(1);
   const [error, setError] = useState("");
   const [sent, setSent] = useState(false);
+  const [filter, setFilter] = useState<"semua" | "hadir" | "tidak_hadir">("semua");
 
   useEffect(() => {
     setList(loadWishes());
@@ -96,34 +96,53 @@ export function Wishes() {
     ragu: "Belum Pasti",
   };
 
+  const totalAttending = list
+    .filter((w) => w.attendance === "hadir")
+    .reduce((acc, curr) => acc + (curr.guestCount || 1), 0);
+
+  const filteredList = list.filter((w) => {
+    if (filter === "hadir") return w.attendance === "hadir";
+    if (filter === "tidak_hadir") return w.attendance !== "hadir";
+    return true;
+  });
+
   return (
     <section id="wishes" className="section-cream section-pad sm:px-8">
       <div className="mx-auto max-w-[360px]">
         <SectionHead
-          script="Wishes"
+          script="Wishes & RSVP"
           title={wishes.title}
           subtitle={wishes.subtitle}
         />
 
         <InView>
+          <div className="mb-5 flex items-center justify-between rounded-xl border border-gold/20 bg-gradient-to-r from-cream via-white to-cream-2 px-4 py-3 shadow-xs">
+            <span className="text-xs font-semibold text-primary-dark">
+              Kehadiran Tamu
+            </span>
+            <span className="rounded-full bg-primary-dark px-3 py-1 text-[11px] font-bold text-cream">
+              {totalAttending} Konfirmasi Hadir
+            </span>
+          </div>
+
           <form
             onSubmit={onSubmit}
-            className="mb-7 space-y-4 rounded-2xl border border-gold/20 bg-white/70 p-5 shadow-[0_16px_40px_-24px_rgba(47,66,45,0.2)]"
+            className="mb-7 space-y-4 rounded-2xl border border-gold/30 bg-white/80 p-5 shadow-[0_16px_40px_-24px_rgba(47,66,45,0.2)] backdrop-blur-sm"
           >
             <div>
               <label
                 htmlFor="wish-name"
-                className="mb-1.5 block text-[11px] font-medium tracking-wide text-muted"
+                className="mb-1.5 block text-[11px] font-semibold tracking-wide text-primary-soft uppercase"
               >
-                Nama
+                Nama Anda
               </label>
               <input
                 id="wish-name"
                 value={anonymous ? "Anonim" : name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Nama Anda"
+                placeholder="Tulis nama lengkap Anda"
                 disabled={anonymous}
-                className="field-input w-full rounded-full border border-primary/12 bg-cream/90 px-4 py-2.5 text-sm outline-none disabled:cursor-not-allowed disabled:opacity-60"
+                className="field-input w-full rounded-full border border-primary/18 bg-cream/90 px-4 py-2.5 text-sm outline-none disabled:cursor-not-allowed disabled:opacity-60"
                 maxLength={60}
                 autoComplete="name"
               />
@@ -145,22 +164,22 @@ export function Wishes() {
             <div>
               <label
                 htmlFor="wish-msg"
-                className="mb-1.5 block text-[11px] font-medium tracking-wide text-muted"
+                className="mb-1.5 block text-[11px] font-semibold tracking-wide text-primary-soft uppercase"
               >
-                Ucapan & Doa
+                Ucapan & Doa Restu
               </label>
               <textarea
                 id="wish-msg"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                placeholder="Tulis doa dan ucapan terbaik..."
+                placeholder="Tuliskan doa & ucapan hangat untuk Ubay & Nindi..."
                 rows={3}
-                className="field-input w-full resize-none rounded-2xl border border-primary/12 bg-cream/90 px-4 py-2.5 text-sm outline-none"
+                className="field-input w-full resize-none rounded-2xl border border-primary/18 bg-cream/90 px-4 py-2.5 text-sm outline-none"
                 maxLength={500}
               />
             </div>
             <div>
-              <p className="mb-2 text-[11px] font-medium tracking-wide text-muted">
+              <p className="mb-2 text-[11px] font-semibold tracking-wide text-primary-soft uppercase">
                 Konfirmasi Kehadiran
               </p>
               <div className="grid grid-cols-3 gap-2">
@@ -175,10 +194,10 @@ export function Wishes() {
                     key={v}
                     type="button"
                     onClick={() => setAttendance(v)}
-                    className={`rounded-full border py-2 text-xs font-medium transition-all duration-200 ${
+                    className={`rounded-full border py-2 text-xs font-semibold transition-all duration-200 ${
                       attendance === v
-                        ? "border-primary-dark bg-primary-dark text-cream"
-                        : "border-primary/15 bg-transparent text-primary-dark hover:border-primary/30"
+                        ? "border-primary-dark bg-primary-dark text-cream shadow-sm"
+                        : "border-primary/20 bg-transparent text-primary-dark hover:border-primary/40"
                     }`}
                   >
                     {label}
@@ -189,7 +208,7 @@ export function Wishes() {
 
             {attendance === "hadir" ? (
               <div>
-                <p className="mb-2 text-[11px] font-medium tracking-wide text-muted">
+                <p className="mb-2 text-[11px] font-semibold tracking-wide text-primary-soft uppercase">
                   Jumlah Tamu
                 </p>
                 <div className="grid grid-cols-3 gap-2">
@@ -198,59 +217,89 @@ export function Wishes() {
                       key={n}
                       type="button"
                       onClick={() => setGuestCount(n)}
-                      className={`rounded-full border py-2 text-xs font-medium transition-all duration-200 ${
+                      className={`rounded-full border py-2 text-xs font-semibold transition-all duration-200 ${
                         guestCount === n
-                          ? "border-primary bg-primary/12 text-primary-dark"
+                          ? "border-primary bg-primary/15 text-primary-dark shadow-xs"
                           : "border-primary/15 bg-transparent text-primary-dark hover:border-primary/30"
                       }`}
                     >
-                      {n === 3 ? "3+" : `${n} Orang`}
+                      {n === 3 ? "3+ Orang" : `${n} Orang`}
                     </button>
                   ))}
                 </div>
               </div>
             ) : null}
 
-            {error ? <p className="text-xs text-red-700">{error}</p> : null}
+            {error ? <p className="text-xs font-medium text-red-700">{error}</p> : null}
             {sent ? (
-              <p className="rounded-xl bg-primary/10 px-3 py-2 text-center text-xs font-medium text-primary-dark">
-                Terima kasih — doa & ucapan Anda sudah tersimpan.
+              <p className="rounded-xl bg-primary/12 px-3 py-2.5 text-center text-xs font-semibold text-primary-dark">
+                Terima kasih — doa & ucapan Anda sudah tersimpan ✓
               </p>
             ) : null}
-            <Button type="submit" variant="double-solid" className="w-full">
-              Kirim Ucapan
+            <Button type="submit" variant="double-solid" className="w-full font-semibold">
+              Kirim Ucapan & Doa
             </Button>
           </form>
         </InView>
 
-        <div className="scroll-soft max-h-[320px] space-y-2.5 overflow-y-auto pr-0.5">
+        {/* Filter Bar */}
+        <div className="mb-3 flex items-center justify-center gap-1.5 rounded-full bg-primary/8 p-1">
+          {(
+            [
+              ["semua", "Semua"],
+              ["hadir", "Hadir"],
+              ["tidak_hadir", "Absen/Ragu"],
+            ] as const
+          ).map(([f, label]) => (
+            <button
+              key={f}
+              type="button"
+              onClick={() => setFilter(f)}
+              className={`flex-1 rounded-full py-1.5 text-[11px] font-semibold transition-all ${
+                filter === f
+                  ? "bg-white text-primary-dark shadow-xs"
+                  : "text-muted hover:text-primary-dark"
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+
+        <div className="scroll-soft max-h-[340px] space-y-3 overflow-y-auto pr-0.5">
           <AnimatePresence initial={false}>
-            {list.map((w) => (
+            {filteredList.map((w) => (
               <motion.article
                 key={w.id}
                 layout
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="rounded-2xl border border-gold/15 bg-white/65 px-4 py-3"
+                className="rounded-2xl border border-gold/20 bg-white/80 p-4 shadow-xs"
               >
-                <div className="flex items-center justify-between gap-2">
-                  <p className="text-sm font-semibold text-primary-dark">
-                    {w.name}
-                  </p>
-                  <div className="flex shrink-0 items-center gap-1.5">
-                    {w.guestCount && w.attendance === "hadir" ? (
-                      <span className="rounded-full bg-gold/15 px-2 py-0.5 text-[10px] font-medium text-primary-dark">
-                        {w.guestCount >= 3 ? "3+" : w.guestCount} org
+                <div className="flex items-start gap-3">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-gold-soft/30 to-gold/15 font-serif text-sm font-bold text-primary-dark">
+                    {w.name.charAt(0).toUpperCase()}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="text-sm font-bold text-primary-dark truncate">
+                        {w.name}
+                      </p>
+                      <span
+                        className={`shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-bold ${
+                          w.attendance === "hadir"
+                            ? "bg-primary/12 text-primary-dark"
+                            : "bg-amber-100 text-amber-800"
+                        }`}
+                      >
+                        {labels[w.attendance]} {w.guestCount && w.attendance === "hadir" ? `(${w.guestCount} org)` : ""}
                       </span>
-                    ) : null}
-                    <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-[10px] font-medium text-primary-dark">
-                      {labels[w.attendance]}
-                    </span>
+                    </div>
+                    <p className="mt-1.5 text-[13px] leading-relaxed text-muted">
+                      {w.message}
+                    </p>
                   </div>
                 </div>
-                <p className="mt-1 text-[13px] leading-relaxed text-muted">
-                  {w.message}
-                </p>
               </motion.article>
             ))}
           </AnimatePresence>

@@ -5,6 +5,8 @@ import { getEventsForSide } from "@/config/wedding";
 import { useInviteSide } from "@/hooks/useInviteSide";
 import { InView, SectionHead } from "@/components/motion/primitives";
 
+import { GoldDivider } from "@/components/ui/Ornament";
+
 function EventCard({ event, index }: { event: EventDetail; index: number }) {
   const day = event.date.split("-")[2];
   const weekday = event.dateLabel.split(",")[0];
@@ -16,30 +18,30 @@ function EventCard({ event, index }: { event: EventDetail; index: number }) {
 
   return (
     <InView delay={index * 0.1}>
-      <article className="oval-frame relative mx-auto w-full max-w-[300px] px-8 py-14 text-center sm:max-w-[318px] sm:px-10 sm:py-16">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-primary">
+      <article className="arch-frame relative mx-auto w-full max-w-[310px] px-7 py-12 text-center sm:max-w-[325px] sm:px-9 sm:py-14 shadow-[0_16px_40px_-18px_rgba(31,45,34,0.15)]">
+        <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-primary">
           {event.title}
         </p>
 
-        <div className="gold-rule mx-auto mt-4 w-10" />
+        <GoldDivider className="my-4" />
 
-        <p className="mt-6 font-script text-[1.9rem] leading-none text-gold">
+        <p className="mt-2 font-script text-[2.1rem] leading-none text-gold">
           {weekday}
         </p>
-        <p className="mt-1 font-serif text-[3.6rem] font-semibold leading-none tracking-tight text-primary-dark">
+        <p className="mt-1 font-serif text-[3.8rem] font-bold leading-none tracking-tight text-primary-dark">
           {day}
         </p>
-        <p className="mt-2 text-[12px] font-medium uppercase tracking-[0.16em] text-muted">
+        <p className="mt-2 text-[12px] font-semibold uppercase tracking-[0.18em] text-muted">
           {month} {year}
         </p>
 
-        <div className="mx-auto mt-6 w-full max-w-[220px] space-y-3">
+        <div className="mx-auto mt-6 w-full max-w-[220px] space-y-3.5">
           {sessions.map((s) => (
             <div key={`${s.label}-${s.time}`} className="text-center">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-primary-soft">
+              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary-soft">
                 {s.label}
               </p>
-              <p className="mt-0.5 text-[14px] font-semibold text-primary-dark">
+              <p className="mt-0.5 text-[14px] font-bold text-primary-dark">
                 {s.time}
               </p>
             </div>
@@ -47,10 +49,10 @@ function EventCard({ event, index }: { event: EventDetail; index: number }) {
         </div>
 
         <div className="mt-7">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-primary-soft">
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary-soft">
             Lokasi
           </p>
-          <p className="mt-1.5 text-[14px] font-semibold text-primary-dark">
+          <p className="mt-1 font-serif text-[1.1rem] font-semibold text-primary-dark">
             {event.venue}
           </p>
         </div>
