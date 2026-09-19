@@ -43,7 +43,7 @@ export function Hero() {
           fill
           priority
           quality={90}
-          sizes="100vw"
+          sizes="(max-width: 768px) 100vw, 448px"
           className="scale-105 object-cover object-center"
         />
         <div className="absolute inset-0 illust-wash" />

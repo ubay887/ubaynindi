@@ -18,19 +18,19 @@ export function AuroraBg({ variant = "page", className = "" }: AuroraBgProps) {
       ? [
           {
             className:
-              "left-[-20%] top-[-10%] h-[55vmax] w-[55vmax] bg-[radial-gradient(circle,rgba(74,93,78,0.35)_0%,transparent_68%)]",
+              "left-[-20%] top-[-10%] h-[55vmax] w-[55vmax] bg-[radial-gradient(circle,rgba(30,71,51,0.28)_0%,transparent_68%)]",
             animate: { x: [0, 40, -20, 0], y: [0, 30, -10, 0], scale: [1, 1.12, 0.96, 1] },
             duration: 18,
           },
           {
             className:
-              "right-[-25%] top-[20%] h-[50vmax] w-[50vmax] bg-[radial-gradient(circle,rgba(142,122,90,0.22)_0%,transparent_70%)]",
+              "right-[-25%] top-[20%] h-[50vmax] w-[50vmax] bg-[radial-gradient(circle,rgba(194,155,78,0.22)_0%,transparent_70%)]",
             animate: { x: [0, -35, 15, 0], y: [0, -25, 20, 0], scale: [1, 0.9, 1.1, 1] },
             duration: 22,
           },
           {
             className:
-              "bottom-[-15%] left-[15%] h-[45vmax] w-[45vmax] bg-[radial-gradient(circle,rgba(121,140,125,0.2)_0%,transparent_70%)]",
+              "bottom-[-15%] left-[15%] h-[45vmax] w-[45vmax] bg-[radial-gradient(circle,rgba(67,130,98,0.18)_0%,transparent_70%)]",
             animate: { x: [0, 25, -30, 0], y: [0, -20, 10, 0], scale: [1, 1.08, 0.94, 1] },
             duration: 20,
           },
@@ -38,19 +38,19 @@ export function AuroraBg({ variant = "page", className = "" }: AuroraBgProps) {
       : [
           {
             className:
-              "left-[-25%] top-[5%] h-[50vmax] w-[50vmax] bg-[radial-gradient(circle,rgba(74,93,78,0.14)_0%,transparent_70%)]",
+              "left-[-25%] top-[5%] h-[50vmax] w-[50vmax] bg-[radial-gradient(circle,rgba(30,71,51,0.12)_0%,transparent_70%)]",
             animate: { x: [0, 45, 0], y: [0, 50, 0], scale: [1, 1.18, 1] },
             duration: 18,
           },
           {
             className:
-              "right-[-20%] top-[35%] h-[45vmax] w-[45vmax] bg-[radial-gradient(circle,rgba(142,122,90,0.12)_0%,transparent_70%)]",
+              "right-[-20%] top-[35%] h-[45vmax] w-[45vmax] bg-[radial-gradient(circle,rgba(194,155,78,0.14)_0%,transparent_70%)]",
             animate: { x: [0, -35, 0], y: [0, -40, 0], scale: [1, 0.9, 1] },
             duration: 22,
           },
           {
             className:
-              "left-[15%] top-[65%] h-[40vmax] w-[40vmax] bg-[radial-gradient(circle,rgba(121,140,125,0.12)_0%,transparent_70%)]",
+              "left-[15%] top-[65%] h-[40vmax] w-[40vmax] bg-[radial-gradient(circle,rgba(67,130,98,0.10)_0%,transparent_70%)]",
             animate: { x: [0, 30, 0], y: [0, -25, 0], scale: [1, 1.1, 1] },
             duration: 16,
           },

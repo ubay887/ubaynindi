@@ -39,9 +39,9 @@ export function Closing() {
         </div>
       </div>
 
-      <div className="relative overflow-hidden bg-gradient-to-b from-[#3f6340] to-[#2a402b]">
-        <GardenFooter className="max-w-none opacity-90" />
-        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#1e301f] via-[#2a402b]/90 to-transparent px-6 pb-11 pt-24 text-center">
+      <div className="relative overflow-hidden bg-gradient-to-b from-[#1e4733] to-[#122c1e]">
+        <GardenFooter className="max-w-none text-gold-light/40" />
+        <div className="relative inset-x-0 bottom-0 bg-gradient-to-t from-[#0d1f15] via-[#122c1e]/90 to-transparent px-6 pb-28 pt-8 text-center">
           <p className="font-script text-[1.75rem] text-cream/95">
             The Wedding Of
           </p>

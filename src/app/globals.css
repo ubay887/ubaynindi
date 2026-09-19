@@ -6,32 +6,33 @@
  * Target WCAG AA for body (≥4.5) and large titles (≥3).
  */
 :root {
-  /* Harmonized Laurel Sage — adem & menyatu dengan gambar */
-  --sage: #4a5d4e;
-  --sage-deep: #1f2d22;
-  --sage-mid: #5d7162;
-  --sage-soft: #798c7d;
-  --sage-mist: #eaf0eb;
-  --sage-haze: #e0e7e1;
+  /* Royal Emerald — mewah, agung & selaras dengan lukisan botani baru */
+  --emerald: #1e4733;
+  --emerald-deep: #122c1e;
+  --emerald-mid: #2b5f45;
+  --emerald-soft: #438262;
+  --emerald-mist: #eaf4ee;
+  --emerald-haze: #deece2;
 
-  /* Solid Warm Silk Cream — persis tone cover-bg.jpg & hero-bg.jpg */
-  --cream: #f7f6f2;
-  --cream-2: #efece6;
+  /* Solid Warm Silk Ivory Cream — selaras dengan background cover & hero */
+  --cream: #fbf9f4;
+  --cream-2: #f3ece0;
 
-  --blush: #c9a59b;
+  --blush: #e2c8be;
 
-  /* Muted Earthy Bronze Gold — lembut, mewah & selaras dengan gambar */
-  --gold: #8e7a5a;
-  --gold-light: #b09f83;
+  /* Luminous Warm Champagne Gold */
+  --gold: #c29b4e;
+  --gold-light: #dfbe7e;
+  --gold-deep: #967432;
 
-  /* High-Contrast Botanical Ink — tajam, jernih & nyaman dibaca */
-  --ink: #1f2d22;
-  --muted: #5f6f62;
+  /* High-Contrast Royal Cypress Ink */
+  --ink: #112519;
+  --muted: #496354;
 
-  --color-primary: var(--sage);
-  --color-primary-dark: var(--sage-deep);
-  --color-primary-light: var(--sage-soft);
-  --color-primary-soft: var(--sage-mid);
+  --color-primary: var(--emerald);
+  --color-primary-dark: var(--emerald-deep);
+  --color-primary-light: var(--emerald-soft);
+  --color-primary-soft: var(--emerald-mid);
   --color-cream: var(--cream);
   --color-cream-soft: var(--cream-2);
   --color-blush: var(--blush);
@@ -41,6 +42,14 @@
   --color-muted: var(--muted);
   --background: var(--cream);
   --foreground: var(--ink);
+
+  /* Aliases mapped to Royal Emerald palette */
+  --sage: var(--emerald);
+  --sage-deep: var(--emerald-deep);
+  --sage-mid: var(--emerald-mid);
+  --sage-soft: var(--emerald-soft);
+  --sage-mist: var(--emerald-mist);
+  --sage-haze: var(--emerald-haze);
 }
 
 @theme inline {
@@ -88,8 +97,8 @@ body.invitation-locked {
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--sage) 26%, transparent);
-  color: var(--sage-deep);
+  background: color-mix(in srgb, var(--emerald) 26%, transparent);
+  color: var(--emerald-deep);
 }
 
 /* Soft wash over full-bleed illustrations */
@@ -97,15 +106,15 @@ body.invitation-locked {
   background:
     radial-gradient(
       ellipse 85% 55% at 50% 36%,
-      rgba(247, 246, 242, 0.14) 0%,
+      rgba(251, 249, 244, 0.12) 0%,
       transparent 60%
     ),
     linear-gradient(
       180deg,
-      rgba(247, 246, 242, 0.28) 0%,
-      rgba(247, 246, 242, 0.06) 28%,
-      rgba(247, 246, 242, 0.14) 55%,
-      rgba(247, 246, 242, 0.96) 100%
+      rgba(251, 249, 244, 0.22) 0%,
+      rgba(251, 249, 244, 0.05) 28%,
+      rgba(251, 249, 244, 0.14) 55%,
+      rgba(251, 249, 244, 0.96) 100%
     );
 }
 
@@ -115,10 +124,10 @@ body.invitation-locked {
 .section-cream {
   background-color: var(--cream);
   background-image:
-    radial-gradient(rgba(47, 63, 44, 0.035) 1px, transparent 1px),
+    radial-gradient(rgba(18, 44, 30, 0.035) 1px, transparent 1px),
     radial-gradient(
       ellipse 90% 55% at 50% 0%,
-      rgba(143, 168, 134, 0.08),
+      rgba(194, 155, 78, 0.08),
       transparent 65%
     );
   background-size:
@@ -126,15 +135,15 @@ body.invitation-locked {
     100% 100%;
 }
 
-/* Soft sage mist — events, accents */
+/* Soft emerald mist — events, accents */
 .section-sage {
   background:
     radial-gradient(
       ellipse 80% 50% at 50% 0%,
-      rgba(255, 255, 255, 0.55),
+      rgba(255, 255, 255, 0.6),
       transparent 55%
     ),
-    linear-gradient(180deg, #e9f0e7 0%, var(--sage-mist) 45%, #dfe8dc 100%);
+    linear-gradient(180deg, #edf5ef 0%, var(--emerald-mist) 45%, #e1ede5 100%);
 }
 
 /* Cool soft band for countdown — light, adem (not solid dark green) */
@@ -142,10 +151,10 @@ body.invitation-locked {
   background:
     radial-gradient(
       ellipse 70% 60% at 50% 100%,
-      rgba(143, 168, 134, 0.18),
+      rgba(67, 130, 98, 0.14),
       transparent 60%
     ),
-    linear-gradient(180deg, #e6efe4 0%, #d8e4d5 50%, #d0ddd0 100%);
+    linear-gradient(180deg, #eaf3ed 0%, #dce9e0 50%, #d2e2d7 100%);
 }
 
 /* Very soft story band */
@@ -153,47 +162,62 @@ body.invitation-locked {
   background:
     radial-gradient(
       ellipse 90% 50% at 50% 0%,
-      rgba(255, 255, 255, 0.4),
+      rgba(255, 255, 255, 0.45),
       transparent 50%
     ),
-    linear-gradient(180deg, #e4ede2 0%, #d5e2d3 55%, #cddbc9 100%);
+    linear-gradient(180deg, #e9f2ec 0%, #dbe8de 55%, #d1e2d6 100%);
 }
 
 /* Keep deep only for footer band if needed */
 .section-sage-deep {
-  background: linear-gradient(180deg, #4a6347 0%, #3a5238 55%, #2e412c 100%);
+  background: linear-gradient(180deg, #244e39 0%, #1a3c2b 55%, #122c1e 100%);
   color: var(--cream);
 }
 
 /* Double-border pill CTA */
 .btn-double {
-  border: 2px double color-mix(in srgb, var(--sage-deep) 70%, var(--gold) 30%);
-  background: rgba(255, 255, 255, 0.92);
-  color: var(--sage-deep);
-  box-shadow: 0 8px 22px -12px rgba(46, 63, 44, 0.28);
+  border: 2px double color-mix(in srgb, var(--emerald) 70%, var(--gold) 30%);
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--emerald-deep);
+  box-shadow: 0 8px 22px -12px rgba(18, 44, 30, 0.35);
 }
 
 .btn-double:hover {
-  background: #fff;
+  background: #ffffff;
+  border-color: var(--gold);
   transform: translateY(-1px);
 }
 
 .btn-double-solid {
-  border: 2px double rgba(247, 246, 242, 0.45);
-  background: var(--sage-deep);
+  border: 2px double rgba(223, 190, 126, 0.7);
+  background: linear-gradient(135deg, #1e4733 0%, #122c1e 100%);
   color: var(--cream);
-  box-shadow: 0 10px 26px -12px rgba(46, 63, 44, 0.45);
+  box-shadow: 0 10px 28px -10px rgba(18, 44, 30, 0.55), 0 0 16px rgba(194, 155, 78, 0.25);
 }
 
 .btn-double-solid:hover {
-  background: var(--sage);
+  background: linear-gradient(135deg, #25573f 0%, #173726 100%);
+  box-shadow: 0 12px 32px -8px rgba(18, 44, 30, 0.65), 0 0 20px rgba(194, 155, 78, 0.35);
   transform: translateY(-1px);
 }
 
 .btn-double-on-sage {
-  border: 2px double color-mix(in srgb, var(--sage-deep) 55%, transparent);
-  background: rgba(255, 255, 255, 0.94);
-  color: var(--sage-deep);
+  border: 2px double color-mix(in srgb, var(--gold) 50%, var(--emerald-deep) 50%);
+  background: rgba(255, 255, 255, 0.96);
+  color: var(--emerald-deep);
+}
+
+@keyframes btn-pulse {
+  0%, 100% {
+    box-shadow: 0 10px 28px -10px rgba(18, 44, 30, 0.55), 0 0 0 0 rgba(194, 155, 78, 0.5);
+  }
+  50% {
+    box-shadow: 0 12px 32px -8px rgba(18, 44, 30, 0.65), 0 0 0 8px rgba(194, 155, 78, 0);
+  }
+}
+
+.btn-pulse {
+  animation: btn-pulse 2.8s ease-in-out infinite;
 }
 
 /* Oval event frame — elegant, content stays in safe middle band */
@@ -388,7 +412,7 @@ body.invitation-locked {
 
 /* Gold Foil Metallic Utilities & Shimmer */
 .gold-text-gradient {
-  background: linear-gradient(135deg, #8e7a5a 0%, #b09f83 40%, #6e5c3d 75%, #8e7a5a 100%);
+  background: linear-gradient(135deg, #c29b4e 0%, #dfbe7e 40%, #967432 75%, #c29b4e 100%);
   background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -396,16 +420,16 @@ body.invitation-locked {
 }
 
 .gold-border-glow {
-  border: 1px solid rgba(142, 122, 90, 0.35);
-  box-shadow: 0 8px 24px -10px rgba(31, 45, 34, 0.12), inset 0 0 8px rgba(142, 122, 90, 0.05);
+  border: 1px solid rgba(194, 155, 78, 0.4);
+  box-shadow: 0 8px 24px -10px rgba(18, 44, 30, 0.15), inset 0 0 8px rgba(194, 155, 78, 0.08);
 }
 
 /* Islamic Arch Frame Motif */
 .arch-frame {
   border-radius: 120px 120px 24px 24px;
-  background: linear-gradient(165deg, rgba(255, 255, 255, 0.96) 0%, rgba(247, 246, 242, 0.98) 100%);
-  border: 1.5px solid rgba(142, 122, 90, 0.35);
-  box-shadow: 0 16px 40px -18px rgba(31, 45, 34, 0.15);
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.96) 0%, rgba(251, 249, 244, 0.98) 100%);
+  border: 1.5px solid rgba(194, 155, 78, 0.4);
+  box-shadow: 0 16px 40px -18px rgba(18, 44, 30, 0.18);
 }
 
 .card-gold-shine {

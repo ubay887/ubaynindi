@@ -39,7 +39,7 @@ export function Cover({ guestName, onOpen }: CoverProps) {
         fill
         priority
         quality={90}
-        sizes="100vw"
+        sizes="(max-width: 1024px) 100vw, 448px"
         className="object-cover object-[center_22%]"
       />
       <div className="absolute inset-0 illust-wash" />

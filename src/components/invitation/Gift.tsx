@@ -76,13 +76,13 @@ export function Gift() {
               {gifts.accounts.map((acc) => (
                 <div
                   key={`${acc.bank}-${acc.accountNumber}`}
-                  className="card-gold-shine relative overflow-hidden rounded-2xl border border-gold/30 bg-gradient-to-br from-[#1c2a1e] via-[#253628] to-[#172218] px-6 py-6 text-cream shadow-[0_20px_42px_-18px_rgba(31,45,34,0.4)]"
+                  className="card-gold-shine relative overflow-hidden rounded-2xl border border-gold/40 bg-gradient-to-br from-[#142d20] via-[#1e4733] to-[#112519] px-6 py-6 text-cream shadow-[0_20px_42px_-18px_rgba(18,44,30,0.5)]"
                 >
                   <div
-                    className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full opacity-25 blur-2xl"
+                    className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full opacity-30 blur-2xl"
                     style={{
                       background:
-                        "radial-gradient(circle, rgba(176,159,131,0.6), transparent 70%)",
+                        "radial-gradient(circle, rgba(194,155,78,0.7), transparent 70%)",
                     }}
                   />
 
@@ -96,8 +96,8 @@ export function Gift() {
                       </p>
                     </div>
                     {/* Metallic Microchip Visual */}
-                    <div className="flex h-7 w-9 items-center justify-center rounded-md border border-amber-200/30 bg-gradient-to-br from-[#b09f83] to-[#736246] shadow-inner">
-                      <div className="h-3 w-5 rounded-sm border border-amber-900/30 bg-amber-50/25" />
+                    <div className="flex h-7 w-9 items-center justify-center rounded-md border border-gold-light/40 bg-gradient-to-br from-[#dfbe7e] to-[#967432] shadow-inner">
+                      <div className="h-3 w-5 rounded-sm border border-emerald-950/30 bg-amber-50/30" />
                     </div>
                   </div>
 
