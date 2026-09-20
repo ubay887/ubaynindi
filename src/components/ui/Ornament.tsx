@@ -389,8 +389,8 @@ export function WaxSealCrest({
           alt="UN Crest"
           width={size * 2}
           height={size * 2}
+          sizes={`${size}px`}
           className="h-full w-full object-contain drop-shadow-[0_10px_24px_rgba(15,61,52,0.4)]"
-          priority
         />
       </div>
     </div>

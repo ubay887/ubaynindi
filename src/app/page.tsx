@@ -9,6 +9,7 @@ import {
 import { findGuestByCode } from "@/lib/guests";
 import { decodeGuestName, parseInviteSide } from "@/lib/utils";
 import { normalizeGuestCode } from "@/lib/guest-code";
+import { resolveInvitationGuest } from "@/lib/resolve-guest";
 
 type PageProps = {
   searchParams: Promise<{
@@ -83,6 +84,7 @@ export async function generateMetadata({
   };
 }
 
-export default function Home() {
-  return <InvitationApp />;
+export default async function Home({ searchParams }: PageProps) {
+  const initialGuest = await resolveInvitationGuest(await searchParams);
+  return <InvitationApp initialGuest={initialGuest} />;
 }

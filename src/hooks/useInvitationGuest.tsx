@@ -4,57 +4,31 @@ import {
   createContext,
   useContext,
   useEffect,
-  useMemo,
   useState,
   type ReactNode,
 } from "react";
-import { useSearchParams } from "next/navigation";
-import { decodeGuestName, parseInviteSide, sanitizeGuestName } from "@/lib/utils";
-import { normalizeGuestCode } from "@/lib/guest-code";
+import { sanitizeGuestName } from "@/lib/utils";
+import type { GuestState } from "@/types/guest";
 import type { InviteSide } from "@/types/wedding";
+
+export type { GuestState };
 
 const FALLBACK_NAME = "Tamu Undangan";
 
-export type GuestState = {
-  name: string;
-  side: InviteSide;
-  code: string | null;
-  loading: boolean;
-  error: string | null;
-  /** True when name came from a valid shortcode or `?to=`. */
-  resolved: boolean;
-  /**
-   * False while a shortcode is in-flight.
-   * Do not paint side-specific schedule until this is true.
-   */
-  ready: boolean;
-};
-
 const GuestContext = createContext<GuestState | null>(null);
 
-function useGuestState(): GuestState {
-  const params = useSearchParams();
-  const code = useMemo(() => normalizeGuestCode(params.get("c")), [params]);
-  const toName = useMemo(() => {
-    const raw = (params.get("to") ?? "").trim();
-    if (!raw) return null;
-    const decoded = decodeGuestName(raw);
-    return decoded === FALLBACK_NAME ? null : decoded;
-  }, [params]);
-  const sideFallback = useMemo(
-    () => parseInviteSide(params.get("side")),
-    [params],
-  );
-
-  const [lookup, setLookup] = useState<{
-    forCode: string;
-    name: string;
-    side: InviteSide;
-    error: string | null;
-  } | null>(null);
+export function GuestProvider({
+  children,
+  initial,
+}: {
+  children: ReactNode;
+  initial: GuestState;
+}) {
+  const [state, setState] = useState<GuestState>(initial);
 
   useEffect(() => {
-    if (!code) return;
+    const code = initial.code;
+    if (!code || initial.resolved || initial.error) return;
 
     let cancelled = false;
     const ac =
@@ -69,12 +43,12 @@ function useGuestState(): GuestState {
         );
         if (!res.ok) {
           if (!cancelled) {
-            setLookup({
-              forCode: code,
-              name: toName ?? FALLBACK_NAME,
-              side: sideFallback,
+            setState((prev) => ({
+              ...prev,
+              loading: false,
+              ready: true,
               error: "Kode undangan tidak valid.",
-            });
+            }));
           }
           return;
         }
@@ -84,21 +58,24 @@ function useGuestState(): GuestState {
           code: string;
         };
         if (!cancelled) {
-          setLookup({
-            forCode: data.code,
+          setState({
             name: sanitizeGuestName(data.name) || FALLBACK_NAME,
             side: data.side === "pria" ? "pria" : "wanita",
+            code: data.code,
+            loading: false,
             error: null,
+            resolved: true,
+            ready: true,
           });
         }
       } catch {
         if (!cancelled) {
-          setLookup({
-            forCode: code,
-            name: toName ?? FALLBACK_NAME,
-            side: sideFallback,
+          setState((prev) => ({
+            ...prev,
+            loading: false,
+            ready: true,
             error: "Gagal memuat data undangan.",
-          });
+          }));
         }
       }
     })();
@@ -108,24 +85,9 @@ function useGuestState(): GuestState {
       ac?.abort();
       window.clearTimeout(timer);
     };
-  }, [code, sideFallback, toName]);
+  }, [initial]);
 
-  const hit = code && lookup?.forCode === code ? lookup : null;
-
-  return {
-    name: hit?.name ?? toName ?? FALLBACK_NAME,
-    side: hit?.side ?? sideFallback,
-    code,
-    loading: Boolean(code) && !hit,
-    error: hit?.error ?? null,
-    resolved: hit ? !hit.error : Boolean(toName) && !code,
-    ready: !code || Boolean(hit),
-  };
-}
-
-export function GuestProvider({ children }: { children: ReactNode }) {
-  const guest = useGuestState();
-  return <GuestContext.Provider value={guest}>{children}</GuestContext.Provider>;
+  return <GuestContext.Provider value={state}>{children}</GuestContext.Provider>;
 }
 
 export function useInvitationGuest(): GuestState {

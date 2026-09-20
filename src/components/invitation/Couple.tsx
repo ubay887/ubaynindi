@@ -20,7 +20,6 @@ function GroomAvatar() {
           fill
           sizes="112px"
           className="object-cover"
-          priority
         />
       </div>
       <span className="absolute -bottom-1 -right-1 flex h-7 w-7 items-center justify-center rounded-full border border-gold/60 bg-cream text-[12px] font-serif font-bold text-primary-dark shadow-md">
@@ -40,7 +39,6 @@ function BrideAvatar() {
           fill
           sizes="112px"
           className="object-cover"
-          priority
         />
       </div>
       <span className="absolute -bottom-1 -right-1 flex h-7 w-7 items-center justify-center rounded-full border border-gold/60 bg-cream text-[12px] font-serif font-bold text-primary-dark shadow-md">

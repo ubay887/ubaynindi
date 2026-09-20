@@ -49,8 +49,7 @@ export function Hero() {
           src="/ornaments/hero-bg.jpg"
           alt=""
           fill
-          priority
-          quality={90}
+          quality={70}
           sizes="(max-width: 768px) 100vw, 448px"
           className="scale-105 object-cover object-center"
         />
@@ -99,7 +98,6 @@ export function Hero() {
             width={420}
             height={280}
             className="h-auto w-full object-contain drop-shadow-[0_6px_20px_rgba(20,45,32,0.18)]"
-            priority
           />
         </InView>
 

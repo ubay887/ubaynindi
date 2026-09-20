@@ -12,7 +12,7 @@ import "./globals.css";
 const display = Cormorant_Infant({
   variable: "--font-display",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "600", "700"],
   display: "swap",
 });
 
@@ -26,7 +26,7 @@ const script = Pinyon_Script({
 const body = Nunito_Sans({
   variable: "--font-body",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "600", "700"],
   display: "swap",
 });
 

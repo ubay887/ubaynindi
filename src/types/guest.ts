@@ -7,3 +7,13 @@ export type GuestInvite = {
   side: InviteSide;
   createdAt: string;
 };
+
+export type GuestState = {
+  name: string;
+  side: InviteSide;
+  code: string | null;
+  loading: boolean;
+  error: string | null;
+  resolved: boolean;
+  ready: boolean;
+};

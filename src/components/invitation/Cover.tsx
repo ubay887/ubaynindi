@@ -46,12 +46,12 @@ export function Cover({ guestName, onOpen }: CoverProps) {
         alt=""
         fill
         priority
-        quality={90}
+        quality={70}
         sizes="100vw"
         className="object-cover object-[center_22%]"
       />
       <div className="absolute inset-0 illust-wash" />
-      <AmbientField density="high" />
+      <AmbientField density="low" />
 
       {/* Dynamic Floating Islamic Clouds (Invisimple style continuous float) */}
       <FloatingIslamicCloud
