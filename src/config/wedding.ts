@@ -201,7 +201,29 @@ export function getSiteUrl(): string {
 /** Static PNG — WhatsApp often fails on `/api/og?…` (query + runtime ImageResponse). */
 export function getOgImageUrl(side: InviteSide = "wanita"): string {
   const file = side === "pria" ? "/og-pria.png" : "/og.png";
-  return `${getSiteUrl()}${file}`;
+  return `${getSiteUrl()}${file}?v=2`;
+}
+
+/** Short title + description for WhatsApp / OG (keep under ~60 / ~90 chars). */
+export function getShareMeta(opts?: {
+  side?: InviteSide;
+  guestName?: string | null;
+}): { title: string; description: string } {
+  const side = opts?.side ?? "wanita";
+  const primary = getPrimaryEvent(side);
+  const names = wedding.couple.displayNames;
+  const guest = opts?.guestName?.trim();
+  if (guest) {
+    const polite = guest.replace(/\S+/g, (w) => w.charAt(0).toUpperCase() + w.slice(1));
+    return {
+      title: `Untuk ${polite}`,
+      description: `${names} · ${primary.title} · ${primary.dateLabel}`,
+    };
+  }
+  return {
+    title: names,
+    description: `${primary.title} · ${primary.dateLabel}`,
+  };
 }
 
 /** Helpers derived from config — pass InviteSide for pria/wanita variants */

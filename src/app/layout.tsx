@@ -1,6 +1,12 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Infant, Pinyon_Script, Nunito_Sans } from "next/font/google";
-import { wedding, getOgImageUrl, getPrimaryEvent, getSiteUrl } from "@/config/wedding";
+import {
+  wedding,
+  getOgImageUrl,
+  getPrimaryEvent,
+  getShareMeta,
+  getSiteUrl,
+} from "@/config/wedding";
 import "./globals.css";
 
 const display = Cormorant_Infant({
@@ -26,8 +32,9 @@ const body = Nunito_Sans({
 
 const siteUrl = getSiteUrl();
 const primary = getPrimaryEvent();
-const ogTitle = wedding.meta.title;
-const ogDescription = `${wedding.meta.description} · ${primary.dateLabel}`;
+const share = getShareMeta();
+const ogTitle = share.title;
+const ogDescription = share.description;
 const ogImage = getOgImageUrl();
 
 export const metadata: Metadata = {

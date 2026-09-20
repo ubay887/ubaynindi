@@ -1,8 +1,13 @@
 import type { Metadata } from "next";
 import { InvitationApp } from "@/components/invitation/InvitationApp";
-import { wedding, getOgImageUrl, getPrimaryEvent, getSiteUrl } from "@/config/wedding";
+import {
+  wedding,
+  getOgImageUrl,
+  getShareMeta,
+  getSiteUrl,
+} from "@/config/wedding";
 import { findGuestByCode } from "@/lib/guests";
-import { decodeGuestName, parseInviteSide, sideLabel } from "@/lib/utils";
+import { decodeGuestName, parseInviteSide } from "@/lib/utils";
 import { normalizeGuestCode } from "@/lib/guest-code";
 
 type PageProps = {
@@ -31,17 +36,8 @@ export async function generateMetadata({
     (directName && directName !== "Tamu Undangan" ? directName : null);
 
   const side = guest?.side ?? parseInviteSide(pick(params.side));
-  const primary = getPrimaryEvent(side);
   const siteUrl = getSiteUrl();
-  const sideText = sideLabel(side);
-
-  const title = guestName
-    ? `Undangan untuk ${guestName} · ${wedding.couple.displayNames}`
-    : `${wedding.meta.title} · ${sideText}`;
-
-  const description = guestName
-    ? `Kepada Yth. ${guestName}. ${sideText} — ${primary.dateLabel}. ${wedding.meta.description}`
-    : `${sideText} — ${primary.dateLabel}. ${wedding.meta.description}`;
+  const { title, description } = getShareMeta({ side, guestName });
 
   const pageUrl = guest
     ? `${siteUrl}/?c=${guest.code}`
@@ -58,7 +54,7 @@ export async function generateMetadata({
       type: "website",
       locale: "id_ID",
       url: pageUrl,
-      siteName: wedding.meta.title,
+      siteName: wedding.couple.displayNames,
       title,
       description,
       images: [
