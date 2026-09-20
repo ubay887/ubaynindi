@@ -81,7 +81,10 @@ function DesktopStickyPane({ guestName }: { guestName: string }) {
 
         <div className="relative z-10 flex flex-col items-center justify-center h-full">
           <WaxSealCrest initials="UN" size={88} className="mb-3" />
-          <IslamicArchHeader className="mb-2 max-w-[200px]" />
+          <IslamicArchHeader className="mb-1 max-w-[200px]" />
+          <p className="font-script text-[2.4rem] leading-none text-ink">
+            The Wedding Of
+          </p>
 
           <div className="mx-auto my-3 flex w-full max-w-[290px] justify-center select-none">
             <Image

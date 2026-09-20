@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { wedding, getPrimaryEvent } from "@/config/wedding";
+import { getPrimaryEvent } from "@/config/wedding";
 import { useInvitationGuest } from "@/hooks/useInvitationGuest";
 import { sideLabel } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
@@ -27,7 +27,6 @@ export function Cover({ guestName, onOpen }: CoverProps) {
   const guest = useInvitationGuest();
   const side = guest.side;
   const primary = getPrimaryEvent(side);
-  const [first, second] = wedding.couple.displayNames.split(" & ");
   const showSchedule = guest.ready;
 
   return (
@@ -106,13 +105,22 @@ export function Cover({ guestName, onOpen }: CoverProps) {
             <WaxSealCrest initials="UN" />
           </motion.div>
 
-          <IslamicArchHeader className="mb-2" />
+          <IslamicArchHeader className="mb-1" />
 
           <motion.p
-            className="text-[10.5px] font-bold uppercase tracking-[0.24em] text-primary min-h-[1.2em]"
+            className="font-script text-[2.15rem] leading-none text-ink"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1, duration: 0.55, ease }}
+          >
+            The Wedding Of
+          </motion.p>
+
+          <motion.p
+            className="mt-1.5 text-[10.5px] font-bold uppercase tracking-[0.24em] text-primary min-h-[1.2em]"
             initial={{ opacity: 0 }}
             animate={{ opacity: showSchedule ? 1 : 0.35 }}
-            transition={{ delay: 0.08, duration: 0.5 }}
+            transition={{ delay: 0.18, duration: 0.5 }}
           >
             {showSchedule ? sideLabel(side) : "Undangan Pernikahan"}
           </motion.p>

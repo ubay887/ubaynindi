@@ -83,8 +83,11 @@ export function Hero() {
       >
         <InView>
           <WaxSealCrest initials="UN" size={76} className="mb-2" />
-          <IslamicArchHeader className="mb-2 max-w-[220px]" />
-          <p className="text-[10.5px] font-bold uppercase tracking-[0.24em] text-primary">
+          <IslamicArchHeader className="mb-1 max-w-[220px]" />
+          <p className="font-script text-[2.35rem] leading-none text-ink">
+            The Wedding Of
+          </p>
+          <p className="mt-1.5 text-[10.5px] font-bold uppercase tracking-[0.24em] text-primary">
             {sideLabel(side)}
           </p>
         </InView>
