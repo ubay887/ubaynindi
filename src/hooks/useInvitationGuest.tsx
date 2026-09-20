@@ -57,14 +57,16 @@ function useGuestState(): GuestState {
     if (!code) return;
 
     let cancelled = false;
-    const ac = new AbortController();
-    const timer = window.setTimeout(() => ac.abort(), 8000);
+    const ac =
+      typeof AbortController !== "undefined" ? new AbortController() : null;
+    const timer = window.setTimeout(() => ac?.abort(), 8000);
 
     void (async () => {
       try {
-        const res = await fetch(`/api/guest?c=${encodeURIComponent(code)}`, {
-          signal: ac.signal,
-        });
+        const res = await fetch(
+          `/api/guest?c=${encodeURIComponent(code)}`,
+          ac ? { signal: ac.signal } : undefined,
+        );
         if (!res.ok) {
           if (!cancelled) {
             setLookup({
@@ -103,7 +105,7 @@ function useGuestState(): GuestState {
 
     return () => {
       cancelled = true;
-      ac.abort();
+      ac?.abort();
       window.clearTimeout(timer);
     };
   }, [code, sideFallback, toName]);

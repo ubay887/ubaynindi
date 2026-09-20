@@ -16,6 +16,13 @@
     "react-dom": "19.2.8",
     "react-leaflet": "^5.0.0"
   },
+  "browserslist": [
+    "chrome >= 90",
+    "android >= 90",
+    "samsung >= 15",
+    "ios_saf >= 15",
+    "safari >= 15"
+  ],
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/leaflet": "^1.9.22",

@@ -40,13 +40,23 @@ export function InvitationScrollProvider({
       return;
     }
 
-    const ro = new ResizeObserver((entries) => {
-      const el = entries[0]?.target as HTMLElement | undefined;
-      if (!el) return;
-      const next = el.scrollHeight > el.clientHeight + 4 ? el : null;
+    const measure = () => {
+      const next =
+        element.scrollHeight > element.clientHeight + 4 ? element : null;
       scrollerRef.current = next;
       setOverflowing(Boolean(next));
-    });
+    };
+    measure();
+
+    if (typeof ResizeObserver === "undefined") {
+      window.addEventListener("resize", measure);
+      return () => {
+        window.removeEventListener("resize", measure);
+        scrollerRef.current = null;
+      };
+    }
+
+    const ro = new ResizeObserver(measure);
     ro.observe(element);
     return () => {
       ro.disconnect();

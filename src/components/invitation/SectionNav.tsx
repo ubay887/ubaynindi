@@ -67,6 +67,7 @@ function useActiveSection() {
       .filter(Boolean) as HTMLElement[];
 
     if (!sections.length) return;
+    if (typeof IntersectionObserver === "undefined") return;
 
     const observer = new IntersectionObserver(
       (entries) => {

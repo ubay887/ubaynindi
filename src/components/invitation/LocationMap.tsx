@@ -1,6 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import {
+  Component,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
 import {
   MapContainer,
   TileLayer,
@@ -18,6 +24,19 @@ import { Button, LinkButton } from "@/components/ui/Button";
 import { InView, SectionHead } from "@/components/motion/primitives";
 
 type Loc = EventDetail & { lat: number; lng: number };
+
+class MapErrorBoundary extends Component<
+  { children: ReactNode; fallback: ReactNode },
+  { failed: boolean }
+> {
+  state = { failed: false };
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  render() {
+    return this.state.failed ? this.props.fallback : this.props.children;
+  }
+}
 
 function isLocated(e: EventDetail): e is Loc {
   return typeof e.lat === "number" && typeof e.lng === "number";
@@ -163,11 +182,20 @@ export function LocationMap() {
         <InView>
           <div className="location-map-shell overflow-hidden rounded-[1.4rem] border border-gold/40 bg-white/90 shadow-[0_18px_40px_-22px_rgba(46,63,44,0.22)]">
             <div className="relative h-[280px] w-full sm:h-[320px]">
-              <MapCanvas
-                locations={locations}
-                activeId={activeId}
-                onSelect={setActiveId}
-              />
+              <MapErrorBoundary
+                fallback={
+                  <div className="flex h-full items-center justify-center bg-[#f4ece1] px-5 text-center text-sm text-muted">
+                    Peta tidak bisa dimuat di browser ini. Pakai tombol Maps
+                    atau Waze di bawah.
+                  </div>
+                }
+              >
+                <MapCanvas
+                  locations={locations}
+                  activeId={activeId}
+                  onSelect={setActiveId}
+                />
+              </MapErrorBoundary>
 
               {/* Soft gradient frame over map edges */}
               <div

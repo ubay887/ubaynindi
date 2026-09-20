@@ -266,7 +266,8 @@ export function getCountdownTarget(side: InviteSide = "wanita"): Date {
 }
 
 function calendarEnd(event: ReturnType<typeof getPrimaryEvent>, start: Date): Date {
-  const last = event.sessions?.at(-1)?.time ?? event.time;
+  const sessions = event.sessions;
+  const last = sessions?.[sessions.length - 1]?.time ?? event.time;
   const lastStart = parseEventDateTime(event.date, last);
   const padMs = 4 * 60 * 60 * 1000;
   const end = new Date(lastStart.getTime() + padMs);
