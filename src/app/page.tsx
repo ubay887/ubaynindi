@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { InvitationApp } from "@/components/invitation/InvitationApp";
-import { wedding, getPrimaryEvent, getSiteUrl } from "@/config/wedding";
+import { wedding, getOgImageUrl, getPrimaryEvent, getSiteUrl } from "@/config/wedding";
 import { findGuestByCode } from "@/lib/guests";
 import { decodeGuestName, parseInviteSide, sideLabel } from "@/lib/utils";
 import { normalizeGuestCode } from "@/lib/guest-code";
@@ -49,16 +49,7 @@ export async function generateMetadata({
       ? `${siteUrl}/?side=${side}&to=${encodeURIComponent(guestName)}`
       : `${siteUrl}/?side=${side}`;
 
-  const ogQ = new URLSearchParams();
-  if (guest) {
-    ogQ.set("c", guest.code);
-  } else if (guestName) {
-    ogQ.set("to", guestName);
-    ogQ.set("side", side);
-  } else {
-    ogQ.set("side", side);
-  }
-  const imageUrl = `${siteUrl}/api/og?${ogQ.toString()}`;
+  const imageUrl = getOgImageUrl(side);
 
   return {
     title: { absolute: title },

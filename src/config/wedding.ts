@@ -198,6 +198,12 @@ export function getSiteUrl(): string {
   return (fromEnv || wedding.meta.siteUrl).replace(/\/$/, "");
 }
 
+/** Static PNG — WhatsApp often fails on `/api/og?…` (query + runtime ImageResponse). */
+export function getOgImageUrl(side: InviteSide = "wanita"): string {
+  const file = side === "pria" ? "/og-pria.png" : "/og.png";
+  return `${getSiteUrl()}${file}`;
+}
+
 /** Helpers derived from config — pass InviteSide for pria/wanita variants */
 
 export function getEventsForSide(side: InviteSide = "wanita") {
