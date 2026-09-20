@@ -1,44 +1,55 @@
-# Deploy di VPS sendiri (Coolify)
+# Deploy di Coolify — ubaynindi.love
 
-Undangan ini **bukan** untuk Vercel. Target: VPS + [Coolify](https://coolify.io), Docker standalone, data tamu di volume agar `/admin` bisa menambah shortcode tanpa commit ulang.
+Repo: [github.com/ubay887/ubaynindi](https://github.com/ubay887/ubaynindi)  
+Domain: **https://ubaynindi.love**  
+Build Pack: **Dockerfile** · port **3000** · branch **`master`**
 
-## Yang kamu siapkan
+Ini **bukan** Vercel. Data tamu dari `/admin` disimpan di volume VPS.
 
-- VPS (1 vCPU / 1 GB RAM cukup; 2 GB lebih nyaman saat build)
-- Coolify terpasang, domain mengarah ke VPS (A record)
-- Repo Git (GitHub/GitLab) yang berisi proyek ini
-- Password admin yang kuat
+## 0. DNS (sebelum atau bersamaan dengan Coolify)
 
-## 1. Di Coolify — buat aplikasi
+Di registrar domain `ubaynindi.love`, A record ke **IP VPS Coolify**:
 
-1. **Projects** → pilih project → **+ New** → **Resource**
-2. **Public Repository** atau **Private Repository** (GitHub App / Deploy Key)
-3. Paste URL repo, branch `master` (atau `main`)
-4. **Build Pack:** **Dockerfile** (jangan Nixpacks)
-5. **Dockerfile Location:** `/Dockerfile`
-6. **Ports Exposes:** `3000`
-7. Domain: misal `undangan.namadomain.com` (HTTPS biarkan Coolify + Let’s Encrypt)
+| Type | Name | Value |
+|---|---|---|
+| A | `@` | IP VPS |
+| A | `www` | IP VPS (opsional) |
 
-Server harus listen `0.0.0.0:3000` — sudah di-set di `Dockerfile` (`HOSTNAME=0.0.0.0`).
+Jangan pakai CNAME di apex kalau registrar tidak mendukung. Tunggu DNS propagate (bisa 5 menit–beberapa jam).
+
+## 1. Buat aplikasi di Coolify
+
+1. **Projects** → project → **+ New** → **Resource**
+2. **Private Repository** (GitHub App) atau **Public Repository**
+3. URL: `https://github.com/ubay887/ubaynindi`
+4. Branch: **`master`**
+5. **Build Pack:** **Dockerfile** (jangan Nixpacks)
+6. **Dockerfile Location:** `/Dockerfile`
+7. **Ports Exposes:** `3000`
+8. **Domains:** `ubaynindi.love`  
+   Centang HTTPS / Let’s Encrypt.  
+   Boleh tambah `www.ubaynindi.love` dan redirect ke apex.
+
+App sudah listen `0.0.0.0:3000` (`HOSTNAME` di Dockerfile).
 
 ## 2. Environment variables
 
 **Configuration → Environment Variables:**
 
-| Nama | Wajib | Contoh |
+| Nama | Wajib | Isi |
 |---|---|---|
-| `ADMIN_PASSWORD` | Ya | password kuat, bukan `ubay2026` |
-| `SITE_URL` | Ya | `https://undangan.namadomain.com` (tanpa slash di akhir) |
+| `ADMIN_PASSWORD` | Ya | Password kuat, **bukan** `ubay2026` |
+| `SITE_URL` | Ya | `https://ubaynindi.love` (tanpa slash di akhir) |
 | `DATA_DIR` | Tidak | default `/app/data` |
 | `PORT` | Tidak | `3000` |
 
-`SITE_URL` dipakai untuk Open Graph, link di admin, dan metadata. Harus sama dengan domain yang dibagikan ke tamu.
+`SITE_URL` dipakai OG WhatsApp, metadata, dan link yang disalin di `/admin`. Harus sama dengan domain tamu.
 
-Boleh juga ubah cadangan di `src/config/wedding.ts` → `meta.siteUrl`, tapi env `SITE_URL` mengalahkan itu.
+Cadangan di kode: `src/config/wedding.ts` → `meta.siteUrl` sudah `https://ubaynindi.love`. Env Coolify tetap wajib.
 
-## 3. Persistent storage (penting untuk admin)
+## 3. Persistent storage (wajib untuk admin)
 
-Tanpa volume, daftar tamu **hilang setiap deploy**.
+Tanpa ini, daftar tamu **hilang setiap deploy**.
 
 **Configuration → Persistent Storage → Add → Volume Mount:**
 
@@ -47,50 +58,49 @@ Tanpa volume, daftar tamu **hilang setiap deploy**.
 | Name | `guests-data` |
 | Destination Path | `/app/data` |
 
-Jangan isi Source Path kecuali kamu mau bind ke folder host tertentu.
+Source Path kosong (kecuali bind folder host).
 
-Deploy pertama: jika volume kosong, container menyalin `data/guests.json` dari image (umar / nazar) ke volume. Deploy berikutnya: file di volume **tidak** ditimpa.
+Deploy pertama: volume kosong → container menyalin `data/guests.json` seed (umar / nazar). Deploy berikutnya: file di volume **tidak** ditimpa.
 
 ## 4. Deploy
 
-Klik **Deploy**. Build memakan beberapa menit (Next.js + image).
+Klik **Deploy**. Build beberapa menit (Next.js + image).
 
 Cek:
 
-- `https://undangan.namadomain.com/` — cover undangan
-- `https://undangan.namadomain.com/?side=pria` — sisi pria
-- `https://undangan.namadomain.com/admin` — login dengan `ADMIN_PASSWORD`
-- Tambah tamu uji di admin → refresh → masih ada setelah **Redeploy**
+- https://ubaynindi.love/ — cover wanita (default)
+- https://ubaynindi.love/?side=pria — sisi pria
+- https://ubaynindi.love/admin — login dengan `ADMIN_PASSWORD`
+- Tambah tamu uji di admin → **Redeploy** → tamu masih ada
 
-Kalau admin error “Tidak bisa menulis data tamu”: volume `/app/data` belum terpasang atau tidak writable. Pasang ulang storage, lalu redeploy.
+Kalau admin error “Tidak bisa menulis data tamu”: volume `/app/data` belum terpasang atau tidak writable.
 
-## 5. Setelah live — link yang dibagikan
-
-Ganti domain di bawah dengan milikmu.
+## 5. Link yang dibagikan
 
 ```
-https://undangan.namadomain.com/?side=wanita
-https://undangan.namadomain.com/?side=pria
-https://undangan.namadomain.com/?side=wanita&to=Bapak+Andi
-https://undangan.namadomain.com/?c=8497
+https://ubaynindi.love/?side=wanita
+https://ubaynindi.love/?side=pria
+https://ubaynindi.love/?side=wanita&to=Bapak+Andi
+https://ubaynindi.love/?c=8497
+https://ubaynindi.love/admin
 ```
 
-Panduan lengkap link & dua sisi: [PANDUAN.md](./PANDUAN.md).
+Panduan keluarga: [PANDUAN.md](./PANDUAN.md).
 
 ## 6. Update undangan (rekening, teks, dll.)
 
-1. Edit `src/config/wedding.ts` di laptop
-2. Push ke Git
-3. Coolify auto-deploy (kalau webhook Git aktif), atau **Deploy** manual
+1. Edit di laptop
+2. `git push` ke `master`
+3. Coolify auto-deploy (webhook Git), atau **Deploy** manual
 
-Daftar tamu di volume **tidak** terhapus. Jangan mount volume ke path lain.
+Daftar tamu di volume **tidak** terhapus.
 
 ## 7. Backup tamu
 
-- Di `/admin` → **Unduh JSON**
-- Atau di VPS: isi volume Docker `guests-data`
+- `/admin` → **Unduh JSON**
+- Atau isi volume Docker `guests-data` di VPS
 
-Simpan file JSON di luar server.
+Simpan JSON di luar server.
 
 ## 8. Tes Docker di laptop (opsional)
 
@@ -101,24 +111,14 @@ ADMIN_PASSWORD=rahasia SITE_URL=http://localhost:3000 docker compose up
 
 Buka http://localhost:3000
 
-## 9. Nixpacks (tidak disarankan)
-
-Kalau Coolify terlanjur Nixpacks:
-
-- Port `3000`
-- Start: `npm run start` (setelah build)
-- Tetap pasang volume ke folder data di dalam container (sering `/app/data`)
-- `output: "standalone"` di `next.config.ts` tetap aman; `next start` masih jalan
-
-Lebih stabil: **Build Pack = Dockerfile**.
-
 ## Troubleshooting
 
 | Gejala | Perbaikan |
 |---|---|
-| 502 / gateway | Port Exposes bukan `3000`, atau app listen localhost saja |
-| Build OOM | Naikkan RAM VPS, atau build di laptop lalu push image (jarang perlu) |
-| HTTPS gagal | DNS A record belum ke IP VPS; tunggu Let’s Encrypt |
-| OG WhatsApp salah domain | `SITE_URL` belum di-set / masih URL lama; redeploy |
+| 502 / gateway | Port Exposes bukan `3000` |
+| Build OOM | Naikkan RAM VPS (2 GB lebih nyaman) |
+| HTTPS gagal | A record belum ke IP VPS; tunggu Let’s Encrypt |
+| OG WhatsApp salah / domain lama | `SITE_URL` harus `https://ubaynindi.love`; redeploy; kirim link ke chat sendiri lagi |
 | Tamu admin hilang | Volume `/app/data` belum ada |
-| Cover lama setelah push | Hard refresh; Coolify deploy belum selesai |
+| Cover lama setelah push | Hard refresh; tunggu deploy selesai |
+| Login admin 503 | `ADMIN_PASSWORD` belum di-set |

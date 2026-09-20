@@ -6,7 +6,7 @@ Satu website, **dua undangan**: pihak wanita dan pihak pria berbeda hari dan lok
 
 Deploy di **VPS sendiri lewat Coolify** (bukan Vercel). Langkah server: [DEPLOY.md](./DEPLOY.md).
 
-Di bawah, ganti `https://DOMAIN-KAMU` dengan domain yang kamu pasang di Coolify.
+Domain live: **https://ubaynindi.love**
 
 ---
 
@@ -14,7 +14,7 @@ Di bawah, ganti `https://DOMAIN-KAMU` dengan domain yang kamu pasang di Coolify.
 
 | | Pihak wanita | Pihak pria |
 |---|---|---|
-| **Link master** | `https://DOMAIN-KAMU/?side=wanita` | `https://DOMAIN-KAMU/?side=pria` |
+| **Link master** | `https://ubaynindi.love/?side=wanita` | `https://ubaynindi.love/?side=pria` |
 | **Hari** | Sabtu, 10 Oktober 2026 | Minggu, 11 Oktober 2026 |
 | **Acara** | Akad 07:00 · Resepsi 12:00 | Resepsi 12:00 |
 | **Tempat** | Kediaman mempelai wanita, Mojodadi, Kemlagi | Kediaman mempelai pria, Bicak, Trowulan |
@@ -34,8 +34,8 @@ Prioritas jika beberapa parameter dipakai bersamaan: **kode (`c`) menang**, lalu
 Bagikan satu link ke seluruh tamu satu sisi.
 
 ```
-https://DOMAIN-KAMU/?side=wanita
-https://DOMAIN-KAMU/?side=pria
+https://ubaynindi.love/?side=wanita
+https://ubaynindi.love/?side=pria
 ```
 
 Nama di cover: **Tamu Undangan**. Cukup untuk grup WhatsApp besar.
@@ -45,8 +45,8 @@ Nama di cover: **Tamu Undangan**. Cukup untuk grup WhatsApp besar.
 Untuk sapaan personal, tanpa daftar tamu.
 
 ```
-https://DOMAIN-KAMU/?side=wanita&to=Bapak+Andi+dan+Keluarga
-https://DOMAIN-KAMU/?side=pria&to=Keluarga+Besar+Khoirin
+https://ubaynindi.love/?side=wanita&to=Bapak+Andi+dan+Keluarga
+https://ubaynindi.love/?side=pria&to=Keluarga+Besar+Khoirin
 ```
 
 Aturan `to=`:
@@ -65,7 +65,7 @@ Contoh:
 
 ### C. Shortcode (nama + sisi terkunci)
 
-Format: `https://DOMAIN-KAMU/?c=8497`
+Format: `https://ubaynindi.love/?c=8497`
 
 - Nama dan sisi diambil dari `data/guests.json`
 - Tamu tidak bisa ganti ke acara sisi lain lewat URL
@@ -114,7 +114,7 @@ Resepsi: 12:00 WIB – selesai
 Kediaman Mempelai Wanita
 
 Undangan digital:
-https://DOMAIN-KAMU/?side=wanita&to=Bapak+Andi+dan+Keluarga
+https://ubaynindi.love/?side=wanita&to=Bapak+Andi+dan+Keluarga
 ```
 
 Untuk pihak pria, ganti judul acara, tanggal, lokasi, dan link `?side=pria`.
@@ -127,7 +127,7 @@ Di dalam undangan ada tombol **Bagikan** (kiri bawah) — WhatsApp, salin tautan
 
 Alamat lokal: [http://localhost:3000/admin](http://localhost:3000/admin)
 
-Alamat live: `https://DOMAIN-KAMU/admin`
+Alamat live: `https://ubaynindi.love/admin`
 
 Di Coolify, pasang **Persistent Storage** ke `/app/data` (lihat [DEPLOY.md](./DEPLOY.md)). Setelah itu, tamu yang dibuat di `/admin` **langsung tersimpan** di VPS, tidak hilang saat redeploy.
 

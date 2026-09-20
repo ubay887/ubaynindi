@@ -14,7 +14,7 @@ export const wedding: WeddingConfig = {
      * Fallback public URL for OG / admin links.
      * Production: set env `SITE_URL` (Coolify) to the real domain.
      */
-    siteUrl: "https://ubaynindi.vercel.app",
+    siteUrl: "https://ubaynindi.love",
     ogImage: "/opengraph-image",
   },
 

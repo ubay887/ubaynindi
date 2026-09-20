@@ -87,5 +87,5 @@ Lokal: `npm run build && npm start`, atau `docker compose up`.
 - [ ] Isi nomor rekening asli di `gifts.accounts`
 - [ ] Lengkapi `mapsUrl` akad (opsional, pin pasti)
 - [ ] Ganti teks love story dengan kisah asli
-- [ ] Set `ADMIN_PASSWORD` + `SITE_URL` di Coolify
+- [ ] Set `ADMIN_PASSWORD` + `SITE_URL=https://ubaynindi.love` di Coolify
 - [ ] Pasang volume `/app/data`
