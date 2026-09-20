@@ -1,9 +1,10 @@
 "use client";
 
 import { FormEvent, useCallback, useEffect, useState } from "react";
+import Link from "next/link";
 import type { GuestInvite } from "@/types/guest";
 import type { InviteSide } from "@/types/wedding";
-import { wedding } from "@/config/wedding";
+import { getInviteShareText, wedding } from "@/config/wedding";
 
 type GuestRow = GuestInvite & { url: string };
 
@@ -18,6 +19,8 @@ export default function AdminPage() {
   const [formError, setFormError] = useState("");
   const [busy, setBusy] = useState(false);
   const [toast, setToast] = useState("");
+  const [filter, setFilter] = useState<"semua" | InviteSide>("semua");
+  const isDev = process.env.NODE_ENV !== "production";
 
   const flash = (msg: string) => {
     setToast(msg);
@@ -147,7 +150,7 @@ export default function AdminPage() {
             Generator Undangan
           </h1>
           <p className="mt-2 text-[13px] text-muted">
-            Masuk untuk membuat shortcode 4 digit undangan tamu.
+            Masuk untuk membuat shortcode undangan tamu (sisi pria/wanita).
           </p>
           <form onSubmit={onLogin} className="mt-6 space-y-3">
             <input
@@ -171,8 +174,15 @@ export default function AdminPage() {
             </button>
           </form>
           <p className="mt-4 text-[11px] text-muted">
-            Set password lewat env <code className="text-primary-dark">ADMIN_PASSWORD</code>
-            . Default lokal: <code className="text-primary-dark">ubay2026</code>
+            Set password lewat env{" "}
+            <code className="text-primary-dark">ADMIN_PASSWORD</code>.
+            {isDev ? (
+              <>
+                {" "}
+                Default lokal:{" "}
+                <code className="text-primary-dark">ubay2026</code>
+              </>
+            ) : null}
           </p>
         </div>
       </div>
@@ -190,7 +200,7 @@ export default function AdminPage() {
             Generator Link
           </h1>
           <p className="mt-1 text-[13px] text-muted">
-            {wedding.couple.displayNames} · shortcode 4 digit
+            {wedding.couple.displayNames} · shortcode 4–8 digit
           </p>
         </div>
         <button
@@ -259,9 +269,9 @@ export default function AdminPage() {
           <input
             value={manualCode}
             onChange={(e) =>
-              setManualCode(e.target.value.replace(/\D/g, "").slice(0, 4))
+              setManualCode(e.target.value.replace(/\D/g, "").slice(0, 8))
             }
-            placeholder="Otomatis 4 digit"
+            placeholder="Otomatis 6 digit"
             inputMode="numeric"
             className="field-input w-full rounded-full border border-primary/15 bg-cream px-4 py-2.5 font-mono text-sm outline-none"
           />
@@ -279,16 +289,65 @@ export default function AdminPage() {
       </form>
 
       <div className="rounded-2xl border border-primary/10 bg-white shadow-sm">
-        <div className="flex items-center justify-between border-b border-primary/8 px-4 py-3">
+        <div className="flex items-center justify-between gap-2 border-b border-primary/8 px-4 py-3">
           <p className="text-sm font-semibold text-primary-dark">
             Daftar tamu ({guests.length})
           </p>
-          <a
-            href="/"
-            className="text-[11px] font-medium text-primary underline-offset-2 hover:underline"
-          >
-            Lihat undangan
-          </a>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => {
+                const payload = guests.map((g) => ({
+                  code: g.code,
+                  name: g.name,
+                  side: g.side,
+                  createdAt: g.createdAt,
+                }));
+                const blob = new Blob([JSON.stringify(payload, null, 2) + "\n"], {
+                  type: "application/json",
+                });
+                const href = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = href;
+                a.download = "guests.json";
+                a.click();
+                URL.revokeObjectURL(href);
+                flash("JSON diunduh");
+              }}
+              className="text-[11px] font-medium text-primary underline-offset-2 hover:underline"
+            >
+              Unduh JSON
+            </button>
+            <Link
+              href="/"
+              className="text-[11px] font-medium text-primary underline-offset-2 hover:underline"
+            >
+              Lihat undangan
+            </Link>
+          </div>
+        </div>
+
+        <div className="flex gap-1.5 border-b border-primary/8 px-4 py-2">
+          {(
+            [
+              ["semua", "Semua"],
+              ["wanita", "Wanita"],
+              ["pria", "Pria"],
+            ] as const
+          ).map(([v, label]) => (
+            <button
+              key={v}
+              type="button"
+              onClick={() => setFilter(v)}
+              className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ${
+                filter === v
+                  ? "bg-primary-dark text-cream"
+                  : "text-primary-dark"
+              }`}
+            >
+              {label}
+            </button>
+          ))}
         </div>
 
         {guests.length === 0 ? (
@@ -297,7 +356,9 @@ export default function AdminPage() {
           </p>
         ) : (
           <ul className="divide-y divide-primary/8">
-            {guests.map((g) => (
+            {guests
+              .filter((g) => (filter === "semua" ? true : g.side === filter))
+              .map((g) => (
               <li key={g.code} className="px-4 py-3">
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0">
@@ -332,6 +393,22 @@ export default function AdminPage() {
                     </button>
                     <button
                       type="button"
+                      onClick={() =>
+                        void copy(
+                          getInviteShareText({
+                            code: g.code,
+                            side: g.side,
+                            guestName: g.name,
+                          }),
+                          "Teks WA disalin",
+                        )
+                      }
+                      className="rounded-full border border-primary/15 px-2.5 py-1 text-[10px] font-semibold text-primary-dark"
+                    >
+                      Salin teks WA
+                    </button>
+                    <button
+                      type="button"
                       onClick={() => void onDelete(g.code)}
                       className="rounded-full px-2.5 py-1 text-[10px] font-medium text-red-700/80"
                     >
@@ -348,12 +425,13 @@ export default function AdminPage() {
       <p className="mt-6 text-center text-[11px] leading-relaxed text-muted">
         Format link:{" "}
         <code className="text-primary-dark">/?c=4821</code>
+        {" · "}
+        tanpa kode:{" "}
+        <code className="text-primary-dark">/?side=pria</code>
         <br />
-        Nama hanya muncul jika shortcode valid — tidak bisa diisi bebas di URL.
-        <br />
-        Data tersimpan di{" "}
-        <code className="text-primary-dark">data/guests.json</code>
-        . Commit file ini saat deploy.
+        Shortcode mengunci nama + sisi. Di VPS/Coolify, pasang volume{" "}
+        <code className="text-primary-dark">/app/data</code> agar tamu baru
+        tersimpan. Cadangan: tombol Unduh JSON.
       </p>
     </div>
   );

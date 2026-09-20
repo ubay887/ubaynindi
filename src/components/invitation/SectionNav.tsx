@@ -1,19 +1,65 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
+import { useInvitationScroll } from "@/components/invitation/InvitationScroll";
 
 const items = [
-  { id: "couple", label: "Mempelai" },
-  { id: "countdown", label: "Tanggal" },
-  { id: "events", label: "Acara" },
-  { id: "location", label: "Lokasi" },
-  { id: "gift", label: "Gift" },
-  { id: "wishes", label: "Ucapan" },
+  {
+    id: "couple",
+    label: "Mempelai",
+    icon: (
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+      </svg>
+    ),
+  },
+  {
+    id: "events",
+    label: "Acara",
+    icon: (
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+        <circle cx="12" cy="12" r="9" />
+        <polyline points="12 6 12 12 16 14" />
+      </svg>
+    ),
+  },
+  {
+    id: "location",
+    label: "Lokasi",
+    icon: (
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+        <circle cx="12" cy="10" r="3" />
+      </svg>
+    ),
+  },
+  {
+    id: "gift",
+    label: "Kado",
+    icon: (
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+        <rect x="3" y="8" width="18" height="13" rx="2" />
+        <path d="M12 8v13M3 12h18" />
+        <path d="M8 8a3 3 0 1 1 4-2.83M12 5.17A3 3 0 1 1 16 8" />
+      </svg>
+    ),
+  },
+  {
+    id: "wishes",
+    label: "Ucapan",
+    icon: (
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+      </svg>
+    ),
+  },
 ] as const;
 
 function useActiveSection() {
   const [active, setActive] = useState<string>(items[0].id);
+  const scroll = useInvitationScroll();
+  const scroller = scroll?.scroller ?? null;
 
   useEffect(() => {
     const sections = items
@@ -31,15 +77,29 @@ function useActiveSection() {
           setActive(visible[0].target.id);
         }
       },
-      { rootMargin: "-35% 0px -45% 0px", threshold: [0.1, 0.25, 0.5] },
+      {
+        root: scroller,
+        rootMargin: "-25% 0px -40% 0px",
+        threshold: [0.1, 0.25, 0.5],
+      },
     );
 
     sections.forEach((s) => observer.observe(s));
     return () => observer.disconnect();
-  }, []);
+  }, [scroller]);
 
   const go = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (scroller) {
+      const top =
+        el.getBoundingClientRect().top -
+        scroller.getBoundingClientRect().top +
+        scroller.scrollTop;
+      scroller.scrollTo({ top: Math.max(0, top - 12), behavior: "smooth" });
+    } else {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
     setActive(id);
   };
 
@@ -53,7 +113,7 @@ export function SectionNav() {
   return (
     <motion.nav
       aria-label="Navigasi undangan"
-      className="fixed left-3 top-1/2 z-40 hidden -translate-y-1/2 flex-col gap-2.5 sm:flex"
+      className="fixed left-4 top-1/2 z-40 hidden -translate-y-1/2 flex-col gap-3 sm:flex"
       initial={{ opacity: 0, x: -8 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: 0.6, duration: 0.5 }}
@@ -73,11 +133,11 @@ export function SectionNav() {
             <span
               className={`block rounded-full transition-all duration-300 ${
                 on
-                  ? "h-2.5 w-2.5 bg-primary-dark shadow-[0_0_0_3px_rgba(79,109,76,0.2)]"
-                  : "h-1.5 w-1.5 bg-primary/35 group-hover:bg-primary/70"
+                  ? "h-3 w-3 bg-gradient-to-br from-primary to-primary-dark shadow-[0_0_0_4px_rgba(194,155,78,0.35)]"
+                  : "h-2 w-2 bg-primary/40 group-hover:bg-primary/80 group-hover:scale-125"
               }`}
             />
-            <span className="pointer-events-none absolute left-4 ml-1 whitespace-nowrap rounded-full bg-primary-dark/90 px-2 py-0.5 text-[9px] font-medium tracking-wide text-cream opacity-0 transition-opacity group-hover:opacity-100">
+            <span className="pointer-events-none absolute left-5 ml-1 whitespace-nowrap rounded-full border border-gold/30 bg-primary-dark/95 px-2.5 py-1 text-[10px] font-bold tracking-wide text-cream opacity-0 shadow-md transition-opacity group-hover:opacity-100">
               {item.label}
             </span>
           </button>
@@ -88,93 +148,38 @@ export function SectionNav() {
 }
 
 /**
- * Mobile: one glass FAB — expands to a clean list (no cramped chip bar).
- * Sits mid-right above the music button.
+ * Mobile: Floating Bottom Glassmorphism Dock (Invisimple style)
  */
 export function SectionNavMobile() {
   const { active, go } = useActiveSection();
-  const [open, setOpen] = useState(false);
-
-  const jump = (id: string) => {
-    go(id);
-    setOpen(false);
-  };
 
   return (
-    <div className="fixed bottom-[4.75rem] right-5 z-40 sm:hidden">
-      <AnimatePresence>
-        {open ? (
-          <motion.div
-            key="panel"
-            className="mb-2 w-[11.5rem] overflow-hidden rounded-2xl border border-white/60 bg-cream/95 shadow-[0_16px_40px_-14px_rgba(46,63,44,0.4)] backdrop-blur-xl"
-            initial={{ opacity: 0, y: 10, scale: 0.96 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 8, scale: 0.96 }}
-            transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+    <motion.nav
+      aria-label="Navigasi cepat"
+      className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 flex items-center gap-1 rounded-full border border-gold/45 bg-cream/90 px-2.5 py-1.5 shadow-[0_14px_36px_-10px_rgba(18,44,30,0.45)] backdrop-blur-xl sm:hidden"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.4, duration: 0.5 }}
+    >
+      {items.map((item) => {
+        const on = active === item.id;
+        return (
+          <button
+            key={item.id}
+            type="button"
+            onClick={() => go(item.id)}
+            aria-label={item.label}
+            aria-current={on ? "true" : undefined}
+            className={`relative flex flex-col items-center justify-center rounded-full p-2 transition-all duration-200 ${
+              on
+                ? "bg-gradient-to-br from-primary-dark to-primary text-gold-light shadow-sm"
+                : "text-primary-dark/70 hover:text-primary-dark active:scale-95"
+            }`}
           >
-            <p className="border-b border-primary/8 px-3.5 py-2 text-[9px] font-semibold tracking-[0.18em] text-muted uppercase">
-              Menu
-            </p>
-            <ul className="py-1">
-              {items.map((item) => {
-                const on = active === item.id;
-                return (
-                  <li key={item.id}>
-                    <button
-                      type="button"
-                      onClick={() => jump(item.id)}
-                      className={`flex w-full items-center gap-2.5 px-3.5 py-2.5 text-left text-[13px] transition-colors ${
-                        on
-                          ? "bg-primary/10 font-semibold text-primary-dark"
-                          : "font-medium text-primary-dark/80 active:bg-primary/8"
-                      }`}
-                    >
-                      <span
-                        className={`h-1.5 w-1.5 shrink-0 rounded-full ${
-                          on ? "bg-primary-dark" : "bg-primary/30"
-                        }`}
-                      />
-                      {item.label}
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
-
-      <motion.button
-        type="button"
-        onClick={() => setOpen((v) => !v)}
-        aria-label={open ? "Tutup menu" : "Buka menu"}
-        aria-expanded={open}
-        className="ml-auto flex h-11 w-11 items-center justify-center rounded-full border border-white/60 bg-cream/95 text-primary-dark shadow-[0_12px_28px_-12px_rgba(46,63,44,0.45)] backdrop-blur-md"
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        whileTap={{ scale: 0.94 }}
-        transition={{ delay: 0.55 }}
-      >
-        {open ? (
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
-            <path
-              d="M6 6l12 12M18 6L6 18"
-              stroke="currentColor"
-              strokeWidth="1.7"
-              strokeLinecap="round"
-            />
-          </svg>
-        ) : (
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
-            <path
-              d="M5 8h14M5 12h14M5 16h10"
-              stroke="currentColor"
-              strokeWidth="1.7"
-              strokeLinecap="round"
-            />
-          </svg>
-        )}
-      </motion.button>
-    </div>
+            {item.icon}
+          </button>
+        );
+      })}
+    </motion.nav>
   );
 }

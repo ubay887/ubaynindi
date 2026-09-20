@@ -2,11 +2,12 @@ import { NextResponse } from "next/server";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import {
   addGuest,
+  GuestStoreError,
   invitePath,
   readGuests,
   removeGuest,
 } from "@/lib/guests";
-import { wedding } from "@/config/wedding";
+import { getSiteUrl } from "@/config/wedding";
 import type { InviteSide } from "@/types/wedding";
 
 export async function GET() {
@@ -14,7 +15,7 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   const guests = await readGuests();
-  const siteUrl = wedding.meta.siteUrl;
+  const siteUrl = getSiteUrl();
   return NextResponse.json({
     guests: guests.map((g) => ({
       ...g,
@@ -44,10 +45,13 @@ export async function POST(request: Request) {
     return NextResponse.json({
       guest: {
         ...guest,
-        url: invitePath(guest, wedding.meta.siteUrl),
+        url: invitePath(guest, getSiteUrl()),
       },
     });
   } catch (e) {
+    if (e instanceof GuestStoreError) {
+      return NextResponse.json({ error: e.message }, { status: 503 });
+    }
     const msg = e instanceof Error ? e.message : "Gagal menambah tamu.";
     return NextResponse.json({ error: msg }, { status: 400 });
   }
@@ -60,9 +64,16 @@ export async function DELETE(request: Request) {
 
   const { searchParams } = new URL(request.url);
   const code = searchParams.get("code") ?? "";
-  const ok = await removeGuest(code);
-  if (!ok) {
-    return NextResponse.json({ error: "Kode tidak ditemukan." }, { status: 404 });
+  try {
+    const ok = await removeGuest(code);
+    if (!ok) {
+      return NextResponse.json({ error: "Kode tidak ditemukan." }, { status: 404 });
+    }
+    return NextResponse.json({ ok: true });
+  } catch (e) {
+    if (e instanceof GuestStoreError) {
+      return NextResponse.json({ error: e.message }, { status: 503 });
+    }
+    throw e;
   }
-  return NextResponse.json({ ok: true });
 }

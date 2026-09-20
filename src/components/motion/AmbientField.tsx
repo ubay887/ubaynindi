@@ -16,7 +16,7 @@ type Particle = {
   dur: number;
   delay: number;
   drift: number;
-  kind: "petal" | "dot" | "spark";
+  kind: "star" | "dot" | "spark";
   opacity: number;
 };
 
@@ -31,28 +31,25 @@ function makeParticles(count: number): Particle[] {
   return Array.from({ length: count }, (_, i) => {
     const r = rand();
     const kind: Particle["kind"] =
-      r > 0.72 ? "spark" : r > 0.38 ? "petal" : "dot";
+      r > 0.62 ? "star" : r > 0.32 ? "spark" : "dot";
     return {
       id: i,
       x: rand() * 100,
       y: rand() * 100,
-      size: kind === "petal" ? 10 + rand() * 16 : kind === "spark" ? 2 + rand() * 3 : 3 + rand() * 5,
-      dur: 10 + rand() * 16,
+      size: kind === "star" ? 7 + rand() * 8 : kind === "spark" ? 2 + rand() * 3 : 3 + rand() * 4,
+      dur: 12 + rand() * 14,
       delay: rand() * -20,
-      drift: (rand() - 0.5) * 40,
+      drift: (rand() - 0.5) * 28,
       kind,
-      opacity: kind === "spark" ? 0.25 + rand() * 0.35 : 0.18 + rand() * 0.35,
+      opacity: kind === "spark" ? 0.28 + rand() * 0.4 : 0.16 + rand() * 0.28,
     };
   });
 }
 
-function Petal({ size }: { size: number }) {
+function StarSpark({ size }: { size: number }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path
-        d="M12 3c2.5 3.5 6 5.2 6 9.2 0 3.3-2.7 5.8-6 5.8s-6-2.5-6-5.8C6 8.2 9.5 6.5 12 3z"
-        fill="currentColor"
-      />
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+      <path d="M12 2L14.2 9.2L22 12L14.2 14.8L12 22L9.8 14.8L2 12L9.8 9.2Z" />
     </svg>
   );
 }
@@ -75,7 +72,7 @@ export function AmbientField({
   scrollLinked = false,
 }: AmbientFieldProps) {
   const reduce = useReducedMotion();
-  const count = density === "high" ? 28 : density === "low" ? 12 : 20;
+  const count = density === "high" ? 16 : density === "low" ? 8 : 12;
   const particles = useMemo(() => makeParticles(count), [count]);
 
   const { scrollYProgress } = useScroll();
@@ -93,24 +90,24 @@ export function AmbientField({
         <motion.div
           key={p.id}
           className={
-            p.kind === "petal"
-              ? "absolute text-blush/80"
+            p.kind === "star"
+              ? "absolute text-gold"
               : p.kind === "spark"
-                ? "absolute rounded-full bg-gold"
-                : "absolute rounded-full bg-primary-light"
+                ? "absolute rounded-full bg-gold-soft"
+                : "absolute rounded-full bg-gold/70"
           }
           style={{
             left: `${p.x}%`,
             top: `${p.y}%`,
-            width: p.kind === "petal" ? undefined : p.size,
-            height: p.kind === "petal" ? undefined : p.size,
+            width: p.kind === "star" ? undefined : p.size,
+            height: p.kind === "star" ? undefined : p.size,
             opacity: p.opacity,
           }}
           animate={{
-            y: [0, -28 - (p.id % 5) * 4, 0],
+            y: [0, -22 - (p.id % 5) * 3, 0],
             x: [0, p.drift, 0],
-            rotate: p.kind === "petal" ? [0, 25, -15, 0] : [0, 0, 0],
-            scale: p.kind === "spark" ? [1, 1.4, 1] : [1, 1.05, 1],
+            rotate: p.kind === "star" ? [0, 40, -20, 0] : [0, 0, 0],
+            scale: p.kind === "spark" ? [1, 1.55, 1] : [1, 1.08, 1],
           }}
           transition={{
             duration: p.dur,
@@ -119,7 +116,7 @@ export function AmbientField({
             ease: "easeInOut",
           }}
         >
-          {p.kind === "petal" ? <Petal size={p.size} /> : null}
+          {p.kind === "star" ? <StarSpark size={p.size} /> : null}
         </motion.div>
       ))}
     </motion.div>

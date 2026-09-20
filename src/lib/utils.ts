@@ -1,16 +1,29 @@
 import type { InviteSide } from "@/types/wedding";
 
+export const GUEST_NAME_MAX_LEN = 80;
+
 export function cn(...classes: Array<string | false | null | undefined>) {
   return classes.filter(Boolean).join(" ");
+}
+
+/** Strip control chars, collapse space, cap length. Safe for UI + OG + JSON. */
+export function sanitizeGuestName(raw: string | null | undefined): string {
+  return (raw ?? "")
+    .replace(/[\u0000-\u001F\u007F]/g, "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, GUEST_NAME_MAX_LEN);
 }
 
 export function decodeGuestName(raw: string | null | undefined): string {
   if (!raw) return "Tamu Undangan";
   try {
-    const decoded = decodeURIComponent(raw.replace(/\+/g, " ")).trim();
+    const decoded = sanitizeGuestName(
+      decodeURIComponent(raw.replace(/\+/g, " ")),
+    );
     return decoded || "Tamu Undangan";
   } catch {
-    return raw.trim() || "Tamu Undangan";
+    return sanitizeGuestName(raw) || "Tamu Undangan";
   }
 }
 

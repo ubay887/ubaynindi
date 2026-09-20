@@ -24,8 +24,8 @@ function isLocated(e: EventDetail): e is Loc {
 }
 
 function createPinIcon(active: boolean) {
-  const fill = active ? "#2e3f2c" : "#4f6d4c";
-  const ring = active ? "#b89a6a" : "rgba(255,255,255,0.9)";
+  const fill = active ? "#0f3d34" : "#1b6554";
+  const ring = active ? "#dfbe7e" : "#c29b4e";
   return L.divIcon({
     className: "wedding-map-pin",
     iconSize: [40, 52],
@@ -35,8 +35,8 @@ function createPinIcon(active: boolean) {
       <div class="pin-wrap ${active ? "is-active" : ""}">
         <svg width="40" height="52" viewBox="0 0 40 52" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path d="M20 50c0 0 16-14.2 16-28A16 16 0 1 0 4 22c0 13.8 16 28 16 28z" fill="${fill}" stroke="${ring}" stroke-width="1.5"/>
-          <circle cx="20" cy="20" r="7.5" fill="#f7f6f2"/>
-          <circle cx="20" cy="20" r="3.2" fill="${fill}"/>
+          <circle cx="20" cy="20" r="7.5" fill="#fbf9f4"/>
+          <circle cx="20" cy="20" r="3.2" fill="${active ? "#c29b4e" : fill}"/>
         </svg>
       </div>
     `,
@@ -94,10 +94,10 @@ function MapCanvas({
           }}
         >
           <Popup className="wedding-map-popup">
-            <strong className="block font-serif text-sm text-[#2e3f2c]">
+            <strong className="block font-serif text-sm text-[#1a1815]">
               {loc.title}
             </strong>
-            <span className="mt-0.5 block text-xs text-[#556058]">
+            <span className="mt-0.5 block text-xs text-[#5a554c]">
               {loc.venue}
             </span>
           </Popup>
@@ -113,17 +113,13 @@ export function LocationMap() {
     () => getEventsForSide(side).filter(isLocated),
     [side],
   );
-  const [activeId, setActiveId] = useState(locations[0]?.id ?? "");
-  const [mounted, setMounted] = useState(false);
+  const firstId = locations[0]?.id ?? "";
+  const [activeId, setActiveId] = useState(firstId);
   const [copied, setCopied] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (locations[0]?.id) setActiveId(locations[0].id);
-  }, [locations]);
+  if (firstId && !locations.some((l) => l.id === activeId)) {
+    setActiveId(firstId);
+  }
 
   if (!locations.length) return null;
 
@@ -133,8 +129,8 @@ export function LocationMap() {
     `https://www.google.com/maps?q=${active.lat},${active.lng}`;
 
   return (
-    <section id="location" className="section-cream section-pad sm:px-8">
-      <div className="mx-auto max-w-[380px]">
+    <section id="location" className="relative overflow-hidden section-cream section-pad sm:px-8">
+      <div className="relative mx-auto max-w-[380px]">
         <SectionHead
           script="Location"
           title="Lokasi Acara"
@@ -151,7 +147,7 @@ export function LocationMap() {
                   key={loc.id}
                   type="button"
                   onClick={() => setActiveId(loc.id)}
-                  className={`flex-1 rounded-full border px-3 py-2.5 text-xs font-semibold tracking-wide transition-all duration-200 ${
+                  className={`flex-1 rounded-full border px-3 py-2.5 text-xs font-bold tracking-wide transition-all duration-200 ${
                     on
                       ? "border-primary-dark bg-primary-dark text-cream shadow-[0_8px_20px_-10px_rgba(46,63,44,0.45)]"
                       : "border-primary/15 bg-white/70 text-primary-dark hover:border-primary/30"
@@ -165,19 +161,13 @@ export function LocationMap() {
         ) : null}
 
         <InView>
-          <div className="location-map-shell overflow-hidden rounded-[1.35rem] border border-primary/10 bg-white/80 shadow-[0_18px_40px_-22px_rgba(46,63,44,0.22)]">
+          <div className="location-map-shell overflow-hidden rounded-[1.4rem] border border-gold/40 bg-white/90 shadow-[0_18px_40px_-22px_rgba(46,63,44,0.22)]">
             <div className="relative h-[280px] w-full sm:h-[320px]">
-              {mounted ? (
-                <MapCanvas
-                  locations={locations}
-                  activeId={activeId}
-                  onSelect={setActiveId}
-                />
-              ) : (
-                <div className="flex h-full items-center justify-center bg-[#e8efe6] text-sm text-muted">
-                  Memuat peta…
-                </div>
-              )}
+              <MapCanvas
+                locations={locations}
+                activeId={activeId}
+                onSelect={setActiveId}
+              />
 
               {/* Soft gradient frame over map edges */}
               <div
@@ -201,10 +191,10 @@ export function LocationMap() {
                   </svg>
                 </span>
                 <div className="min-w-0 flex-1">
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-primary-soft">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary-soft">
                     {active.title}
                   </p>
-                  <p className="mt-1 font-serif text-[1.15rem] text-primary-dark">
+                  <p className="mt-1 font-serif text-[1.15rem] font-bold text-primary-dark">
                     {active.venue}
                   </p>
                   <p className="mt-1 text-[12.5px] leading-relaxed text-muted">
@@ -218,7 +208,7 @@ export function LocationMap() {
                   type="button"
                   variant="double"
                   size="sm"
-                  className="flex-1 min-w-[120px]"
+                  className="flex-1 min-w-[120px] font-semibold"
                   onClick={async () => {
                     const text = `${active.venue}\n${active.address}`;
                     const ok = await copyToClipboard(text);
@@ -240,7 +230,7 @@ export function LocationMap() {
                   rel="noopener noreferrer"
                   variant="double-solid"
                   size="sm"
-                  className="flex-1 min-w-[130px]"
+                  className="flex-1 min-w-[130px] font-semibold shadow-md"
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
                     <path
@@ -258,7 +248,7 @@ export function LocationMap() {
                   rel="noopener noreferrer"
                   variant="outline"
                   size="sm"
-                  className="flex-1 min-w-[110px]"
+                  className="flex-1 min-w-[100px] font-semibold"
                 >
                   Waze
                 </LinkButton>

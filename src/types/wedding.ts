@@ -59,6 +59,8 @@ export type Wish = {
   attendance: "hadir" | "tidak_hadir" | "ragu";
   /** Number of guests (including themselves) */
   guestCount?: number;
+  /** Invitation side when the wish was sent */
+  side?: InviteSide;
   createdAt: string;
 };
 

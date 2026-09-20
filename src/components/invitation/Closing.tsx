@@ -1,8 +1,14 @@
 "use client";
 
+import Image from "next/image";
 import { wedding, getPrimaryEvent } from "@/config/wedding";
 import { useInviteSide } from "@/hooks/useInviteSide";
-import { GardenFooter } from "@/components/ui/Ornament";
+import {
+  GoldDivider,
+  IslamicArchHeader,
+  WaxSealCrest,
+  FloatingIslamicCloud,
+} from "@/components/ui/Ornament";
 import { InView } from "@/components/motion/primitives";
 
 export function Closing() {
@@ -11,50 +17,58 @@ export function Closing() {
   const date = getPrimaryEvent(side).dateLabel;
 
   return (
-    <section id="closing" className="overflow-hidden">
-      <div className="section-cream section-pad pb-8 sm:px-8">
+    <section id="closing" className="relative overflow-hidden section-cream">
+      <FloatingIslamicCloud
+        variant={1}
+        width={180}
+        className="-top-6 -left-8 text-gold-light/40"
+        opacity={0.4}
+      />
+
+      <div className="section-pad pb-4 sm:px-8">
         <div className="mx-auto max-w-[360px]">
           <InView>
             <div className="text-center">
-              <p className="font-script text-[2.5rem] leading-none text-primary-dark">
+              <WaxSealCrest initials="UN" className="mb-3 scale-90" />
+              <IslamicArchHeader className="mb-3 max-w-[200px]" />
+              <p className="font-script text-[2.7rem] leading-none text-ink">
                 Terima Kasih
               </p>
               <div className="ornament-line mx-auto my-5">
                 <span className="dot" />
               </div>
-              <p className="mx-auto max-w-[300px] text-[13.5px] leading-[1.85] text-muted">
+              <p className="mx-auto max-w-[310px] text-[13.5px] leading-[1.85] text-muted font-medium">
                 {closing.body}
               </p>
-              <p className="mt-4 text-[13.5px] font-semibold italic text-primary-dark">
+              <p className="mt-4 text-[14px] font-bold italic text-primary">
                 {closing.salam}
               </p>
-              <p className="mt-10 text-[10px] uppercase tracking-[0.24em] text-primary-soft">
+              <p className="mt-9 text-[10px] font-bold uppercase tracking-[0.24em] text-gold-deep">
                 Kami yang berbahagia
               </p>
-              <p className="mt-2 font-serif text-[1.95rem] tracking-wide text-primary-dark">
-                {couple.displayNames}
-              </p>
+              <div className="mx-auto mt-2 flex justify-center select-none">
+                <Image
+                  src="/images/ubay-nindi-banner.png"
+                  alt={couple.displayNames}
+                  width={360}
+                  height={120}
+                  className="h-auto w-64 object-contain drop-shadow-[0_4px_16px_rgba(20,45,32,0.1)]"
+                />
+              </div>
             </div>
           </InView>
         </div>
       </div>
 
-      <div className="relative overflow-hidden bg-gradient-to-b from-[#1e4733] to-[#122c1e]">
-        <GardenFooter className="max-w-none text-gold-light/40" />
-        <div className="relative inset-x-0 bottom-0 bg-gradient-to-t from-[#0d1f15] via-[#122c1e]/90 to-transparent px-6 pb-28 pt-8 text-center">
-          <p className="font-script text-[1.75rem] text-cream/95">
-            The Wedding Of
+      <footer className="relative mx-auto max-w-[360px] px-6 pb-32 pt-8 text-center">
+        <GoldDivider />
+        {date ? (
+          <p className="mt-6 text-[10.5px] font-medium tracking-[0.22em] text-muted uppercase">
+            {date}
           </p>
-          <p className="mt-1 font-serif text-[1.5rem] tracking-[0.14em] text-cream uppercase">
-            {couple.displayNames}
-          </p>
-          {date ? (
-            <p className="mt-2.5 text-[10px] tracking-[0.2em] text-cream/55 uppercase">
-              {date}
-            </p>
-          ) : null}
-        </div>
-      </div>
+        ) : null}
+        <IslamicArchHeader className="mt-4 max-w-[148px] opacity-60" />
+      </footer>
     </section>
   );
 }

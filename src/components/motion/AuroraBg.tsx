@@ -18,7 +18,7 @@ export function AuroraBg({ variant = "page", className = "" }: AuroraBgProps) {
       ? [
           {
             className:
-              "left-[-20%] top-[-10%] h-[55vmax] w-[55vmax] bg-[radial-gradient(circle,rgba(30,71,51,0.28)_0%,transparent_68%)]",
+              "left-[-20%] top-[-10%] h-[55vmax] w-[55vmax] bg-[radial-gradient(circle,rgba(27,101,84,0.28)_0%,transparent_68%)]",
             animate: { x: [0, 40, -20, 0], y: [0, 30, -10, 0], scale: [1, 1.12, 0.96, 1] },
             duration: 18,
           },
@@ -30,7 +30,7 @@ export function AuroraBg({ variant = "page", className = "" }: AuroraBgProps) {
           },
           {
             className:
-              "bottom-[-15%] left-[15%] h-[45vmax] w-[45vmax] bg-[radial-gradient(circle,rgba(67,130,98,0.18)_0%,transparent_70%)]",
+              "bottom-[-15%] left-[15%] h-[45vmax] w-[45vmax] bg-[radial-gradient(circle,rgba(74,155,132,0.18)_0%,transparent_70%)]",
             animate: { x: [0, 25, -30, 0], y: [0, -20, 10, 0], scale: [1, 1.08, 0.94, 1] },
             duration: 20,
           },
@@ -38,7 +38,7 @@ export function AuroraBg({ variant = "page", className = "" }: AuroraBgProps) {
       : [
           {
             className:
-              "left-[-25%] top-[5%] h-[50vmax] w-[50vmax] bg-[radial-gradient(circle,rgba(30,71,51,0.12)_0%,transparent_70%)]",
+              "left-[-25%] top-[5%] h-[50vmax] w-[50vmax] bg-[radial-gradient(circle,rgba(27,101,84,0.12)_0%,transparent_70%)]",
             animate: { x: [0, 45, 0], y: [0, 50, 0], scale: [1, 1.18, 1] },
             duration: 18,
           },
@@ -50,7 +50,7 @@ export function AuroraBg({ variant = "page", className = "" }: AuroraBgProps) {
           },
           {
             className:
-              "left-[15%] top-[65%] h-[40vmax] w-[40vmax] bg-[radial-gradient(circle,rgba(67,130,98,0.10)_0%,transparent_70%)]",
+              "left-[15%] top-[65%] h-[40vmax] w-[40vmax] bg-[radial-gradient(circle,rgba(74,155,132,0.10)_0%,transparent_70%)]",
             animate: { x: [0, 30, 0], y: [0, -25, 0], scale: [1, 1.1, 1] },
             duration: 16,
           },
@@ -65,7 +65,7 @@ export function AuroraBg({ variant = "page", className = "" }: AuroraBgProps) {
       <div
         className={
           variant === "cover"
-            ? "absolute inset-0 bg-gradient-to-b from-[#1f2d22] via-[#2a382c] to-[#172219]"
+            ? "absolute inset-0 bg-gradient-to-b from-[#1b6554] via-[#175c4d] to-[#0f3d34]"
             : "absolute inset-0 bg-gradient-to-b from-[#f7f6f2] via-[#efece6] to-[#f7f6f2]"
         }
       />

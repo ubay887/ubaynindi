@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { InvitationApp } from "@/components/invitation/InvitationApp";
-import { wedding, getPrimaryEvent } from "@/config/wedding";
+import { wedding, getPrimaryEvent, getSiteUrl } from "@/config/wedding";
 import { findGuestByCode } from "@/lib/guests";
-import { parseInviteSide, sideLabel } from "@/lib/utils";
+import { decodeGuestName, parseInviteSide, sideLabel } from "@/lib/utils";
+import { normalizeGuestCode } from "@/lib/guest-code";
 
 type PageProps = {
   searchParams: Promise<{
@@ -21,14 +22,17 @@ export async function generateMetadata({
   searchParams,
 }: PageProps): Promise<Metadata> {
   const params = await searchParams;
-  const code = (pick(params.c) ?? "").trim();
-  const guest = /^\d{4}$/.test(code) ? await findGuestByCode(code) : null;
-  const directName = (pick(params.to) ?? "").trim();
-  const guestName = guest?.name ?? (directName || null);
+  const code = normalizeGuestCode(pick(params.c));
+  const guest = code ? await findGuestByCode(code) : null;
+  const directRaw = (pick(params.to) ?? "").trim();
+  const directName = directRaw ? decodeGuestName(directRaw) : "";
+  const guestName =
+    guest?.name ??
+    (directName && directName !== "Tamu Undangan" ? directName : null);
 
   const side = guest?.side ?? parseInviteSide(pick(params.side));
   const primary = getPrimaryEvent(side);
-  const siteUrl = wedding.meta.siteUrl.replace(/\/$/, "");
+  const siteUrl = getSiteUrl();
   const sideText = sideLabel(side);
 
   const title = guestName
@@ -41,20 +45,20 @@ export async function generateMetadata({
 
   const pageUrl = guest
     ? `${siteUrl}/?c=${guest.code}`
-    : directName
-      ? `${siteUrl}/?to=${encodeURIComponent(directName)}`
+    : guestName
+      ? `${siteUrl}/?side=${side}&to=${encodeURIComponent(guestName)}`
       : `${siteUrl}/?side=${side}`;
 
   const ogQ = new URLSearchParams();
   if (guest) {
     ogQ.set("c", guest.code);
-  } else if (directName) {
-    ogQ.set("to", directName);
+  } else if (guestName) {
+    ogQ.set("to", guestName);
     ogQ.set("side", side);
   } else {
     ogQ.set("side", side);
   }
-  const imageUrl = `/api/og?${ogQ.toString()}`;
+  const imageUrl = `${siteUrl}/api/og?${ogQ.toString()}`;
 
   return {
     title: { absolute: title },

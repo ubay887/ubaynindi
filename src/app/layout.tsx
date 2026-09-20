@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Infant, Pinyon_Script, Nunito_Sans } from "next/font/google";
-import { wedding, getPrimaryEvent } from "@/config/wedding";
+import { wedding, getPrimaryEvent, getSiteUrl } from "@/config/wedding";
 import "./globals.css";
 
 const display = Cormorant_Infant({
@@ -24,7 +24,7 @@ const body = Nunito_Sans({
   display: "swap",
 });
 
-const siteUrl = wedding.meta.siteUrl.replace(/\/$/, "");
+const siteUrl = getSiteUrl();
 const primary = getPrimaryEvent();
 const ogTitle = wedding.meta.title;
 const ogDescription = `${wedding.meta.description} · ${primary.dateLabel}`;
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
-  // Default OG; page.tsx generateMetadata overrides when ?to= guest is present
+  // Default OG; page.tsx generateMetadata overrides for ?c= / ?to= / ?side=
   openGraph: {
     type: "website",
     locale: "id_ID",
@@ -62,6 +62,17 @@ export const metadata: Metadata = {
     title: ogTitle,
     description: ogDescription,
   },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: wedding.couple.displayNames,
+  },
+  formatDetection: {
+    telephone: false,
+    date: false,
+    address: false,
+    email: false,
+  },
   robots: {
     index: true,
     follow: true,
@@ -74,8 +85,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#4f6d4c" },
-    { media: "(prefers-color-scheme: dark)", color: "#2e3f2c" },
+    { media: "(prefers-color-scheme: light)", color: "#1b6554" },
+    { media: "(prefers-color-scheme: dark)", color: "#0f3d34" },
   ],
   width: "device-width",
   initialScale: 1,
@@ -83,12 +94,47 @@ export const viewport: Viewport = {
   colorScheme: "light",
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  name: `Pernikahan ${wedding.couple.groom.fullName} & ${wedding.couple.bride.fullName}`,
+  description: wedding.meta.description,
+  startDate: "2026-10-10T07:00:00+07:00",
+  endDate: "2026-10-10T21:00:00+07:00",
+  eventStatus: "https://schema.org/EventScheduled",
+  eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+  location: {
+    "@type": "Place",
+    name: primary.venue,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: primary.address,
+      addressLocality: "Mojokerto",
+      addressRegion: "Jawa Timur",
+      addressCountry: "ID",
+    },
+  },
+  organizer: {
+    "@type": "Person",
+    name: wedding.couple.displayNames,
+    url: siteUrl,
+  },
+  image: [`${siteUrl}/api/og`],
+};
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="id"
+      data-scroll-behavior="smooth"
       className={`${display.variable} ${script.variable} ${body.variable} h-full antialiased`}
     >
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className="min-h-full bg-cream font-sans text-ink">{children}</body>
     </html>
   );

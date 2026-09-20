@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -12,15 +13,16 @@ import { useInviteSide } from "@/hooks/useInviteSide";
 import { pad2 } from "@/lib/utils";
 import { LinkButton } from "@/components/ui/Button";
 import { InView, SectionHead } from "@/components/motion/primitives";
+import { FloatingIslamicCloud } from "@/components/ui/Ornament";
 
 function Unit({ value, label }: { value: number; label: string }) {
   return (
-    <div className="count-cell flex flex-1 flex-col items-center rounded-xl border border-gold/30 bg-white/75 px-1 py-4 shadow-[0_12px_28px_-14px_rgba(46,63,44,0.22)] backdrop-blur-md">
+    <div className="count-cell flex flex-1 flex-col items-center rounded-2xl border border-gold/40 bg-white/85 px-1 py-4 shadow-[0_12px_28px_-14px_rgba(18,44,30,0.22)] backdrop-blur-md">
       <div className="relative h-8 overflow-hidden">
         <AnimatePresence mode="popLayout" initial={false}>
           <motion.span
             key={value}
-            className="block font-serif text-[1.85rem] font-bold tabular-nums leading-none text-primary-dark sm:text-[2rem]"
+            className="block font-serif text-[1.95rem] font-bold tabular-nums leading-none text-primary-dark sm:text-[2.1rem]"
             initial={{ y: 12, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -12, opacity: 0 }}
@@ -30,7 +32,7 @@ function Unit({ value, label }: { value: number; label: string }) {
           </motion.span>
         </AnimatePresence>
       </div>
-      <span className="mt-2 text-[9.5px] font-bold uppercase tracking-[0.18em] text-primary-soft">
+      <span className="mt-2 text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
         {label}
       </span>
     </div>
@@ -46,8 +48,15 @@ export function Countdown() {
   return (
     <section
       id="countdown"
-      className="relative overflow-hidden section-sage-soft section-pad sm:px-8"
+      className="relative overflow-hidden section-cream section-pad sm:px-8"
     >
+      <FloatingIslamicCloud
+        variant={2}
+        width={190}
+        className="-top-6 -left-10 text-gold-light/45"
+        opacity={0.45}
+      />
+
       <div className="relative mx-auto max-w-[360px]">
         <SectionHead
           script="Save The Date"
@@ -55,7 +64,7 @@ export function Countdown() {
         />
 
         {parts.isPast ? (
-          <p className="text-center font-serif text-lg text-primary-dark">
+          <p className="text-center font-serif text-lg font-bold text-primary-dark">
             Acara telah berlangsung. Terima kasih atas doa restunya.
           </p>
         ) : (
@@ -69,16 +78,16 @@ export function Countdown() {
           </InView>
         )}
 
-        <InView delay={0.12} className="mt-9 flex justify-center">
+        <InView delay={0.12} className="mt-8 flex justify-center">
           <LinkButton
             href={getCalendarUrl(side)}
             target="_blank"
             rel="noopener noreferrer"
-            variant="double"
+            variant="double-solid"
             size="md"
-            className="min-w-[170px]"
+            className="min-w-[190px] shadow-md"
           >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden>
               <rect
                 x="3"
                 y="5"
@@ -86,12 +95,12 @@ export function Countdown() {
                 height="16"
                 rx="2"
                 stroke="currentColor"
-                strokeWidth="1.5"
+                strokeWidth="1.7"
               />
               <path
                 d="M3 10h18M8 3v4M16 3v4"
                 stroke="currentColor"
-                strokeWidth="1.5"
+                strokeWidth="1.7"
                 strokeLinecap="round"
               />
             </svg>

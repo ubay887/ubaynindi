@@ -10,7 +10,10 @@ export const wedding: WeddingConfig = {
     title: "The Wedding of Ubay & Nindi",
     description:
       "Dengan memohon ridho Allah SWT, kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri pernikahan Muhammad Ubaydillah & Nindi Nirmala Nadziroh.",
-    /** Canonical public URL — used for Open Graph absolute image/links */
+    /**
+     * Fallback public URL for OG / admin links.
+     * Production: set env `SITE_URL` (Coolify) to the real domain.
+     */
     siteUrl: "https://ubaynindi.vercel.app",
     ogImage: "/opengraph-image",
   },
@@ -53,10 +56,9 @@ export const wedding: WeddingConfig = {
       venue: "Kediaman Mempelai Wanita",
       address:
         "Dsn. Bakalan RT.02 RW.01, Ds. Mojodadi, Kec. Kemlagi, Kab. Mojokerto",
-      lat: -7.3948,
-      lng: 112.3745,
-      mapsUrl:
-        "https://www.google.com/maps/search/?api=1&query=Mojodadi+Kemlagi+Mojokerto",
+      lat: -7.39687,
+      lng: 112.38546,
+      mapsUrl: "https://maps.app.goo.gl/2X42RVLFdHjizrnS7",
     },
     {
       id: "pria",
@@ -124,8 +126,12 @@ export const wedding: WeddingConfig = {
   },
 
   notes: {
-    enabled: true,
+    enabled: false,
     items: [
+      {
+        title: "Adab Walimah",
+        body: "Mohon hadir dengan pakaian sopan, menjaga adab, dan tidak merokok di area acara.",
+      },
       {
         title: "Doa Restu",
         body: "Kehadiran dan doa Bapak/Ibu/Saudara/i adalah anugerah terindah bagi kami.",
@@ -171,16 +177,26 @@ export const wedding: WeddingConfig = {
   },
 
   theme: {
-    primary: "#4f6d4c",
-    primaryDark: "#2e3f2c",
-    cream: "#f7f6f2",
-    creamDark: "#eef0eb",
-    gold: "#8f7348",
-    goldSoft: "#b89a6a",
-    ink: "#2a322c",
-    muted: "#556058",
+    primary: "#1b6554",
+    primaryDark: "#0f3d34",
+    cream: "#fbf9f4",
+    creamDark: "#f4ece1",
+    gold: "#c29b4e",
+    goldSoft: "#dfbe7e",
+    ink: "#1a1815",
+    muted: "#5a554c",
   },
 };
+
+/** Public origin: Coolify `SITE_URL`, else config fallback. */
+export function getSiteUrl(): string {
+  const fromEnv =
+    (typeof process !== "undefined" &&
+      (process.env.SITE_URL?.trim() ||
+        process.env.NEXT_PUBLIC_SITE_URL?.trim())) ||
+    "";
+  return (fromEnv || wedding.meta.siteUrl).replace(/\/$/, "");
+}
 
 /** Helpers derived from config — pass InviteSide for pria/wanita variants */
 
@@ -198,24 +214,41 @@ export function getPrimaryEvent(side: InviteSide = "wanita") {
   );
 }
 
+/** WIB = UTC+7. Keep countdown & calendar on the same clock. */
+const WIB_OFFSET_HOURS = 7;
+
+function parseWibTime(time: string): { hours: number; minutes: number } {
+  const timeMatch = time.match(/(\d{1,2}):(\d{2})/);
+  return {
+    hours: timeMatch ? Number(timeMatch[1]) : 0,
+    minutes: timeMatch ? Number(timeMatch[2]) : 0,
+  };
+}
+
+/** Instant for an event clock time expressed in WIB. */
+export function parseEventDateTime(date: string, time: string): Date {
+  const [y, m, d] = date.split("-").map(Number);
+  const { hours, minutes } = parseWibTime(time);
+  return new Date(Date.UTC(y, m - 1, d, hours - WIB_OFFSET_HOURS, minutes, 0));
+}
+
 export function getCountdownTarget(side: InviteSide = "wanita"): Date {
   const event = getPrimaryEvent(side);
-  const [y, m, d] = event.date.split("-").map(Number);
-  const timeMatch = event.time.match(/(\d{1,2}):(\d{2})/);
-  const hours = timeMatch ? Number(timeMatch[1]) : 0;
-  const minutes = timeMatch ? Number(timeMatch[2]) : 0;
-  return new Date(y, m - 1, d, hours, minutes, 0, 0);
+  return parseEventDateTime(event.date, event.time);
+}
+
+function calendarEnd(event: ReturnType<typeof getPrimaryEvent>, start: Date): Date {
+  const last = event.sessions?.at(-1)?.time ?? event.time;
+  const lastStart = parseEventDateTime(event.date, last);
+  const padMs = 4 * 60 * 60 * 1000;
+  const end = new Date(lastStart.getTime() + padMs);
+  return end > start ? end : new Date(start.getTime() + padMs);
 }
 
 export function getCalendarUrl(side: InviteSide = "wanita"): string {
   const event = getPrimaryEvent(side);
-  const [y, m, d] = event.date.split("-").map(Number);
-  const timeMatch = event.time.match(/(\d{1,2}):(\d{2})/);
-  const hours = timeMatch ? Number(timeMatch[1]) : 8;
-  const minutes = timeMatch ? Number(timeMatch[2]) : 0;
-
-  const start = new Date(Date.UTC(y, m - 1, d, hours - 7, minutes, 0));
-  const end = new Date(start.getTime() + 2 * 60 * 60 * 1000);
+  const start = parseEventDateTime(event.date, event.time);
+  const end = calendarEnd(event, start);
 
   const fmt = (dt: Date) =>
     dt
@@ -233,44 +266,48 @@ export function getCalendarUrl(side: InviteSide = "wanita"): string {
   return `https://www.google.com/calendar/render?action=TEMPLATE&text=${text}&details=${details}&location=${location}&dates=${fmt(start)}%2F${fmt(end)}`;
 }
 
-/** Build invite URL — prefer shortcode `c` over public name */
 export function getInviteUrl(opts?: {
   code?: string | null;
   side?: InviteSide;
+  guestName?: string;
 }): string {
-  if (typeof window !== "undefined") {
-    // Prefer current page URL (already has ?c=)
-    if (opts?.code) {
-      const url = new URL(window.location.origin + "/");
-      url.searchParams.set("c", opts.code);
-      return url.toString();
-    }
-    return window.location.href.split("#")[0];
+  const origin =
+    typeof window !== "undefined"
+      ? window.location.origin
+      : getSiteUrl();
+  const url = new URL("/", origin.endsWith("/") ? origin : `${origin}/`);
+  if (opts?.code) {
+    url.searchParams.set("c", opts.code);
+    return url.toString();
   }
-  const base = wedding.meta.siteUrl.replace(/\/$/, "");
-  if (opts?.code) return `${base}/?c=${opts.code}`;
-  const side = opts?.side ?? "wanita";
-  return `${base}/?side=${side}`;
+  url.searchParams.set("side", opts?.side ?? "wanita");
+  if (opts?.guestName && opts.guestName !== "Tamu Undangan") {
+    url.searchParams.set("to", opts.guestName);
+  }
+  return url.toString();
 }
 
-/** WhatsApp share text + link */
-export function getWhatsAppShareUrl(opts?: {
+export function getInviteShareText(opts?: {
   code?: string | null;
   side?: InviteSide;
   guestName?: string;
 }): string {
   const side = opts?.side ?? "wanita";
-  const url = getInviteUrl({ code: opts?.code, side });
+  const url = getInviteUrl({
+    code: opts?.code,
+    side,
+    guestName: opts?.guestName,
+  });
   const primary = getPrimaryEvent(side);
   const toLine =
     opts?.guestName && opts.guestName !== "Tamu Undangan"
       ? `Kepada Yth. *${opts.guestName}*`
       : null;
-  const text = [
+  return [
     `Assalamu’alaikum Warahmatullahi Wabarakatuh`,
     ``,
     toLine,
-    `Tanpa mengurangi rasa hormat, kami mengundang untuk menghadiri:`,
+    `Tanpa mengurangi rasa hormat, kami mengundang untuk menghadiri pernikahan kami:`,
     ``,
     `*${wedding.couple.displayNames}*`,
     `*${primary.title}*`,
@@ -284,8 +321,15 @@ export function getWhatsAppShareUrl(opts?: {
   ]
     .filter(Boolean)
     .join("\n");
+}
 
-  return `https://wa.me/?text=${encodeURIComponent(text)}`;
+/** WhatsApp share text + link */
+export function getWhatsAppShareUrl(opts?: {
+  code?: string | null;
+  side?: InviteSide;
+  guestName?: string;
+}): string {
+  return `https://wa.me/?text=${encodeURIComponent(getInviteShareText(opts))}`;
 }
 
 export { parseInviteSide };

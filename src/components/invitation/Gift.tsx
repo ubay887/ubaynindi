@@ -6,6 +6,7 @@ import { wedding } from "@/config/wedding";
 import { copyToClipboard } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
 import { InView, SectionHead } from "@/components/motion/primitives";
+import { FloatingIslamicCloud, IslamicCornerArt } from "@/components/ui/Ornament";
 
 export function Gift() {
   const { gifts } = wedding;
@@ -23,8 +24,15 @@ export function Gift() {
   };
 
   return (
-    <section id="gift" className="section-cream section-pad sm:px-8">
-      <div className="mx-auto max-w-[360px]">
+    <section id="gift" className="relative overflow-hidden section-cream section-pad sm:px-8">
+      <FloatingIslamicCloud
+        variant={1}
+        width={190}
+        className="-top-6 -left-8 text-gold-light/40"
+        opacity={0.4}
+      />
+
+      <div className="relative mx-auto max-w-[360px]">
         <SectionHead script="Wedding Gift" title="Amplop Digital" subtitle={gifts.note} />
 
         <InView className="flex flex-col items-center">
@@ -32,7 +40,7 @@ export function Gift() {
             type="button"
             size="md"
             variant="double-solid"
-            className="btn-pulse min-w-[180px]"
+            className="btn-pulse min-w-[190px] font-semibold shadow-md"
             aria-expanded={open}
             aria-controls="gift-accounts"
             onClick={() => setOpen((v) => !v)}
@@ -45,19 +53,19 @@ export function Gift() {
                 height="13"
                 rx="2"
                 stroke="currentColor"
-                strokeWidth="1.6"
+                strokeWidth="1.7"
               />
               <path
                 d="M3 10h18M8 14h4"
                 stroke="currentColor"
-                strokeWidth="1.6"
+                strokeWidth="1.7"
                 strokeLinecap="round"
               />
             </svg>
             {open ? "Tutup Amplop" : "Transfer Amplop"}
           </Button>
           {!open ? (
-            <p className="mt-3 text-center text-[11px] text-muted">
+            <p className="mt-3 text-center text-[11px] font-medium text-muted">
               Opsional — hanya bila berkenan
             </p>
           ) : null}
@@ -76,8 +84,9 @@ export function Gift() {
               {gifts.accounts.map((acc) => (
                 <div
                   key={`${acc.bank}-${acc.accountNumber}`}
-                  className="card-gold-shine relative overflow-hidden rounded-2xl border border-gold/40 bg-gradient-to-br from-[#142d20] via-[#1e4733] to-[#112519] px-6 py-6 text-cream shadow-[0_20px_42px_-18px_rgba(18,44,30,0.5)]"
+                  className="card-gold-shine relative overflow-hidden rounded-2xl border border-gold/50 bg-gradient-to-br from-[#1b6554] via-[#175c4d] to-[#0f3d34] px-6 py-6 text-cream shadow-[0_20px_42px_-18px_rgba(15,61,52,0.5)]"
                 >
+                  <IslamicCornerArt position="top-right" className="top-2 right-2 text-gold-light/25" />
                   <div
                     className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full opacity-30 blur-2xl"
                     style={{
@@ -88,41 +97,41 @@ export function Gift() {
 
                   <div className="relative flex items-center justify-between">
                     <div>
-                      <span className="text-[9.5px] font-bold uppercase tracking-[0.22em] text-gold-light">
-                        Digital Card
+                      <span className="text-[9.5px] font-bold uppercase tracking-[0.24em] text-gold-light">
+                        Digital Gift Card
                       </span>
-                      <p className="mt-0.5 font-serif text-xl font-bold tracking-wider text-white">
+                      <p className="mt-0.5 font-serif text-2xl font-bold tracking-wider text-white">
                         {acc.bank}
                       </p>
                     </div>
                     {/* Metallic Microchip Visual */}
-                    <div className="flex h-7 w-9 items-center justify-center rounded-md border border-gold-light/40 bg-gradient-to-br from-[#dfbe7e] to-[#967432] shadow-inner">
-                      <div className="h-3 w-5 rounded-sm border border-emerald-950/30 bg-amber-50/30" />
+                    <div className="flex h-7 w-9 items-center justify-center rounded-md border border-gold-light/50 bg-gradient-to-br from-[#dfbe7e] to-[#967432] shadow-inner">
+                      <div className="h-3 w-5 rounded-sm border border-emerald-950/30 bg-amber-50/40" />
                     </div>
                   </div>
 
                   <div className="relative mt-6">
-                    <p className="text-[9.5px] uppercase tracking-[0.2em] text-cream/60">
+                    <p className="text-[9.5px] font-medium uppercase tracking-[0.2em] text-cream/70">
                       Nomor Rekening
                     </p>
-                    <p className="mt-1 font-mono text-[1.25rem] font-semibold tracking-[0.14em] text-amber-100">
+                    <p className="mt-1 font-mono text-[1.35rem] font-bold tracking-[0.14em] text-amber-100">
                       {acc.accountNumber}
                     </p>
                   </div>
 
                   <div className="relative mt-4 flex items-end justify-between">
                     <div>
-                      <p className="text-[9.5px] uppercase tracking-[0.2em] text-cream/60">
+                      <p className="text-[9.5px] font-medium uppercase tracking-[0.2em] text-cream/70">
                         Atas Nama
                       </p>
-                      <p className="mt-0.5 font-serif text-sm font-semibold tracking-wide text-white">
+                      <p className="mt-0.5 font-serif text-[15px] font-bold tracking-wide text-white">
                         {acc.accountName}
                       </p>
                     </div>
                     <Button
                       size="sm"
                       variant="double-on-sage"
-                      className="font-semibold shadow-md"
+                      className="font-bold shadow-md text-xs"
                       onClick={() => handleCopy(acc.accountNumber)}
                     >
                       {copied === acc.accountNumber ? "Tersalin ✓" : "Salin No. Rek"}
@@ -135,7 +144,7 @@ export function Gift() {
                 <motion.div
                   initial={{ opacity: 0, y: -6 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="rounded-xl border border-gold/40 bg-gold/15 p-3 text-center text-xs font-semibold text-primary-dark"
+                  className="rounded-xl border border-gold/50 bg-gold/20 p-3 text-center text-xs font-bold text-primary-dark"
                 >
                   Nomor rekening telah berhasil disalin!
                 </motion.div>

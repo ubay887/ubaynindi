@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion, type Variants } from "framer-motion";
+import { useInvitationScroll } from "@/components/invitation/InvitationScroll";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -30,6 +31,7 @@ export function InView({
   y?: number;
 }) {
   const reduce = useReducedMotion();
+  const scroll = useInvitationScroll();
   if (reduce) return <div className={className}>{children}</div>;
 
   return (
@@ -37,7 +39,12 @@ export function InView({
       className={className}
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.18, margin: "0px 0px -36px 0px" }}
+      viewport={{
+        once: true,
+        amount: 0.18,
+        margin: "0px 0px -36px 0px",
+        root: scroll?.scroller ? scroll.scrollerRef : undefined,
+      }}
       transition={{ duration: 0.9, ease, delay }}
     >
       {children}
@@ -89,7 +96,7 @@ export function SectionHead({
 }) {
   return (
     <InView className="mb-10 text-center">
-      <p className="font-script text-[2.35rem] leading-none text-primary-dark sm:text-[2.55rem]">
+      <p className="font-script text-[2.35rem] leading-none text-ink sm:text-[2.55rem]">
         {script}
       </p>
       {title ? (

@@ -6,17 +6,17 @@
  * Target WCAG AA for body (≥4.5) and large titles (≥3).
  */
 :root {
-  /* Royal Emerald — mewah, agung & selaras dengan lukisan botani baru */
-  --emerald: #1e4733;
-  --emerald-deep: #122c1e;
-  --emerald-mid: #2b5f45;
-  --emerald-soft: #438262;
-  --emerald-mist: #eaf4ee;
-  --emerald-haze: #deece2;
+  /* Jewel teal-emerald — cooler chroma so gold stays luminous and black stays black */
+  --emerald: #1b6554;
+  --emerald-deep: #0f3d34;
+  --emerald-mid: #2c7d69;
+  --emerald-soft: #4a9b84;
+  --emerald-mist: #e8f3f0;
+  --emerald-haze: #d6e9e3;
 
-  /* Solid Warm Silk Ivory Cream — selaras dengan background cover & hero */
+  /* Cream Silk Canvas */
   --cream: #fbf9f4;
-  --cream-2: #f3ece0;
+  --cream-2: #f4ece1;
 
   --blush: #e2c8be;
 
@@ -25,9 +25,9 @@
   --gold-light: #dfbe7e;
   --gold-deep: #967432;
 
-  /* High-Contrast Royal Cypress Ink */
-  --ink: #112519;
-  --muted: #496354;
+  /* Warm near-black ink — not a third green */
+  --ink: #1a1815;
+  --muted: #5a554c;
 
   --color-primary: var(--emerald);
   --color-primary-dark: var(--emerald-deep);
@@ -64,6 +64,8 @@
   --color-blush: var(--color-blush);
   --color-gold: var(--color-gold);
   --color-gold-soft: var(--color-gold-soft);
+  --color-gold-light: var(--gold-light);
+  --color-gold-deep: var(--gold-deep);
   --color-ink: var(--color-ink);
   --color-muted: var(--color-muted);
   --font-sans: var(--font-body);
@@ -143,7 +145,7 @@ body.invitation-locked {
       rgba(255, 255, 255, 0.6),
       transparent 55%
     ),
-    linear-gradient(180deg, #edf5ef 0%, var(--emerald-mist) 45%, #e1ede5 100%);
+    linear-gradient(180deg, #eef5f2 0%, var(--emerald-mist) 45%, #dceee8 100%);
 }
 
 /* Cool soft band for countdown — light, adem (not solid dark green) */
@@ -151,10 +153,10 @@ body.invitation-locked {
   background:
     radial-gradient(
       ellipse 70% 60% at 50% 100%,
-      rgba(67, 130, 98, 0.14),
+      rgba(74, 155, 132, 0.14),
       transparent 60%
     ),
-    linear-gradient(180deg, #eaf3ed 0%, #dce9e0 50%, #d2e2d7 100%);
+    linear-gradient(180deg, #eaf4f1 0%, #dceee8 50%, #d0e6df 100%);
 }
 
 /* Very soft story band */
@@ -165,12 +167,12 @@ body.invitation-locked {
       rgba(255, 255, 255, 0.45),
       transparent 50%
     ),
-    linear-gradient(180deg, #e9f2ec 0%, #dbe8de 55%, #d1e2d6 100%);
+    linear-gradient(180deg, #eaf4f1 0%, #dceee8 55%, #d0e6df 100%);
 }
 
 /* Keep deep only for footer band if needed */
 .section-sage-deep {
-  background: linear-gradient(180deg, #244e39 0%, #1a3c2b 55%, #122c1e 100%);
+  background: linear-gradient(180deg, var(--emerald) 0%, var(--emerald-deep) 55%, #0a2a24 100%);
   color: var(--cream);
 }
 
@@ -190,14 +192,14 @@ body.invitation-locked {
 
 .btn-double-solid {
   border: 2px double rgba(223, 190, 126, 0.7);
-  background: linear-gradient(135deg, #1e4733 0%, #122c1e 100%);
+  background: linear-gradient(135deg, var(--emerald) 0%, var(--emerald-deep) 100%);
   color: var(--cream);
-  box-shadow: 0 10px 28px -10px rgba(18, 44, 30, 0.55), 0 0 16px rgba(194, 155, 78, 0.25);
+  box-shadow: 0 10px 28px -10px rgba(15, 61, 52, 0.55), 0 0 16px rgba(194, 155, 78, 0.28);
 }
 
 .btn-double-solid:hover {
-  background: linear-gradient(135deg, #25573f 0%, #173726 100%);
-  box-shadow: 0 12px 32px -8px rgba(18, 44, 30, 0.65), 0 0 20px rgba(194, 155, 78, 0.35);
+  background: linear-gradient(135deg, var(--emerald-mid) 0%, var(--emerald) 100%);
+  box-shadow: 0 12px 32px -8px rgba(15, 61, 52, 0.65), 0 0 20px rgba(194, 155, 78, 0.4);
   transform: translateY(-1px);
 }
 
@@ -218,6 +220,12 @@ body.invitation-locked {
 
 .btn-pulse {
   animation: btn-pulse 2.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-pulse {
+    animation: none;
+  }
 }
 
 /* Oval event frame — elegant, content stays in safe middle band */
@@ -342,7 +350,7 @@ body.invitation-locked {
   font-size: 2.35rem;
   font-weight: 600;
   line-height: 1;
-  color: var(--sage-deep);
+  color: var(--gold-deep);
   text-shadow:
     0 1px 0 rgba(247, 246, 242, 0.7),
     0 2px 10px rgba(247, 246, 242, 0.45);
@@ -350,22 +358,6 @@ body.invitation-locked {
 
 .ampersand-sm {
   font-size: 1.65rem;
-}
-
-@keyframes soft-pulse {
-  0%,
-  100% {
-    box-shadow: 0 8px 22px -12px rgba(46, 63, 44, 0.32);
-  }
-  50% {
-    box-shadow:
-      0 10px 26px -10px rgba(46, 63, 44, 0.38),
-      0 0 0 8px rgba(79, 109, 76, 0.07);
-  }
-}
-
-.btn-pulse {
-  animation: soft-pulse 2.6s ease-in-out infinite;
 }
 
 .scroll-soft {
@@ -415,21 +407,31 @@ body.invitation-locked {
   background: linear-gradient(135deg, #c29b4e 0%, #dfbe7e 40%, #967432 75%, #c29b4e 100%);
   background-size: 200% auto;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine-gold 5s linear infinite;
 }
 
 .gold-border-glow {
-  border: 1px solid rgba(194, 155, 78, 0.4);
-  box-shadow: 0 8px 24px -10px rgba(18, 44, 30, 0.15), inset 0 0 8px rgba(194, 155, 78, 0.08);
+  border: 1px solid rgba(194, 155, 78, 0.45);
+  box-shadow: 0 8px 24px -10px rgba(18, 44, 30, 0.2), inset 0 0 10px rgba(194, 155, 78, 0.1);
 }
 
-/* Islamic Arch Frame Motif */
+/* Islamic Arch Frame Motif - Light Card */
 .arch-frame {
   border-radius: 120px 120px 24px 24px;
-  background: linear-gradient(165deg, rgba(255, 255, 255, 0.96) 0%, rgba(251, 249, 244, 0.98) 100%);
-  border: 1.5px solid rgba(194, 155, 78, 0.4);
-  box-shadow: 0 16px 40px -18px rgba(18, 44, 30, 0.18);
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.98) 0%, rgba(251, 249, 244, 0.98) 100%);
+  border: 1.5px solid rgba(194, 155, 78, 0.45);
+  box-shadow: 0 16px 40px -18px rgba(18, 44, 30, 0.18), inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+}
+
+/* Islamic Arch Frame Motif - Dark Royal Emerald Contrast Card */
+.arch-frame-dark {
+  border-radius: 120px 120px 24px 24px;
+  background: linear-gradient(165deg, var(--emerald) 0%, var(--emerald-deep) 70%, #0a2a24 100%);
+  border: 1.5px solid rgba(223, 190, 126, 0.6);
+  box-shadow: 0 20px 48px -18px rgba(15, 61, 52, 0.45), inset 0 0 22px rgba(194, 155, 78, 0.16);
+  color: var(--cream);
 }
 
 .card-gold-shine {
@@ -447,7 +449,7 @@ body.invitation-locked {
   background: linear-gradient(
     45deg,
     transparent 45%,
-    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.18) 50%,
     transparent 55%
   );
   transform: rotate(30deg);
@@ -464,6 +466,80 @@ body.invitation-locked {
 @keyframes sweep-shine {
   0% { transform: translateX(-100%) rotate(30deg); }
   20%, 100% { transform: translateX(100%) rotate(30deg); }
+}
+
+/* Dynamic Floating & Swaying Ornaments (Reverse Engineered from Invisimple) */
+@keyframes galleggia {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-14px);
+  }
+}
+
+@keyframes galleggia-reverse {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(12px);
+  }
+}
+
+@keyframes dondola {
+  from {
+    transform: rotate(-18deg);
+  }
+  to {
+    transform: rotate(18deg);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 6px rgba(194, 155, 78, 0.3));
+    opacity: 0.85;
+  }
+  50% {
+    filter: drop-shadow(0 0 14px rgba(223, 190, 126, 0.7));
+    opacity: 1;
+  }
+}
+
+.anim-galleggia-1 {
+  animation: galleggia 6s ease-in-out infinite alternate;
+}
+
+.anim-galleggia-2 {
+  animation: galleggia-reverse 8.5s ease-in-out infinite alternate;
+}
+
+.anim-galleggia-3 {
+  animation: galleggia 11s ease-in-out infinite alternate;
+}
+
+.anim-dondola {
+  transform-origin: top center;
+  animation: dondola 5.5s ease-in-out infinite alternate;
+}
+
+.anim-pulse-glow {
+  animation: pulse-glow 3.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-galleggia-1,
+  .anim-galleggia-2,
+  .anim-galleggia-3,
+  .anim-dondola,
+  .anim-pulse-glow,
+  .gold-text-gradient,
+  .card-gold-shine::after,
+  .bar-wave,
+  .wedding-map-pin .pin-wrap.is-active {
+    animation: none !important;
+  }
 }
 
 /* Audio Wave Visualizer */

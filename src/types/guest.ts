@@ -1,7 +1,7 @@
 import type { InviteSide } from "@/types/wedding";
 
 export type GuestInvite = {
-  /** 4-digit shortcode, e.g. "4821" */
+  /** 4–8 digit shortcode (legacy 4-digit still valid) */
   code: string;
   name: string;
   side: InviteSide;

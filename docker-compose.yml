@@ -1,0 +1,20 @@
+# Opsional: tes lokal atau Coolify Compose.
+# Di Coolify biasanya cukup Build Pack = Dockerfile (lihat DEPLOY.md).
+
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?set ADMIN_PASSWORD}
+      SITE_URL: ${SITE_URL:-http://localhost:3000}
+      DATA_DIR: /app/data
+      PORT: 3000
+      HOSTNAME: 0.0.0.0
+    volumes:
+      - guests-data:/app/data
+    restart: unless-stopped
+
+volumes:
+  guests-data:
