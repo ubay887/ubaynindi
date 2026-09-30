@@ -6,7 +6,12 @@ ARG NODE_VERSION=20-bookworm-slim
 FROM node:${NODE_VERSION} AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm ci --no-audit --no-fund
+# Lockfile is produced on Windows, so npm ci skips the Linux native
+# addons. Webpack still needs them to compile Tailwind.
+RUN NODE_ENV=development npm ci --no-audit --no-fund --include=dev --include=optional \
+  && npm install --no-save --no-package-lock --no-audit --no-fund --include=optional \
+    lightningcss-linux-x64-gnu@1.32.0 \
+    @tailwindcss/oxide-linux-x64-gnu@4.3.3
 
 FROM node:${NODE_VERSION} AS builder
 WORKDIR /app
