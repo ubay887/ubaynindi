@@ -7,18 +7,16 @@
 @custom-variant xl (@media (min-width: 1280px));
 
 /**
- * Palette: Sage Mist — adem, nyaman dibaca lama
- * Soft mist greens + cool cream, deep ink for body, bronze-gold only as accent.
- * Target WCAG AA for body (≥4.5) and large titles (≥3).
+ * Palette: saturated sage on ivory. Lighter than the old teal, richer than
+ * the washed olive, and still dark enough for small labels on cream.
  */
 :root {
-  /* Jewel teal-emerald — cooler chroma so gold stays luminous and black stays black */
-  --emerald: #1b6554;
-  --emerald-deep: #0f3d34;
-  --emerald-mid: #2c7d69;
-  --emerald-soft: #4a9b84;
-  --emerald-mist: #e8f3f0;
-  --emerald-haze: #d6e9e3;
+  --emerald: #2d6b52;
+  --emerald-deep: #1e4d3c;
+  --emerald-mid: #3d8a6a;
+  --emerald-soft: #6aaf90;
+  --emerald-mist: #e6f1eb;
+  --emerald-haze: #cfe4d8;
 
   /* Cream Silk Canvas */
   --cream: #fbf9f4;
@@ -80,7 +78,7 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
@@ -150,6 +148,38 @@ body.invitation-locked {
     );
 }
 
+/* Quieter veil: floral frame stays at the edges, center stays readable */
+.cover-wash {
+  background:
+    radial-gradient(
+      ellipse 74% 60% at 50% 46%,
+      rgba(251, 249, 244, 0.9) 0%,
+      rgba(251, 249, 244, 0.62) 42%,
+      rgba(251, 249, 244, 0.2) 70%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(251, 249, 244, 0.42) 0%,
+      rgba(251, 249, 244, 0.16) 40%,
+      rgba(251, 249, 244, 0.5) 100%
+    );
+}
+
+/* Skip layout and paint for sections far from the scrollport. */
+.section-cream,
+.section-sage,
+.section-sage-soft,
+.section-story {
+  content-visibility: auto;
+  contain-intrinsic-size: 800px;
+  contain-intrinsic-size: auto 800px;
+}
+
+/* The map measures itself on mount, so it must stay laid out. */
+#location {
+  content-visibility: visible;
+}
+
 /* ── Section backgrounds — soft rhythm, no dark walls ── */
 
 /* Airy cream with soft dots */
@@ -175,7 +205,7 @@ body.invitation-locked {
       rgba(255, 255, 255, 0.6),
       transparent 55%
     ),
-    linear-gradient(180deg, #eef5f2 0%, var(--emerald-mist) 45%, #dceee8 100%);
+    linear-gradient(180deg, #f4f6f1 0%, var(--emerald-mist) 45%, #dce6d8 100%);
 }
 
 /* Cool soft band for countdown — light, adem (not solid dark green) */
@@ -183,10 +213,10 @@ body.invitation-locked {
   background:
     radial-gradient(
       ellipse 70% 60% at 50% 100%,
-      rgba(74, 155, 132, 0.14),
+      rgba(45, 107, 82, 0.14),
       transparent 60%
     ),
-    linear-gradient(180deg, #eaf4f1 0%, #dceee8 50%, #d0e6df 100%);
+    linear-gradient(180deg, #f3f6f0 0%, #e4ece0 50%, #d5e2d2 100%);
 }
 
 /* Very soft story band */
@@ -197,18 +227,18 @@ body.invitation-locked {
       rgba(255, 255, 255, 0.45),
       transparent 50%
     ),
-    linear-gradient(180deg, #eaf4f1 0%, #dceee8 55%, #d0e6df 100%);
+    linear-gradient(180deg, #f3f6f0 0%, #e4ece0 55%, #d5e2d2 100%);
 }
 
 /* Keep deep only for footer band if needed */
 .section-sage-deep {
-  background: linear-gradient(180deg, var(--emerald) 0%, var(--emerald-deep) 55%, #0a2a24 100%);
+  background: linear-gradient(180deg, var(--emerald) 0%, var(--emerald-deep) 55%, #173d31 100%);
   color: var(--cream);
 }
 
 /* Double-border pill CTA */
 .btn-double {
-  border: 2px double #8f8a4e;
+  border: 2px double var(--gold-deep);
   background: rgba(255, 255, 255, 0.95);
   color: var(--emerald-deep);
   box-shadow: 0 8px 22px -12px rgba(18, 44, 30, 0.35);
@@ -234,7 +264,7 @@ body.invitation-locked {
 }
 
 .btn-double-on-sage {
-  border: 2px double #896e41;
+  border: 2px double var(--gold-deep);
   background: rgba(255, 255, 255, 0.96);
   color: var(--emerald-deep);
 }
@@ -362,22 +392,13 @@ body.invitation-locked {
   border-bottom: 1px solid rgba(15, 61, 52, 0.12);
 }
 
-/* Thin glassy guest plate on cover */
+/* Solid guest plate — no backdrop-filter, so the cover stays cheap to paint */
 .guest-glass {
-  background: rgba(251, 249, 244, 0.92);
+  background: rgba(251, 249, 244, 0.94);
   border: 1px solid rgba(194, 155, 78, 0.4);
   box-shadow:
     0 12px 32px -18px rgba(46, 63, 44, 0.22),
     inset 0 1px 0 rgba(255, 255, 255, 0.65);
-}
-@supports (
-  (backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px))
-) {
-  .guest-glass {
-    background: rgba(247, 246, 242, 0.42);
-    backdrop-filter: blur(12px) saturate(1.15);
-    -webkit-backdrop-filter: blur(12px) saturate(1.15);
-  }
 }
 
 /* Ampersand — serif, high contrast (script & often vanishes on art) */
@@ -475,7 +496,7 @@ body.invitation-locked {
 /* Islamic Arch Frame Motif - Dark Royal Emerald Contrast Card */
 .arch-frame-dark {
   border-radius: 120px 120px 24px 24px;
-  background: linear-gradient(165deg, var(--emerald) 0%, var(--emerald-deep) 70%, #0a2a24 100%);
+  background: linear-gradient(165deg, var(--emerald) 0%, var(--emerald-deep) 70%, #173d31 100%);
   border: 1.5px solid rgba(223, 190, 126, 0.6);
   box-shadow: 0 20px 48px -18px rgba(15, 61, 52, 0.45), inset 0 0 22px rgba(194, 155, 78, 0.16);
   color: var(--cream);
@@ -487,21 +508,7 @@ body.invitation-locked {
 }
 
 .card-gold-shine::after {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-    45deg,
-    transparent 45%,
-    rgba(255, 255, 255, 0.18) 50%,
-    transparent 55%
-  );
-  transform: rotate(30deg);
-  animation: sweep-shine 6s ease-in-out infinite;
-  pointer-events: none;
+  content: none;
 }
 
 @keyframes shine-gold {
@@ -545,11 +552,9 @@ body.invitation-locked {
 
 @keyframes pulse-glow {
   0%, 100% {
-    filter: drop-shadow(0 0 6px rgba(194, 155, 78, 0.3));
-    opacity: 0.85;
+    opacity: 0.7;
   }
   50% {
-    filter: drop-shadow(0 0 14px rgba(223, 190, 126, 0.7));
     opacity: 1;
   }
 }

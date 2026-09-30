@@ -47,7 +47,7 @@ export function Notes() {
         <div className="space-y-3.5">
           {notes.items.map((item, i) => (
             <InView key={item.title} delay={i * 0.06}>
-              <div className="flex gap-3.5 rounded-2xl border border-gold/30 bg-white/85 px-4.5 py-4 shadow-[0_12px_28px_-18px_rgba(46,63,44,0.15)]">
+              <div className="flex gap-3.5 rounded-2xl border border-gold/40 bg-white px-4.5 py-4">
                 <span className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary-dark to-primary text-gold-light shadow-xs">
                   {icons[i % icons.length]}
                 </span>

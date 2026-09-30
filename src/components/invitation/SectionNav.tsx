@@ -36,7 +36,7 @@ const items = [
   },
   {
     id: "gift",
-    label: "Kado",
+    label: "Hadiah",
     icon: (
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
         <rect x="3" y="8" width="18" height="13" rx="2" />
@@ -157,7 +157,7 @@ export function SectionNavMobile() {
   return (
     <motion.nav
       aria-label="Navigasi cepat"
-      className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 flex items-center gap-1 rounded-full border border-gold/45 bg-cream/90 px-2.5 py-1.5 shadow-[0_14px_36px_-10px_rgba(18,44,30,0.45)] backdrop-blur-xl sm:hidden"
+      className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 flex items-center gap-1 rounded-full border border-gold/45 bg-cream px-2.5 py-1.5 shadow-[0_14px_36px_-10px_rgba(18,44,30,0.45)] sm:hidden"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.4, duration: 0.5 }}

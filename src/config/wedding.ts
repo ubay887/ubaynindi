@@ -145,16 +145,16 @@ export const wedding: WeddingConfig = {
 
   gifts: {
     enabled: true,
-    note: "Kehadiran dan doa restu Anda adalah hadiah terindah bagi kami.",
+    note: "Doa restu dan kehadiran Anda sudah lebih dari cukup bagi kami. Bila dari jauh ingin menitipkan tanda kasih, kami menerimanya dengan senang hati — sebagai kemudahan, bukan suatu permintaan.",
     accounts: [
       {
         bank: "BCA",
-        accountNumber: "0000000000",
+        accountNumber: "6105202371",
         accountName: "Muhammad Ubaydillah",
       },
       {
         bank: "BRI",
-        accountNumber: "0000000000",
+        accountNumber: "640701041244534",
         accountName: "Nindi Nirmala Nadziroh",
       },
     ],
@@ -177,8 +177,8 @@ export const wedding: WeddingConfig = {
   },
 
   theme: {
-    primary: "#1b6554",
-    primaryDark: "#0f3d34",
+    primary: "#2d6b52",
+    primaryDark: "#1e4d3c",
     cream: "#fbf9f4",
     creamDark: "#f4ece1",
     gold: "#c29b4e",

@@ -16,7 +16,7 @@ const variants: Record<Variant, string> = {
   cream:
     "bg-cream/95 text-primary-dark border border-primary/15 hover:bg-white hover:-translate-y-0.5",
   outline:
-    "border border-primary/25 bg-cream/70 text-primary-dark backdrop-blur-sm hover:bg-primary/8",
+    "border border-primary/25 bg-cream text-primary-dark hover:bg-primary/8",
   gold: "bg-gradient-to-r from-gold to-gold-soft text-ink shadow-sm hover:brightness-105",
   ghost: "bg-transparent text-primary-dark hover:bg-primary/8",
 };

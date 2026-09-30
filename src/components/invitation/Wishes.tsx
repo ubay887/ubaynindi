@@ -128,7 +128,7 @@ export function Wishes() {
         />
 
         <InView>
-          <div className="mb-6 flex items-center justify-between rounded-2xl border border-gold/40 bg-white/85 px-4.5 py-3.5 text-xs text-muted shadow-sm backdrop-blur-sm">
+          <div className="mb-6 flex items-center justify-between rounded-2xl border border-gold/40 bg-white px-4.5 py-3.5 text-xs text-muted shadow-sm">
             <span className="font-bold text-primary-dark">Ucapan di perangkat ini</span>
             <span className="rounded-full bg-gradient-to-r from-primary-dark to-primary px-3.5 py-1 font-bold text-cream shadow-xs">
               {totalAttending} hadir
@@ -137,13 +137,13 @@ export function Wishes() {
 
           <form
             onSubmit={onSubmit}
-            className="mb-7 space-y-4.5 rounded-2xl border border-gold/40 bg-white/90 p-5.5 shadow-[0_16px_40px_-24px_rgba(18,44,30,0.2)] backdrop-blur-sm"
+            className="mb-7 space-y-4.5 rounded-2xl border border-gold/40 bg-white p-5.5 shadow-[0_16px_40px_-24px_rgba(18,44,30,0.2)]"
           >
             <div>
               <div className="mb-1.5 flex items-center justify-between">
                 <label
                   htmlFor="wish-name"
-                  className="block text-[11px] font-bold tracking-wide text-primary-soft uppercase"
+                  className="block text-[11px] font-bold tracking-wide text-primary uppercase"
                 >
                   Nama Anda
                 </label>
@@ -159,7 +159,7 @@ export function Wishes() {
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Tulis nama lengkap Anda"
                 disabled={anonymous}
-                className="field-input w-full rounded-full border border-primary/20 bg-cream/90 px-4 py-2.5 text-sm font-medium text-ink outline-none disabled:cursor-not-allowed disabled:opacity-60"
+                className="field-input w-full rounded-full border border-gold/35 bg-cream px-4 py-2.5 text-sm font-medium text-ink outline-none disabled:cursor-not-allowed disabled:opacity-60"
                 maxLength={60}
                 autoComplete="name"
               />
@@ -181,7 +181,7 @@ export function Wishes() {
             <div>
               <label
                 htmlFor="wish-msg"
-                className="mb-1.5 block text-[11px] font-bold tracking-wide text-primary-soft uppercase"
+                className="mb-1.5 block text-[11px] font-bold tracking-wide text-primary uppercase"
               >
                 Ucapan & Doa Restu
               </label>
@@ -191,12 +191,12 @@ export function Wishes() {
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Tuliskan doa & ucapan hangat untuk Ubay & Nindi..."
                 rows={3}
-                className="field-input w-full resize-none rounded-2xl border border-primary/20 bg-cream/90 px-4 py-2.5 text-sm font-medium text-ink outline-none"
+                className="field-input w-full resize-none rounded-2xl border border-gold/35 bg-cream px-4 py-2.5 text-sm font-medium text-ink outline-none"
                 maxLength={500}
               />
             </div>
             <div>
-              <p className="mb-2 text-[11px] font-bold tracking-wide text-primary-soft uppercase">
+              <p className="mb-2 text-[11px] font-bold tracking-wide text-primary uppercase">
                 Konfirmasi Kehadiran
               </p>
               <div className="grid grid-cols-3 gap-2">
@@ -214,7 +214,7 @@ export function Wishes() {
                     className={`rounded-full border py-2.5 text-[11px] font-bold leading-tight transition-all duration-200 ${
                       attendance === v
                         ? "border-primary-dark bg-primary-dark text-cream shadow-sm"
-                        : "border-primary/20 bg-white/60 text-primary-dark hover:border-primary/40"
+                        : "border-gold/35 bg-cream text-primary-dark hover:border-gold"
                     }`}
                   >
                     {label}
@@ -225,7 +225,7 @@ export function Wishes() {
 
             {attendance === "hadir" ? (
               <div>
-                <p className="mb-2 text-[11px] font-bold tracking-wide text-primary-soft uppercase">
+                <p className="mb-2 text-[11px] font-bold tracking-wide text-primary uppercase">
                   Jumlah Tamu
                 </p>
                 <div className="grid grid-cols-3 gap-2">
@@ -236,8 +236,8 @@ export function Wishes() {
                       onClick={() => setGuestCount(n)}
                       className={`rounded-full border py-2 text-xs font-bold transition-all duration-200 ${
                         guestCount === n
-                          ? "border-primary bg-primary/15 text-primary-dark shadow-xs"
-                          : "border-primary/15 bg-white/50 text-primary-dark hover:border-primary/30"
+                          ? "border-primary-dark bg-primary-dark text-cream"
+                          : "border-gold/35 bg-cream text-primary-dark hover:border-gold"
                       }`}
                     >
                       {n === 3 ? "3+ Orang" : `${n} Orang`}
@@ -263,7 +263,7 @@ export function Wishes() {
         </InView>
 
         {/* Filter Bar */}
-        <div className="mb-3 flex items-center justify-center gap-1.5 rounded-full bg-primary/10 p-1 border border-gold/20">
+        <div className="mb-3 flex items-center justify-center gap-1.5 rounded-full border border-gold/35 bg-cream p-1">
           {(
             [
               ["semua", "Semua"],
@@ -277,7 +277,7 @@ export function Wishes() {
               onClick={() => setFilter(f)}
               className={`flex-1 rounded-full py-1.5 text-[11px] font-bold transition-all ${
                 filter === f
-                  ? "bg-white text-primary-dark shadow-xs"
+                  ? "bg-primary-dark text-cream"
                   : "text-muted hover:text-primary-dark"
               }`}
             >
@@ -288,7 +288,7 @@ export function Wishes() {
 
         <div className="scroll-soft max-h-[340px] space-y-3 overflow-y-auto pr-0.5">
           {filteredList.length === 0 ? (
-            <p className="rounded-2xl border border-gold/25 bg-white/70 px-4 py-8 text-center text-sm text-muted">
+            <p className="rounded-2xl border border-gold/35 bg-cream px-4 py-8 text-center text-sm text-muted">
               Belum ada ucapan di perangkat ini. Jadilah yang pertama.
             </p>
           ) : null}
@@ -299,7 +299,7 @@ export function Wishes() {
                 layout
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="rounded-2xl border border-gold/30 bg-white/90 p-4 shadow-xs"
+                className="rounded-2xl border border-gold/40 bg-white p-4"
               >
                 <div className="flex items-start gap-3">
                   <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-gold/30 to-gold-soft/20 font-serif text-sm font-bold text-primary-dark border border-gold/40">
@@ -314,7 +314,7 @@ export function Wishes() {
                         className={`shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-bold ${
                           w.attendance === "hadir"
                             ? "bg-primary/12 text-primary-dark border border-primary/20"
-                            : "bg-amber-100 text-amber-800 border border-amber-200"
+                            : "bg-cream-soft text-gold-deep border border-gold/40"
                         }`}
                       >
                         {labels[w.attendance]} {w.guestCount && w.attendance === "hadir" ? `(${w.guestCount} org)` : ""}

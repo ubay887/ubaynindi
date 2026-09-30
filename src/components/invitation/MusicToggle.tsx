@@ -25,7 +25,7 @@ export function MusicToggle({ isPlaying, onToggle }: MusicToggleProps) {
             initial={{ opacity: 0, x: 8, scale: 0.9 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
             exit={{ opacity: 0, x: 8, scale: 0.9 }}
-            className="pointer-events-none absolute right-13 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-full border border-gold/35 bg-cream/95 px-3 py-1 text-[10.5px] font-bold tracking-wide text-primary-dark shadow-md backdrop-blur-md"
+            className="pointer-events-none absolute right-13 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-full border border-gold/35 bg-cream px-3 py-1 text-[10.5px] font-bold tracking-wide text-primary-dark shadow-md"
           >
             {isPlaying ? "Musik Diputar ♫" : "Musik Dijeda"}
           </motion.div>
@@ -36,7 +36,7 @@ export function MusicToggle({ isPlaying, onToggle }: MusicToggleProps) {
         type="button"
         onClick={handleClick}
         aria-label={isPlaying ? "Matikan musik" : "Putar musik"}
-        className={`flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border-2 border-gold/55 bg-cream/95 text-primary-dark shadow-[0_10px_25px_-8px_rgba(13,34,23,0.35)] backdrop-blur-md transition-all hover:border-gold ${
+        className={`flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border-2 border-gold/55 bg-cream text-primary-dark shadow-[0_10px_25px_-8px_rgba(15,61,52,0.35)] transition-all hover:border-gold ${
           isPlaying ? "ring-2 ring-gold/30" : ""
         }`}
         initial={{ opacity: 0, scale: 0.85 }}

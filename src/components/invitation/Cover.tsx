@@ -6,15 +6,7 @@ import { getPrimaryEvent } from "@/config/wedding";
 import { useInvitationGuest } from "@/hooks/useInvitationGuest";
 import { sideLabel } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
-import { AmbientField } from "@/components/motion/AmbientField";
-import {
-  WaxSealCrest,
-  FloatingIslamicCloud,
-  SwayingLantern,
-  SwayingFloralVine,
-  IslamicArchHeader,
-  IslamicCornerArt,
-} from "@/components/ui/Ornament";
+import { WaxSealCrest, IslamicArchHeader } from "@/components/ui/Ornament";
 
 type CoverProps = {
   guestName: string;
@@ -35,10 +27,8 @@ export function Cover({ guestName, onOpen }: CoverProps) {
       initial={{ opacity: 1 }}
       exit={{
         opacity: 0,
-        scale: 1.08,
-        y: -24,
-        filter: "blur(12px)",
-        transition: { duration: 0.85, ease: [0.4, 0, 0.2, 1] },
+        y: -12,
+        transition: { duration: 0.4, ease: [0.4, 0, 0.2, 1] },
       }}
     >
       <Image
@@ -46,53 +36,11 @@ export function Cover({ guestName, onOpen }: CoverProps) {
         alt=""
         fill
         priority
-        quality={70}
+        quality={75}
         sizes="100vw"
-        className="object-cover object-[center_22%]"
+        className="object-cover object-center"
       />
-      <div className="absolute inset-0 illust-wash" />
-      <AmbientField density="low" />
-
-      {/* Dynamic Floating Islamic Clouds (Invisimple style continuous float) */}
-      <FloatingIslamicCloud
-        variant={1}
-        width={210}
-        className="-top-4 -left-10 text-gold-light/60"
-        opacity={0.6}
-      />
-      <FloatingIslamicCloud
-        variant={2}
-        width={230}
-        flip
-        className="top-24 -right-12 text-gold-light/50"
-        opacity={0.55}
-      />
-      <FloatingIslamicCloud
-        variant={3}
-        width={220}
-        className="bottom-8 -left-12 text-gold-light/60"
-        opacity={0.5}
-      />
-
-      <SwayingLantern className="top-0 left-6 z-10" size={56} />
-      <SwayingLantern className="top-0 right-6 z-10" size={48} />
-      <SwayingFloralVine className="top-10 left-1 z-10 text-gold/50" size={58} />
-      <SwayingFloralVine className="top-16 right-1 z-10 text-gold/40" size={50} flip />
-
-      {/* Corner Arabesque Art */}
-      <IslamicCornerArt position="top-left" className="top-3 left-3" />
-      <IslamicCornerArt position="top-right" className="top-3 right-3" />
-      <IslamicCornerArt position="bottom-left" className="bottom-3 left-3" />
-      <IslamicCornerArt position="bottom-right" className="bottom-3 right-3" />
-
-      {/* Side vignette for focus */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 65% 55% at 50% 42%, transparent 0%, rgba(255,252,245,0.25) 100%)",
-        }}
-      />
+      <div className="absolute inset-0 cover-wash" />
 
       <div className="relative z-10 flex h-full flex-col items-center justify-center overflow-y-auto px-6 py-8 sm:px-7">
         <div className="w-full max-w-[325px] text-center">

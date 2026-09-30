@@ -52,7 +52,7 @@ export function ShareButton() {
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? "Tutup menu bagikan" : "Bagikan undangan"}
         aria-expanded={open}
-        className={`flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border-2 border-primary-dark/20 bg-cream/95 text-primary-dark shadow-[0_10px_25px_-8px_rgba(46,63,44,0.35)] backdrop-blur-md transition-all hover:border-gold ${
+        className={`flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border-2 border-gold/55 bg-cream text-primary-dark shadow-[0_10px_25px_-8px_rgba(15,61,52,0.35)] transition-all hover:border-gold ${
           open ? "ring-2 ring-gold/40 border-gold" : ""
         }`}
         whileTap={{ scale: 0.92 }}
@@ -76,7 +76,7 @@ export function ShareButton() {
       <AnimatePresence>
         {open ? (
           <motion.div
-            className="mt-2 flex min-w-[155px] flex-col gap-1 rounded-2xl border border-gold/30 bg-cream/98 p-1.5 shadow-[0_14px_36px_-12px_rgba(46,63,44,0.35)] backdrop-blur-xl"
+            className="mt-2 flex min-w-[155px] flex-col gap-1 rounded-2xl border border-gold/30 bg-cream p-1.5 shadow-[0_14px_36px_-12px_rgba(46,63,44,0.35)]"
             initial={{ opacity: 0, y: -6, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -6, scale: 0.95 }}

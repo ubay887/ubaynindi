@@ -65,7 +65,7 @@ export function AuroraBg({ variant = "page", className = "" }: AuroraBgProps) {
       <div
         className={
           variant === "cover"
-            ? "absolute inset-0 bg-gradient-to-b from-[#1b6554] via-[#175c4d] to-[#0f3d34]"
+            ? "absolute inset-0 bg-gradient-to-b from-[#2d6b52] via-[#246048] to-[#1e4d3c]"
             : "absolute inset-0 bg-gradient-to-b from-[#f7f6f2] via-[#efece6] to-[#f7f6f2]"
         }
       />

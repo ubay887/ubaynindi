@@ -93,7 +93,7 @@ export function createOgImage(opts?: {
           <div
             style={{
               display: "flex",
-              color: "#1b6554",
+              color: "#2d6b52",
               fontSize: 26,
               fontWeight: 600,
             }}

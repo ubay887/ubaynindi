@@ -32,7 +32,7 @@ export function LoveStory() {
 
           {wedding.loveStory.map((item, i) => (
             <li key={`${item.date}-${i}`} className="relative">
-              <span className="absolute -left-[1.85rem] top-4 flex h-6 w-6 items-center justify-center rounded-full border border-gold/50 bg-gradient-to-br from-white to-cream text-gold shadow-sm">
+              <span className="absolute -left-[1.85rem] top-4 flex h-6 w-6 items-center justify-center rounded-full border border-gold/50 bg-white text-gold-deep shadow-sm">
                 <svg
                   width="11"
                   height="11"
@@ -45,7 +45,7 @@ export function LoveStory() {
               </span>
 
               <InView delay={i * 0.07}>
-                <div className="story-bubble border border-gold/30 bg-white/90 px-5 py-4.5 shadow-sm">
+                <div className="story-bubble border border-gold/40 bg-white px-5 py-4.5">
                   <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-primary">
                     {item.date}
                   </p>

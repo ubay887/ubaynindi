@@ -46,7 +46,7 @@ export function FloatingIslamicCloud({
         viewBox="0 0 240 100"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="w-full h-auto drop-shadow-[0_4px_12px_rgba(194,155,78,0.15)]"
+        className="h-auto w-full"
       >
         <path
           d="M20 70C12 70 5 63 5 55C5 47 11 41 18 40C19 28 30 18 43 18C52 18 60 23 64 30C69 22 79 16 90 16C104 16 116 26 118 40C123 37 130 35 137 35C148 35 158 43 160 54C165 52 171 51 176 51C189 51 200 60 200 72C200 73 200 74 199.8 75C208 76 215 82 215 90C215 98 208 100 200 100H20C9 100 0 91 0 80C0 72 6 65 14 62"
@@ -111,7 +111,7 @@ export function SwayingLantern({
         viewBox="0 0 60 120"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="w-full h-auto drop-shadow-[0_4px_10px_rgba(194,155,78,0.4)]"
+        className="h-auto w-full"
       >
         <line x1="30" y1="0" x2="30" y2="35" stroke="currentColor" strokeWidth="1.2" strokeDasharray="3 2" />
         <circle cx="30" cy="38" r="4" stroke="currentColor" strokeWidth="1.2" />
@@ -134,7 +134,7 @@ export function SwayingLantern({
           <radialGradient id={glowId} cx="0.5" cy="0.5" r="0.5" fx="0.5" fy="0.5">
             <stop offset="0%" stopColor="#fff8e7" stopOpacity="0.9" />
             <stop offset="60%" stopColor="#dfbe7e" stopOpacity="0.45" />
-            <stop offset="100%" stopColor="#1b6554" stopOpacity="0.85" />
+            <stop offset="100%" stopColor="#2d6b52" stopOpacity="0.85" />
           </radialGradient>
         </defs>
       </svg>

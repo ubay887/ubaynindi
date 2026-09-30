@@ -43,7 +43,7 @@ function isLocated(e: EventDetail): e is Loc {
 }
 
 function createPinIcon(active: boolean) {
-  const fill = active ? "#0f3d34" : "#1b6554";
+  const fill = active ? "#1e4d3c" : "#2d6b52";
   const ring = active ? "#dfbe7e" : "#c29b4e";
   return L.divIcon({
     className: "wedding-map-pin",
@@ -113,10 +113,10 @@ function MapCanvas({
           }}
         >
           <Popup className="wedding-map-popup">
-            <strong className="block font-serif text-sm text-[#1a1815]">
+            <strong className="block font-serif text-sm text-ink">
               {loc.title}
             </strong>
-            <span className="mt-0.5 block text-xs text-[#5a554c]">
+            <span className="mt-0.5 block text-xs text-muted">
               {loc.venue}
             </span>
           </Popup>
@@ -169,7 +169,7 @@ export function LocationMap() {
                   className={`flex-1 rounded-full border px-3 py-2.5 text-xs font-bold tracking-wide transition-all duration-200 ${
                     on
                       ? "border-primary-dark bg-primary-dark text-cream shadow-[0_8px_20px_-10px_rgba(46,63,44,0.45)]"
-                      : "border-primary/15 bg-white/70 text-primary-dark hover:border-primary/30"
+                      : "border-gold/35 bg-cream text-primary-dark hover:border-gold"
                   }`}
                 >
                   {loc.title}
@@ -180,11 +180,11 @@ export function LocationMap() {
         ) : null}
 
         <InView>
-          <div className="location-map-shell overflow-hidden rounded-[1.4rem] border border-gold/40 bg-white/90 shadow-[0_18px_40px_-22px_rgba(46,63,44,0.22)]">
+          <div className="location-map-shell overflow-hidden rounded-[1.4rem] border border-gold/40 bg-white">
             <div className="relative h-[280px] w-full sm:h-[320px]">
               <MapErrorBoundary
                 fallback={
-                  <div className="flex h-full items-center justify-center bg-[#f4ece1] px-5 text-center text-sm text-muted">
+                  <div className="flex h-full items-center justify-center bg-cream-soft px-5 text-center text-sm text-muted">
                     Peta tidak bisa dimuat di browser ini. Pakai tombol Maps
                     atau Waze di bawah.
                   </div>
@@ -219,7 +219,7 @@ export function LocationMap() {
                   </svg>
                 </span>
                 <div className="min-w-0 flex-1">
-                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary-soft">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
                     {active.title}
                   </p>
                   <p className="mt-1 font-serif text-[1.15rem] font-bold text-primary-dark">

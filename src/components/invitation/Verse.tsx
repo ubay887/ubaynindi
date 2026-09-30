@@ -28,7 +28,7 @@ export function Verse() {
 
       <div className="relative mx-auto max-w-[360px] text-center">
         <InView>
-          <BismillahSVG className="mb-4 text-gold anim-pulse-glow" />
+          <BismillahSVG className="mb-4 text-gold-deep anim-pulse-glow" />
           <IslamicArchHeader className="mb-4 max-w-[200px]" />
         </InView>
 
@@ -47,7 +47,7 @@ export function Verse() {
               />
             </div>
 
-            <p className="mt-5 font-serif text-[1.08rem] leading-[2.1] text-amber-50/95 italic sm:text-[1.12rem]">
+            <p className="mt-5 font-serif text-[1.08rem] leading-[2.1] text-cream italic sm:text-[1.12rem]">
               &ldquo;{verse.text}&rdquo;
             </p>
 

@@ -45,7 +45,7 @@ export function InView({
         margin: "0px 0px -36px 0px",
         root: scroll?.scroller ? scroll.scrollerRef : undefined,
       }}
-      transition={{ duration: 0.9, ease, delay }}
+      transition={{ duration: 0.45, ease, delay }}
     >
       {children}
     </motion.div>

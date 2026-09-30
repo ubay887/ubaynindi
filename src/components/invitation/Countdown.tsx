@@ -17,7 +17,7 @@ import { FloatingIslamicCloud } from "@/components/ui/Ornament";
 
 function Unit({ value, label }: { value: number; label: string }) {
   return (
-    <div className="count-cell flex flex-1 flex-col items-center rounded-2xl border border-gold/40 bg-white/85 px-1 py-4 shadow-[0_12px_28px_-14px_rgba(18,44,30,0.22)] backdrop-blur-md">
+    <div className="count-cell flex flex-1 flex-col items-center rounded-2xl border border-gold/40 bg-white px-1 py-4">
       <div className="relative h-8 overflow-hidden">
         <AnimatePresence mode="popLayout" initial={false}>
           <motion.span

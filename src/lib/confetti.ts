@@ -28,7 +28,7 @@ export function fireWeddingConfetti(durationMs = 2500) {
   const colors = [
     "#c29b4e", // Gold
     "#dfbe7e", // Soft Gold
-    "#1b6554", // Emerald Green
+    "#2d6b52", // Sage
     "#2d8a74", // Sage Bright
     "#ffffff", // Pearl White
     "#fbf9f4", // Warm Cream

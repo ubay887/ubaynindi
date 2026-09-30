@@ -12,8 +12,8 @@ import {
 
 function GroomAvatar() {
   return (
-    <div className="relative mx-auto flex h-28 w-28 items-center justify-center rounded-full p-1 bg-gradient-to-br from-[#dfbe7e] via-[#c29b4e] to-[#1b6554] shadow-[0_14px_30px_-10px_rgba(15,61,52,0.45)] ring-2 ring-[#dfbe7e]/60 transition-transform duration-500 hover:scale-105">
-      <div className="relative h-full w-full overflow-hidden rounded-full border border-amber-100/40 bg-[#0f3d34]">
+    <div className="relative mx-auto flex h-28 w-28 items-center justify-center rounded-full p-1 bg-gradient-to-br from-gold-light via-gold to-primary ring-2 ring-gold-light/60">
+      <div className="relative h-full w-full overflow-hidden rounded-full border border-gold-light/40 bg-primary-dark">
         <Image
           src="/images/avatar-ubay.png"
           alt="Muhammad Ubaydillah"
@@ -31,8 +31,8 @@ function GroomAvatar() {
 
 function BrideAvatar() {
   return (
-    <div className="relative mx-auto flex h-28 w-28 items-center justify-center rounded-full p-1 bg-gradient-to-br from-[#dfbe7e] via-[#e2c8be] to-[#c29b4e] shadow-[0_14px_30px_-10px_rgba(194,155,78,0.45)] ring-2 ring-[#dfbe7e]/60 transition-transform duration-500 hover:scale-105">
-      <div className="relative h-full w-full overflow-hidden rounded-full border border-amber-100/40 bg-[#0f3d34]">
+    <div className="relative mx-auto flex h-28 w-28 items-center justify-center rounded-full p-1 bg-gradient-to-br from-gold-light via-blush to-gold ring-2 ring-gold-light/60">
+      <div className="relative h-full w-full overflow-hidden rounded-full border border-gold-light/40 bg-primary-dark">
         <Image
           src="/images/avatar-nindi.png"
           alt="Nindi Nirmala Nadziroh"
@@ -71,7 +71,7 @@ function Person({
 
         {isGroom ? <GroomAvatar /> : <BrideAvatar />}
 
-        <p className="mt-5 font-script text-[2.9rem] leading-none text-gold sm:text-[3.2rem]">
+        <p className="mt-5 font-script text-[2.9rem] leading-none text-gold-deep sm:text-[3.2rem]">
           {nickname}
         </p>
         <h3 className="mt-2 font-serif text-[1.45rem] font-bold tracking-wide text-ink sm:text-[1.55rem]">
@@ -86,7 +86,7 @@ function Person({
             href={`https://instagram.com/${instagram.replace(/^@/, "")}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-white/70 px-3 py-1.5 text-[11px] font-bold text-primary-dark hover:border-gold"
+            className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-white px-3 py-1.5 text-[11px] font-bold text-primary-dark hover:border-gold"
           >
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden>
               <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" strokeWidth="1.6" />
@@ -149,7 +149,7 @@ export function Couple() {
 
           <InView delay={0.06} className="py-2 text-center">
             <span
-              className="ampersand ampersand-sm inline-flex h-14 w-14 items-center justify-center rounded-full border border-gold/45 bg-gradient-to-br from-white via-cream to-cream-2 text-gold shadow-md backdrop-blur-md"
+              className="ampersand ampersand-sm inline-flex h-14 w-14 items-center justify-center rounded-full border border-gold/45 bg-gradient-to-br from-white via-cream to-cream-soft text-gold-deep shadow-md"
               aria-hidden
             >
               &amp;

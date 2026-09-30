@@ -37,7 +37,7 @@ function EventCard({ event, index }: { event: EventDetail; index: number }) {
 
         {/* Vertical Date Presentation (Invisimple style) */}
         <div className="my-2 flex flex-col items-center">
-          <p className="font-script text-[2.3rem] leading-none text-gold">
+          <p className="font-script text-[2.3rem] leading-none text-gold-deep">
             {weekday}
           </p>
           <p className="mt-1 font-serif text-[4.2rem] font-bold leading-none tracking-tight text-ink">
@@ -51,10 +51,10 @@ function EventCard({ event, index }: { event: EventDetail; index: number }) {
         </div>
 
         {/* Sessions Schedule */}
-        <div className="mx-auto mt-6 w-full max-w-[240px] space-y-3 rounded-2xl bg-primary/5 p-4 border border-primary/10">
+        <div className="mx-auto mt-6 w-full max-w-[240px] space-y-3 rounded-2xl border border-gold/30 bg-cream p-4">
           {sessions.map((s) => (
             <div key={`${s.label}-${s.time}`} className="text-center">
-              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary-soft">
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
                 {s.label}
               </p>
               <p className="mt-0.5 font-serif text-[15px] font-bold text-primary-dark">
@@ -66,7 +66,7 @@ function EventCard({ event, index }: { event: EventDetail; index: number }) {
 
         {/* Venue Info */}
         <div className="mt-6">
-          <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-primary-soft">
+          <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-primary">
             Lokasi Acara
           </p>
           <p className="mt-1 font-serif text-[1.2rem] font-bold text-primary-dark">

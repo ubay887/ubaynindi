@@ -40,10 +40,10 @@ export function Closing() {
               <p className="mx-auto max-w-[310px] text-[13.5px] leading-[1.85] text-muted font-medium">
                 {closing.body}
               </p>
-              <p className="mt-4 text-[14px] font-bold italic text-primary">
+              <p className="mt-4 text-[14px] font-bold italic text-primary-dark">
                 {closing.salam}
               </p>
-              <p className="mt-9 text-[10px] font-bold uppercase tracking-[0.24em] text-gold-deep">
+              <p className="mt-9 text-[10px] font-bold uppercase tracking-[0.24em] text-primary">
                 Kami yang berbahagia
               </p>
               <div className="mx-auto mt-2 flex justify-center select-none">
