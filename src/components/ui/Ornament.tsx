@@ -373,10 +373,13 @@ export function VineDivider({ className }: { className?: string }) {
 export function WaxSealCrest({
   size = 80,
   className,
+  eager = false,
 }: {
   size?: number;
   initials?: string;
   className?: string;
+  /** Load immediately when the seal is the first screen's largest image. */
+  eager?: boolean;
 }) {
   return (
     <div className={cn("relative flex items-center justify-center select-none", className)}>
@@ -390,6 +393,7 @@ export function WaxSealCrest({
           width={size * 2}
           height={size * 2}
           sizes={`${size}px`}
+          loading={eager ? "eager" : "lazy"}
           className="h-full w-full object-contain drop-shadow-[0_10px_24px_rgba(15,61,52,0.4)]"
         />
       </div>

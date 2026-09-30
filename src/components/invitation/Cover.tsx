@@ -50,7 +50,7 @@ export function Cover({ guestName, onOpen }: CoverProps) {
             transition={{ duration: 0.7, ease, delay: 0.05 }}
             className="mb-2"
           >
-            <WaxSealCrest initials="UN" />
+            <WaxSealCrest initials="UN" eager />
           </motion.div>
 
           <IslamicArchHeader className="mb-1" />
