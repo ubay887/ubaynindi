@@ -114,7 +114,7 @@ export function SectionNav() {
   return (
     <motion.nav
       aria-label="Navigasi undangan"
-      className="fixed left-4 top-1/2 z-40 hidden -translate-y-1/2 flex-col gap-3 sm:flex"
+      className="fixed left-5 top-1/2 z-40 hidden -translate-y-1/2 flex-col gap-3 lg:flex"
       initial={{ opacity: 0, x: -8 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: 0.6, duration: 0.5 }}
@@ -157,7 +157,7 @@ export function SectionNavMobile() {
   return (
     <motion.nav
       aria-label="Navigasi cepat"
-      className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 flex items-center gap-1 rounded-full border border-gold/45 bg-cream px-2.5 py-1.5 shadow-[0_14px_36px_-10px_rgba(18,44,30,0.45)] sm:hidden"
+      className="mobile-dock fixed left-1/2 z-40 flex w-[calc(100%-2rem)] max-w-[350px] -translate-x-1/2 items-center justify-between rounded-[1.4rem] px-2 py-2 lg:hidden"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.4, duration: 0.5 }}
@@ -171,13 +171,16 @@ export function SectionNavMobile() {
             onClick={() => go(item.id)}
             aria-label={item.label}
             aria-current={on ? "true" : undefined}
-            className={`relative flex flex-col items-center justify-center rounded-full p-2 transition-all duration-200 ${
+            className={`relative flex min-h-11 min-w-12 flex-col items-center justify-center gap-0.5 rounded-[0.95rem] px-1.5 py-1 transition-all duration-200 ${
               on
                 ? "bg-gradient-to-br from-primary-dark to-primary text-gold-light shadow-sm"
                 : "text-primary-dark/70 hover:text-primary-dark active:scale-95"
             }`}
           >
             {item.icon}
+            <span className="text-[8.5px] font-bold leading-none tracking-wide">
+              {item.label}
+            </span>
           </button>
         );
       })}

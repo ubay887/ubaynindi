@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -13,11 +12,11 @@ import { useInviteSide } from "@/hooks/useInviteSide";
 import { pad2 } from "@/lib/utils";
 import { LinkButton } from "@/components/ui/Button";
 import { InView, SectionHead } from "@/components/motion/primitives";
-import { FloatingIslamicCloud } from "@/components/ui/Ornament";
+import { BotanicalBackdrop } from "@/components/ui/Ornament";
 
 function Unit({ value, label }: { value: number; label: string }) {
   return (
-    <div className="count-cell flex flex-1 flex-col items-center rounded-2xl border border-gold/40 bg-white px-1 py-4">
+    <div className="count-cell flex flex-1 flex-col items-center px-1 py-4">
       <div className="relative h-8 overflow-hidden">
         <AnimatePresence mode="popLayout" initial={false}>
           <motion.span
@@ -50,12 +49,7 @@ export function Countdown() {
       id="countdown"
       className="relative overflow-hidden section-cream section-pad sm:px-8"
     >
-      <FloatingIslamicCloud
-        variant={2}
-        width={190}
-        className="-top-6 -left-10 text-gold-light/45"
-        opacity={0.45}
-      />
+      <BotanicalBackdrop variant="right" />
 
       <div className="relative mx-auto max-w-[360px]">
         <SectionHead

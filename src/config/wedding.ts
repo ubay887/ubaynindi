@@ -145,7 +145,7 @@ export const wedding: WeddingConfig = {
 
   gifts: {
     enabled: true,
-    note: "Doa restu dan kehadiran Anda sudah lebih dari cukup bagi kami. Bila dari jauh ingin menitipkan tanda kasih, kami menerimanya dengan senang hati — sebagai kemudahan, bukan suatu permintaan.",
+    note: "",
     accounts: [
       {
         bank: "BCA",
@@ -177,14 +177,14 @@ export const wedding: WeddingConfig = {
   },
 
   theme: {
-    primary: "#2d6b52",
-    primaryDark: "#1e4d3c",
-    cream: "#fbf9f4",
-    creamDark: "#f4ece1",
-    gold: "#c29b4e",
-    goldSoft: "#dfbe7e",
-    ink: "#1a1815",
-    muted: "#5a554c",
+    primary: "#315f4b",
+    primaryDark: "#173f33",
+    cream: "#fcfaf6",
+    creamDark: "#f3ede4",
+    gold: "#b88a42",
+    goldSoft: "#e2c58f",
+    ink: "#20241f",
+    muted: "#62665f",
   },
 };
 

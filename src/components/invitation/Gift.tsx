@@ -6,7 +6,7 @@ import { wedding } from "@/config/wedding";
 import { copyToClipboard } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
 import { InView, SectionHead } from "@/components/motion/primitives";
-import { FloatingIslamicCloud, IslamicCornerArt } from "@/components/ui/Ornament";
+import { BotanicalBackdrop, IslamicCornerArt } from "@/components/ui/Ornament";
 
 export function Gift() {
   const { gifts } = wedding;
@@ -25,12 +25,7 @@ export function Gift() {
 
   return (
     <section id="gift" className="relative overflow-hidden section-cream section-pad sm:px-8">
-      <FloatingIslamicCloud
-        variant={1}
-        width={190}
-        className="-top-6 -left-8 text-gold-light/40"
-        opacity={0.4}
-      />
+      <BotanicalBackdrop variant="balanced" />
 
       <div className="relative mx-auto max-w-[360px]">
         <SectionHead script="Tanda Kasih" title="Hadiah untuk Kami" subtitle={gifts.note} />
@@ -62,13 +57,8 @@ export function Gift() {
                 strokeLinecap="round"
               />
             </svg>
-            {open ? "Tutup" : "Bila Ingin Berbagi"}
+            {open ? "Tutup" : "Hadiah Untuk Kami"}
           </Button>
-          {!open ? (
-            <p className="mt-3 text-center text-[11px] font-medium text-muted">
-              Sepenuhnya sukarela
-            </p>
-          ) : null}
         </InView>
 
         <AnimatePresence initial={false}>
@@ -84,7 +74,7 @@ export function Gift() {
               {gifts.accounts.map((acc) => (
                 <div
                   key={`${acc.bank}-${acc.accountNumber}`}
-                  className="card-gold-shine relative overflow-hidden rounded-2xl border border-gold/50 bg-gradient-to-br from-primary via-primary to-primary-dark px-6 py-6 text-cream shadow-[0_20px_42px_-18px_rgba(44,70,50,0.4)]"
+                  className="card-gold-shine relative overflow-hidden rounded-[1.5rem] border border-gold-light/55 bg-gradient-to-br from-primary via-primary to-primary-dark px-5 py-6 text-cream shadow-[0_20px_42px_-18px_rgba(23,63,51,0.46)] sm:px-6"
                 >
                   <IslamicCornerArt position="top-right" className="top-2 right-2 text-gold-light/25" />
                   <div
@@ -156,4 +146,3 @@ export function Gift() {
     </section>
   );
 }
-

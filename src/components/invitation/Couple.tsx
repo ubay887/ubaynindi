@@ -108,7 +108,7 @@ export function Couple() {
   const second = order === "groom-first" ? bride : groom;
 
   return (
-    <section id="couple" className="relative overflow-hidden section-cream section-pad sm:px-8">
+    <section id="couple" className="section-sage section-pad relative overflow-hidden sm:px-8">
       <FloatingIslamicCloud
         variant={3}
         width={190}
@@ -169,4 +169,3 @@ export function Couple() {
     </section>
   );
 }
-

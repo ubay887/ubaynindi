@@ -36,7 +36,7 @@ export function MusicToggle({ isPlaying, onToggle }: MusicToggleProps) {
         type="button"
         onClick={handleClick}
         aria-label={isPlaying ? "Matikan musik" : "Putar musik"}
-        className={`flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border-2 border-gold/55 bg-cream text-primary-dark shadow-[0_10px_25px_-8px_rgba(15,61,52,0.35)] transition-all hover:border-gold ${
+        className={`floating-control flex h-11 w-11 items-center justify-center rounded-full transition-all hover:border-gold ${
           isPlaying ? "ring-2 ring-gold/30" : ""
         }`}
         initial={{ opacity: 0, scale: 0.85 }}
@@ -78,4 +78,3 @@ export function MusicToggle({ isPlaying, onToggle }: MusicToggleProps) {
     </div>
   );
 }
-

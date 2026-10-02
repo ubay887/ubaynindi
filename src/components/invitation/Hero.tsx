@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { getPrimaryEvent } from "@/config/wedding";
+import { getPrimaryEvent, wedding } from "@/config/wedding";
 import { useInviteSide } from "@/hooks/useInviteSide";
 import { sideLabel } from "@/lib/utils";
 import { InView } from "@/components/motion/primitives";
@@ -26,6 +26,7 @@ export function Hero() {
       </div>
 
       <div className="relative z-10 flex min-h-[100dvh] flex-col items-center justify-center px-6 pb-20 pt-14 text-center lg:min-h-full">
+        <h1 className="sr-only">Pernikahan {wedding.couple.displayNames}</h1>
         <InView>
           <WaxSealCrest initials="UN" size={76} className="mb-2" />
           <IslamicArchHeader className="mb-1 max-w-[220px]" />
@@ -66,4 +67,3 @@ export function Hero() {
     </section>
   );
 }
-

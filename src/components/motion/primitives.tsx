@@ -95,12 +95,12 @@ export function SectionHead({
   subtitle?: string;
 }) {
   return (
-    <InView className="mb-10 text-center">
-      <p className="font-script text-[2.35rem] leading-none text-ink sm:text-[2.55rem]">
+    <InView className="mb-10 text-center sm:mb-12">
+      <p className="font-script text-[2.45rem] leading-none text-gold-deep sm:text-[2.7rem]">
         {script}
       </p>
       {title ? (
-        <h2 className="mt-2 font-serif text-[1.3rem] font-medium tracking-[0.12em] text-primary uppercase">
+        <h2 className="mt-2 font-serif text-[1.45rem] font-semibold tracking-[0.04em] text-primary-dark sm:text-[1.55rem]">
           {title}
         </h2>
       ) : null}
@@ -108,7 +108,7 @@ export function SectionHead({
         <span className="dot" />
       </div>
       {subtitle ? (
-        <p className="mx-auto mt-4 max-w-[300px] text-[13.5px] leading-[1.75] text-muted">
+        <p className="mx-auto mt-4 max-w-[310px] text-[13.5px] leading-[1.8] text-muted">
           {subtitle}
         </p>
       ) : null}

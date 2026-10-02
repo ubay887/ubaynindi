@@ -7,7 +7,7 @@ import {
   GoldDivider,
   IslamicArchHeader,
   WaxSealCrest,
-  FloatingIslamicCloud,
+  BotanicalBackdrop,
 } from "@/components/ui/Ornament";
 import { InView } from "@/components/motion/primitives";
 
@@ -18,12 +18,7 @@ export function Closing() {
 
   return (
     <section id="closing" className="relative overflow-hidden section-cream">
-      <FloatingIslamicCloud
-        variant={1}
-        width={180}
-        className="-top-6 -left-8 text-gold-light/40"
-        opacity={0.4}
-      />
+      <BotanicalBackdrop variant="right" />
 
       <div className="section-pad pb-4 sm:px-8">
         <div className="mx-auto max-w-[360px]">
@@ -60,7 +55,7 @@ export function Closing() {
         </div>
       </div>
 
-      <footer className="relative mx-auto max-w-[360px] px-6 pb-32 pt-8 text-center">
+      <footer className="relative mx-auto max-w-[360px] px-6 pb-36 pt-8 text-center lg:pb-14">
         <GoldDivider />
         {date ? (
           <p className="mt-6 text-[10.5px] font-medium tracking-[0.22em] text-muted uppercase">

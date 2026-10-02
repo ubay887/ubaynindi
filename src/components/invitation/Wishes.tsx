@@ -6,7 +6,7 @@ import { wedding } from "@/config/wedding";
 import type { Wish } from "@/types/wedding";
 import { Button } from "@/components/ui/Button";
 import { InView, SectionHead } from "@/components/motion/primitives";
-import { FloatingIslamicCloud } from "@/components/ui/Ornament";
+import { BotanicalBackdrop } from "@/components/ui/Ornament";
 import { useInvitationGuest } from "@/hooks/useInvitationGuest";
 import { fireWeddingConfetti } from "@/lib/confetti";
 
@@ -112,13 +112,8 @@ export function Wishes() {
   });
 
   return (
-    <section id="wishes" className="relative overflow-hidden section-cream section-pad px-6 pb-28 sm:px-8">
-      <FloatingIslamicCloud
-        variant={2}
-        width={200}
-        className="-top-8 -right-10 text-gold-light/40"
-        opacity={0.4}
-      />
+    <section id="wishes" className="section-sage section-pad relative overflow-hidden px-5 pb-32 sm:px-8">
+      <BotanicalBackdrop variant="left" />
 
       <div className="relative mx-auto max-w-[400px]">
         <SectionHead
@@ -128,7 +123,7 @@ export function Wishes() {
         />
 
         <InView>
-          <div className="mb-6 flex items-center justify-between rounded-2xl border border-gold/40 bg-white px-4.5 py-3.5 text-xs text-muted shadow-sm">
+          <div className="surface-card mb-6 flex items-center justify-between px-4.5 py-3.5 text-xs text-muted">
             <span className="font-bold text-primary-dark">Ucapan di perangkat ini</span>
             <span className="rounded-full bg-gradient-to-r from-primary-dark to-primary px-3.5 py-1 font-bold text-cream shadow-xs">
               {totalAttending} hadir
@@ -137,7 +132,7 @@ export function Wishes() {
 
           <form
             onSubmit={onSubmit}
-            className="mb-7 space-y-4.5 rounded-2xl border border-gold/40 bg-white p-5.5 shadow-[0_16px_40px_-24px_rgba(18,44,30,0.2)]"
+            className="surface-card mb-7 space-y-4.5 p-5 sm:p-5.5"
           >
             <div>
               <div className="mb-1.5 flex items-center justify-between">
@@ -159,7 +154,7 @@ export function Wishes() {
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Tulis nama lengkap Anda"
                 disabled={anonymous}
-                className="field-input w-full rounded-full border border-gold/35 bg-cream px-4 py-2.5 text-sm font-medium text-ink outline-none disabled:cursor-not-allowed disabled:opacity-60"
+                className="field-input min-h-11 w-full rounded-full border border-gold/35 bg-cream px-4 py-2.5 text-sm font-medium text-ink outline-none disabled:cursor-not-allowed disabled:opacity-60"
                 maxLength={60}
                 autoComplete="name"
               />
@@ -191,7 +186,7 @@ export function Wishes() {
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Tuliskan doa & ucapan hangat untuk Ubay & Nindi..."
                 rows={3}
-                className="field-input w-full resize-none rounded-2xl border border-gold/35 bg-cream px-4 py-2.5 text-sm font-medium text-ink outline-none"
+                className="field-input w-full resize-none rounded-2xl border border-gold/35 bg-cream px-4 py-3 text-sm font-medium text-ink outline-none"
                 maxLength={500}
               />
             </div>
@@ -211,7 +206,7 @@ export function Wishes() {
                     key={v}
                     type="button"
                     onClick={() => setAttendance(v)}
-                    className={`rounded-full border py-2.5 text-[11px] font-bold leading-tight transition-all duration-200 ${
+                    className={`min-h-11 rounded-full border px-1 py-2.5 text-[11px] font-bold leading-tight transition-all duration-200 ${
                       attendance === v
                         ? "border-primary-dark bg-primary-dark text-cream shadow-sm"
                         : "border-gold/35 bg-cream text-primary-dark hover:border-gold"
@@ -234,7 +229,7 @@ export function Wishes() {
                       key={n}
                       type="button"
                       onClick={() => setGuestCount(n)}
-                      className={`rounded-full border py-2 text-xs font-bold transition-all duration-200 ${
+                      className={`min-h-11 rounded-full border px-1 py-2 text-xs font-bold transition-all duration-200 ${
                         guestCount === n
                           ? "border-primary-dark bg-primary-dark text-cream"
                           : "border-gold/35 bg-cream text-primary-dark hover:border-gold"
@@ -275,7 +270,7 @@ export function Wishes() {
               key={f}
               type="button"
               onClick={() => setFilter(f)}
-              className={`flex-1 rounded-full py-1.5 text-[11px] font-bold transition-all ${
+              className={`min-h-10 flex-1 rounded-full py-1.5 text-[11px] font-bold transition-all ${
                 filter === f
                   ? "bg-primary-dark text-cream"
                   : "text-muted hover:text-primary-dark"
@@ -299,7 +294,7 @@ export function Wishes() {
                 layout
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="rounded-2xl border border-gold/40 bg-white p-4"
+                className="surface-card p-4"
               >
                 <div className="flex items-start gap-3">
                   <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-gold/30 to-gold-soft/20 font-serif text-sm font-bold text-primary-dark border border-gold/40">

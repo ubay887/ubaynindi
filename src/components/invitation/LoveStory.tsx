@@ -2,7 +2,7 @@
 
 import { wedding } from "@/config/wedding";
 import { InView, SectionHead } from "@/components/motion/primitives";
-import { FloatingIslamicCloud } from "@/components/ui/Ornament";
+import { BotanicalBackdrop } from "@/components/ui/Ornament";
 
 export function LoveStory() {
   return (
@@ -10,12 +10,7 @@ export function LoveStory() {
       id="story"
       className="relative overflow-hidden section-cream section-pad sm:px-8"
     >
-      <FloatingIslamicCloud
-        variant={3}
-        width={180}
-        className="-top-6 -right-8 text-gold-light/40"
-        opacity={0.4}
-      />
+      <BotanicalBackdrop variant="left" />
 
       <div className="relative mx-auto max-w-[360px]">
         <SectionHead
@@ -45,7 +40,7 @@ export function LoveStory() {
               </span>
 
               <InView delay={i * 0.07}>
-                <div className="story-bubble border border-gold/40 bg-white px-5 py-4.5">
+                <div className="story-bubble px-5 py-4.5">
                   <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-primary">
                     {item.date}
                   </p>

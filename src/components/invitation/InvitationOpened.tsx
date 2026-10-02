@@ -39,7 +39,7 @@ const LocationMap = dynamic(
 
 function DesktopStickyPane({ guestName }: { guestName: string }) {
   return (
-    <aside className="hidden h-full overflow-hidden rounded-[2.2rem] border border-gold/45 bg-cream shadow-[0_24px_60px_-15px_rgba(13,34,23,0.35)] lg:flex lg:col-span-5 z-20">
+    <aside className="z-20 hidden h-full overflow-hidden rounded-[2rem] border border-gold/35 bg-cream shadow-[0_24px_60px_-18px_rgba(23,63,51,0.32)] lg:col-span-5 lg:flex">
       <div className="relative flex h-full w-full flex-col justify-between p-8 text-center">
         <Image
           src="/ornaments/cover-bg.jpg"
@@ -72,7 +72,7 @@ function DesktopStickyPane({ guestName }: { guestName: string }) {
             <span className="dot" />
           </div>
 
-          <div className="guest-glass gold-border-glow mx-auto mt-2 w-full max-w-[280px] rounded-2xl p-4.5">
+          <div className="guest-glass mx-auto mt-2 w-full max-w-[280px] rounded-[1.35rem] p-4.5">
             <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-muted">
               Kepada Yth.
             </p>
@@ -111,7 +111,7 @@ export function InvitationOpened({
           <div
             id="invitation-scroll"
             ref={setScrollEl}
-            className="relative overflow-x-hidden rounded-none lg:col-span-7 lg:h-full lg:overflow-y-auto scroll-soft lg:rounded-[2rem] lg:border lg:border-gold/40 lg:bg-cream lg:shadow-[0_24px_60px_-15px_rgba(15,61,52,0.28)]"
+            className="scroll-soft relative overflow-x-hidden rounded-none lg:col-span-7 lg:h-full lg:overflow-y-auto lg:rounded-[2rem] lg:border lg:border-gold/35 lg:bg-cream lg:shadow-[0_24px_60px_-18px_rgba(23,63,51,0.26)]"
           >
             <Hero />
             <Verse />

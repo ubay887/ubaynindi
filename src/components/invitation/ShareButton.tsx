@@ -52,8 +52,8 @@ export function ShareButton() {
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? "Tutup menu bagikan" : "Bagikan undangan"}
         aria-expanded={open}
-        className={`flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border-2 border-gold/55 bg-cream text-primary-dark shadow-[0_10px_25px_-8px_rgba(15,61,52,0.35)] transition-all hover:border-gold ${
-          open ? "ring-2 ring-gold/40 border-gold" : ""
+        className={`floating-control flex h-11 w-11 items-center justify-center rounded-full transition-all hover:border-gold ${
+          open ? "border-gold ring-2 ring-gold/30" : ""
         }`}
         whileTap={{ scale: 0.92 }}
         initial={{ opacity: 0, scale: 0.85 }}
@@ -76,7 +76,7 @@ export function ShareButton() {
       <AnimatePresence>
         {open ? (
           <motion.div
-            className="mt-2 flex min-w-[155px] flex-col gap-1 rounded-2xl border border-gold/30 bg-cream p-1.5 shadow-[0_14px_36px_-12px_rgba(46,63,44,0.35)]"
+            className="surface-card mt-2 flex min-w-[172px] flex-col gap-1 p-1.5"
             initial={{ opacity: 0, y: -6, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -6, scale: 0.95 }}
@@ -85,7 +85,7 @@ export function ShareButton() {
             <button
               type="button"
               onClick={shareWa}
-              className="flex items-center gap-2 rounded-xl px-2.5 py-2 text-left text-xs font-semibold text-primary-dark transition-colors hover:bg-primary/10"
+              className="flex min-h-11 items-center gap-2 rounded-xl px-2.5 py-2 text-left text-xs font-semibold text-primary-dark transition-colors hover:bg-primary/10"
             >
               <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#25D366]/15 text-[#128C7E]">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
@@ -97,7 +97,7 @@ export function ShareButton() {
             <button
               type="button"
               onClick={copyLink}
-              className="flex items-center gap-2 rounded-xl px-2.5 py-2 text-left text-xs font-semibold text-primary-dark transition-colors hover:bg-primary/10"
+              className="flex min-h-11 items-center gap-2 rounded-xl px-2.5 py-2 text-left text-xs font-semibold text-primary-dark transition-colors hover:bg-primary/10"
             >
               <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-primary-dark">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden>
@@ -111,7 +111,7 @@ export function ShareButton() {
               <button
                 type="button"
                 onClick={nativeShare}
-                className="flex items-center gap-2 rounded-xl px-2.5 py-2 text-left text-xs font-semibold text-primary-dark transition-colors hover:bg-primary/10"
+                className="flex min-h-11 items-center gap-2 rounded-xl px-2.5 py-2 text-left text-xs font-semibold text-primary-dark transition-colors hover:bg-primary/10"
               >
                 <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-primary-dark">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden>
@@ -130,4 +130,3 @@ export function ShareButton() {
     </div>
   );
 }
-

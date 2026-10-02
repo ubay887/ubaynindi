@@ -5,6 +5,7 @@ import { wedding } from "@/config/wedding";
 import { InView } from "@/components/motion/primitives";
 import {
   BismillahSVG,
+  BotanicalBackdrop,
   GoldDivider,
   IslamicArchHeader,
   IslamicCornerArt,
@@ -15,6 +16,7 @@ export function Verse() {
 
   return (
     <section className="relative overflow-hidden section-cream section-pad px-6">
+      <BotanicalBackdrop variant="balanced" />
       {/* Soft monogram watermark */}
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-[0.035] select-none">
         <Image
@@ -62,4 +64,3 @@ export function Verse() {
     </section>
   );
 }
-

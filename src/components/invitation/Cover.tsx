@@ -42,13 +42,14 @@ export function Cover({ guestName, onOpen }: CoverProps) {
       />
       <div className="absolute inset-0 cover-wash" />
 
-      <div className="relative z-10 flex h-full flex-col items-center justify-center overflow-y-auto px-6 py-8 sm:px-7">
-        <div className="w-full max-w-[325px] text-center">
+      <div className="cover-scroll relative z-10 h-full">
+        <div className="cover-stage">
+        <div className="cover-card">
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, ease, delay: 0.05 }}
-            className="mb-2"
+            className="cover-crest mb-2"
           >
             <WaxSealCrest initials="UN" eager />
           </motion.div>
@@ -77,7 +78,7 @@ export function Cover({ guestName, onOpen }: CoverProps) {
             initial={{ opacity: 0, scale: 0.95, y: 12 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.8, ease, delay: 0.2 }}
-            className="mx-auto my-2 flex w-full max-w-[285px] justify-center select-none"
+            className="cover-monogram mx-auto my-1.5 flex w-full max-w-[245px] justify-center select-none sm:max-w-[275px]"
           >
             <Image
               src="/images/couple-card-gold.png"
@@ -100,7 +101,7 @@ export function Cover({ guestName, onOpen }: CoverProps) {
 
           {/* Guest plate — thin glassy panel with gold border glow */}
           <motion.div
-            className="guest-glass gold-border-glow mx-auto mt-4 w-full rounded-2xl px-4 py-3 sm:mt-5 sm:px-5 sm:py-4"
+            className="cover-guest guest-glass mx-auto mt-3.5 w-full rounded-[1.35rem] px-4 py-3 sm:mt-5 sm:px-5 sm:py-4"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease, delay: 0.9 }}
@@ -126,7 +127,7 @@ export function Cover({ guestName, onOpen }: CoverProps) {
           </motion.div>
 
           <motion.div
-            className="mt-4 sm:mt-6"
+            className="cover-cta mt-3.5 sm:mt-5"
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, ease, delay: 1.1 }}
@@ -134,7 +135,7 @@ export function Cover({ guestName, onOpen }: CoverProps) {
             <Button
               size="lg"
               variant="double-solid"
-              className="btn-pulse min-w-[210px] text-sm tracking-wider font-semibold shadow-lg"
+              className="btn-pulse w-full text-sm tracking-wider sm:w-auto sm:min-w-[220px]"
               onClick={onOpen}
               disabled={!guest.ready}
             >
@@ -150,8 +151,8 @@ export function Cover({ guestName, onOpen }: CoverProps) {
             </Button>
           </motion.div>
         </div>
+        </div>
       </div>
     </motion.div>
   );
 }
-

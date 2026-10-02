@@ -72,14 +72,14 @@ export function FloatingIslamicCloud({
         />
         <defs>
           <linearGradient id={gradId} x1="0" y1="0" x2="240" y2="100" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#dfbe7e" stopOpacity="0.4" />
-            <stop offset="0.5" stopColor="#c29b4e" stopOpacity="0.15" />
-            <stop offset="1" stopColor="#fbf9f4" stopOpacity="0.05" />
+            <stop stopColor="var(--gold-light)" stopOpacity="0.4" />
+            <stop offset="0.5" stopColor="var(--gold)" stopOpacity="0.15" />
+            <stop offset="1" stopColor="var(--cream)" stopOpacity="0.05" />
           </linearGradient>
           <linearGradient id={strokeId} x1="0" y1="0" x2="240" y2="100" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#dfbe7e" stopOpacity="0.75" />
-            <stop offset="0.5" stopColor="#c29b4e" stopOpacity="0.5" />
-            <stop offset="1" stopColor="#dfbe7e" stopOpacity="0.2" />
+            <stop stopColor="var(--gold-light)" stopOpacity="0.75" />
+            <stop offset="0.5" stopColor="var(--gold)" stopOpacity="0.5" />
+            <stop offset="1" stopColor="var(--gold-light)" stopOpacity="0.2" />
           </linearGradient>
         </defs>
       </svg>
@@ -115,26 +115,26 @@ export function SwayingLantern({
       >
         <line x1="30" y1="0" x2="30" y2="35" stroke="currentColor" strokeWidth="1.2" strokeDasharray="3 2" />
         <circle cx="30" cy="38" r="4" stroke="currentColor" strokeWidth="1.2" />
-        <path d="M22 46C22 42 25 40 30 40C35 40 38 42 38 46H22Z" fill="#dfbe7e" stroke="currentColor" strokeWidth="1" />
+        <path d="M22 46C22 42 25 40 30 40C35 40 38 42 38 46H22Z" fill="var(--gold-light)" stroke="currentColor" strokeWidth="1" />
         <path
           d="M18 52L20 46H40L42 52L40 85L30 95L20 85L18 52Z"
           fill={`url(#${glowId})`}
           stroke="currentColor"
           strokeWidth="1.2"
         />
-        <circle cx="30" cy="68" r="5" fill="#fffdfa" className="anim-pulse-glow" />
+        <circle cx="30" cy="68" r="5" fill="var(--surface)" className="anim-pulse-glow" />
         <path
           d="M30 60L32 66L38 68L32 70L30 76L28 70L22 68L28 66Z"
-          fill="#dfbe7e"
+          fill="var(--gold-light)"
           opacity="0.85"
         />
         <line x1="30" y1="95" x2="30" y2="108" stroke="currentColor" strokeWidth="1.2" />
-        <circle cx="30" cy="110" r="2.5" fill="#c29b4e" />
+        <circle cx="30" cy="110" r="2.5" fill="var(--gold)" />
         <defs>
           <radialGradient id={glowId} cx="0.5" cy="0.5" r="0.5" fx="0.5" fy="0.5">
-            <stop offset="0%" stopColor="#fff8e7" stopOpacity="0.9" />
-            <stop offset="60%" stopColor="#dfbe7e" stopOpacity="0.45" />
-            <stop offset="100%" stopColor="#2d6b52" stopOpacity="0.85" />
+            <stop offset="0%" stopColor="var(--surface)" stopOpacity="0.9" />
+            <stop offset="60%" stopColor="var(--gold-light)" stopOpacity="0.45" />
+            <stop offset="100%" stopColor="var(--emerald)" stopOpacity="0.85" />
           </radialGradient>
         </defs>
       </svg>
@@ -184,7 +184,7 @@ export function SwayingFloralVine({
           fill="currentColor"
           opacity="0.4"
         />
-        <circle cx="24" cy="128" r="3" fill="#c29b4e" />
+        <circle cx="24" cy="128" r="3" fill="var(--gold)" />
       </svg>
     </div>
   );
@@ -320,6 +320,38 @@ export function FloralSprig({
     </Float>
   ) : (
     node
+  );
+}
+
+export function BotanicalBackdrop({
+  variant = "balanced",
+  className,
+}: {
+  variant?: "balanced" | "left" | "right";
+  className?: string;
+}) {
+  return (
+    <div
+      className={cn("botanical-backdrop", className)}
+      aria-hidden
+    >
+      <span className="botanical-aura" />
+      {variant !== "right" ? (
+        <FloralSprig
+          float={false}
+          size={118}
+          className="botanical-sprig botanical-sprig-left"
+        />
+      ) : null}
+      {variant !== "left" ? (
+        <FloralSprig
+          float={false}
+          size={126}
+          className="botanical-sprig botanical-sprig-right"
+        />
+      ) : null}
+      <VineDivider className="botanical-vine" />
+    </div>
   );
 }
 

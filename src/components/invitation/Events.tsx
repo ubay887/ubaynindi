@@ -51,7 +51,7 @@ function EventCard({ event, index }: { event: EventDetail; index: number }) {
         </div>
 
         {/* Sessions Schedule */}
-        <div className="mx-auto mt-6 w-full max-w-[240px] space-y-3 rounded-2xl border border-gold/30 bg-cream p-4">
+        <div className="surface-card-soft mx-auto mt-6 w-full max-w-[240px] space-y-3 p-4">
           {sessions.map((s) => (
             <div key={`${s.label}-${s.time}`} className="text-center">
               <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
@@ -108,7 +108,7 @@ export function Events() {
   const events = getEventsForSide(side);
 
   return (
-    <section id="events" className="relative overflow-hidden section-cream section-pad sm:px-8">
+    <section id="events" className="section-sage section-pad relative overflow-hidden sm:px-8">
       <FloatingIslamicCloud
         variant={1}
         width={210}

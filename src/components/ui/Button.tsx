@@ -22,9 +22,9 @@ const variants: Record<Variant, string> = {
 };
 
 const sizes: Record<Size, string> = {
-  sm: "px-4 py-2 text-xs",
-  md: "px-6 py-2.5 text-sm",
-  lg: "px-8 py-3 text-[12.5px] tracking-[0.06em]",
+  sm: "min-h-10 px-4 py-2 text-xs",
+  md: "min-h-11 px-6 py-2.5 text-sm",
+  lg: "min-h-12 px-8 py-3 text-[12.5px] tracking-[0.06em]",
 };
 
 export function Button({
@@ -41,7 +41,7 @@ export function Button({
     <button
       type={type}
       className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all duration-300 ease-out active:scale-[0.97] disabled:opacity-50 disabled:hover:translate-y-0",
+        "inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-300 ease-out active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0",
         variants[variant],
         sizes[size],
         className,
@@ -74,7 +74,7 @@ export function LinkButton({
       target={target}
       rel={rel}
       className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all duration-300 ease-out active:scale-[0.97]",
+        "inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-300 ease-out active:scale-[0.97]",
         variants[variant],
         sizes[size],
         className,

@@ -22,6 +22,7 @@ import { copyToClipboard } from "@/lib/utils";
 import { useInviteSide } from "@/hooks/useInviteSide";
 import { Button, LinkButton } from "@/components/ui/Button";
 import { InView, SectionHead } from "@/components/motion/primitives";
+import { BotanicalBackdrop } from "@/components/ui/Ornament";
 
 type Loc = EventDetail & { lat: number; lng: number };
 
@@ -43,8 +44,8 @@ function isLocated(e: EventDetail): e is Loc {
 }
 
 function createPinIcon(active: boolean) {
-  const fill = active ? "#1e4d3c" : "#2d6b52";
-  const ring = active ? "#dfbe7e" : "#c29b4e";
+  const fill = active ? "#173f33" : "#315f4b";
+  const ring = active ? "#e2c58f" : "#b88a42";
   return L.divIcon({
     className: "wedding-map-pin",
     iconSize: [40, 52],
@@ -54,7 +55,7 @@ function createPinIcon(active: boolean) {
       <div class="pin-wrap ${active ? "is-active" : ""}">
         <svg width="40" height="52" viewBox="0 0 40 52" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path d="M20 50c0 0 16-14.2 16-28A16 16 0 1 0 4 22c0 13.8 16 28 16 28z" fill="${fill}" stroke="${ring}" stroke-width="1.5"/>
-          <circle cx="20" cy="20" r="7.5" fill="#fbf9f4"/>
+          <circle cx="20" cy="20" r="7.5" fill="#fcfaf6"/>
           <circle cx="20" cy="20" r="3.2" fill="${active ? "#c29b4e" : fill}"/>
         </svg>
       </div>
@@ -148,7 +149,8 @@ export function LocationMap() {
     `https://www.google.com/maps?q=${active.lat},${active.lng}`;
 
   return (
-    <section id="location" className="relative overflow-hidden section-cream section-pad sm:px-8">
+    <section id="location" className="section-sage section-pad relative overflow-hidden sm:px-8">
+      <BotanicalBackdrop variant="right" />
       <div className="relative mx-auto max-w-[380px]">
         <SectionHead
           script="Location"
@@ -180,7 +182,7 @@ export function LocationMap() {
         ) : null}
 
         <InView>
-          <div className="location-map-shell overflow-hidden rounded-[1.4rem] border border-gold/40 bg-white">
+          <div className="surface-card location-map-shell overflow-hidden">
             <div className="relative h-[280px] w-full sm:h-[320px]">
               <MapErrorBoundary
                 fallback={
