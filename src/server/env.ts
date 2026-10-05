@@ -3,6 +3,7 @@ import "server-only";
 type ServerEnv = {
   databaseUrl: string;
   appOrigin: string;
+  allowedOrigins: string[];
   rateLimitHmacSecret: string;
   trustedProxyHeader: string | null;
   trustedProxyVerified: boolean;
@@ -32,12 +33,21 @@ function origin(value: string): string {
   return parsed.toString().replace(/\/$/, "");
 }
 
+function optionalOrigins(value: string | undefined): string[] {
+  return (value ?? "")
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .map(origin);
+}
+
 export function getServerEnv(): ServerEnv {
   if (cached) return cached;
 
   const appOrigin = origin(
     required("APP_ORIGIN", process.env.APP_ORIGIN, "Environment configuration in README.md and DEPLOY.md"),
   );
+  const allowedOrigins = [...new Set([appOrigin, ...optionalOrigins(process.env.APP_ALLOWED_ORIGINS)])];
   const databaseUrl = required(
     "DATABASE_URL",
     process.env.DATABASE_URL,
@@ -58,6 +68,7 @@ export function getServerEnv(): ServerEnv {
   cached = {
     databaseUrl,
     appOrigin,
+    allowedOrigins,
     rateLimitHmacSecret,
     trustedProxyHeader,
     trustedProxyVerified,

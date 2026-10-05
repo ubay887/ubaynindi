@@ -32,7 +32,8 @@ Kontrak environment:
 
 | Variable | Wajib | Kegunaan |
 |---|---:|---|
-| `APP_ORIGIN` | Ya | Origin yang diizinkan untuk POST guestbook, tanpa slash akhir |
+| `APP_ORIGIN` | Ya | Origin utama yang diizinkan untuk POST guestbook, tanpa slash akhir |
+| `APP_ALLOWED_ORIGINS` | Tidak | Daftar origin tambahan yang dipisahkan koma, jika apex dan `www` sama-sama aktif |
 | `DATABASE_URL` | Ya | Connection string PostgreSQL |
 | `RATE_LIMIT_HMAC_SECRET` | Ya | Secret minimal 32 karakter untuk key rate limit harian |
 | `TRUSTED_PROXY_HEADER` | Tidak | Header client address dari proxy yang sudah diverifikasi |

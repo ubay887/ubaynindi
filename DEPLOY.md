@@ -23,6 +23,7 @@ Coolify harus mengarahkan traffic berdasarkan `/api/ready`. Liveness tetap hidup
 | Variable | Wajib | Contoh |
 |---|---:|---|
 | `APP_ORIGIN` | Ya | `https://ubaynindi.love` |
+| `APP_ALLOWED_ORIGINS` | Jika perlu | `https://www.ubaynindi.love` bila apex dan `www` sama-sama aktif |
 | `DATABASE_URL` | Ya | Connection string dari PostgreSQL Coolify |
 | `RATE_LIMIT_HMAC_SECRET` | Ya | Secret random minimal 32 karakter |
 | `SITE_URL` | Disarankan | `https://ubaynindi.love` |

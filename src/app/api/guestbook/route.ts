@@ -45,7 +45,7 @@ async function readBody(request: Request): Promise<unknown> {
 
 function validateOrigin(request: Request) {
   const origin = request.headers.get("origin");
-  return origin === getServerEnv().appOrigin;
+  return origin !== null && getServerEnv().allowedOrigins.includes(origin);
 }
 
 function clientIdentity(request: Request): string | null {
