@@ -5,16 +5,28 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build --webpack",
-    "start": "next start",
-    "lint": "eslint"
+    "start": "node server.js",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
+    "test:e2e": "playwright test",
+    "db:migrate": "node scripts/migrate.mjs",
+    "db:status": "node scripts/db-status.mjs",
+    "guestbook:list": "node scripts/guestbook.mjs list",
+    "guestbook:export": "node scripts/guestbook.mjs export",
+    "guestbook:delete": "node scripts/guestbook.mjs delete",
+    "guestbook:cleanup": "node scripts/guestbook.mjs cleanup"
   },
   "dependencies": {
     "framer-motion": "^13.0.0",
     "leaflet": "^1.9.4",
-    "next": "16.3.0",
+    "next": "^16.3.8",
+    "pg": "^8.23.1",
     "react": "19.2.8",
     "react-dom": "19.2.8",
-    "react-leaflet": "^5.0.0"
+    "react-leaflet": "^5.0.0",
+    "server-only": "^0.0.1"
   },
   "browserslist": [
     "chrome >= 90",
@@ -24,14 +36,17 @@
     "safari >= 15"
   ],
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "@tailwindcss/postcss": "^4",
     "@types/leaflet": "^1.9.22",
     "@types/node": "^20",
+    "@types/pg": "^8.23.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.3.0",
+    "eslint-config-next": "^16.3.8",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^3.2.7"
   }
 }

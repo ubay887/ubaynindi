@@ -11,7 +11,7 @@ export const wedding: WeddingConfig = {
     description:
       "Dengan memohon ridho Allah SWT, kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri pernikahan Muhammad Ubaydillah & Nindi Nirmala Nadziroh.",
     /**
-     * Fallback public URL for OG / admin links.
+     * Fallback public URL for OG / generated links.
      * Production: set env `SITE_URL` (Coolify) to the real domain.
      */
     siteUrl: "https://ubaynindi.love",
@@ -172,7 +172,7 @@ export const wedding: WeddingConfig = {
   },
 
   audio: {
-    src: "/music/bgm.mp3",
+    src: "/music/wedding-bgm.mp3",
     autoplayOnOpen: true,
   },
 
@@ -198,7 +198,7 @@ export function getSiteUrl(): string {
   return (fromEnv || wedding.meta.siteUrl).replace(/\/$/, "");
 }
 
-/** Static PNG — WhatsApp often fails on `/api/og?…` (query + runtime ImageResponse). */
+/** Static PNG — reliable for WhatsApp previews without a query-rendered image route. */
 export function getOgImageUrl(side: InviteSide = "wanita"): string {
   const file = side === "pria" ? "/og-pria.png" : "/og.png";
   return `${getSiteUrl()}${file}?v=2`;
@@ -296,7 +296,6 @@ export function getCalendarUrl(side: InviteSide = "wanita"): string {
 }
 
 export function getInviteUrl(opts?: {
-  code?: string | null;
   side?: InviteSide;
   guestName?: string;
 }): string {
@@ -305,10 +304,6 @@ export function getInviteUrl(opts?: {
       ? window.location.origin
       : getSiteUrl();
   const url = new URL("/", origin.endsWith("/") ? origin : `${origin}/`);
-  if (opts?.code) {
-    url.searchParams.set("c", opts.code);
-    return url.toString();
-  }
   url.searchParams.set("side", opts?.side ?? "wanita");
   if (opts?.guestName && opts.guestName !== "Tamu Undangan") {
     url.searchParams.set("to", opts.guestName);
@@ -317,44 +312,52 @@ export function getInviteUrl(opts?: {
 }
 
 export function getInviteShareText(opts?: {
-  code?: string | null;
   side?: InviteSide;
   guestName?: string;
 }): string {
   const side = opts?.side ?? "wanita";
   const url = getInviteUrl({
-    code: opts?.code,
     side,
     guestName: opts?.guestName,
   });
   const primary = getPrimaryEvent(side);
-  const toLine =
+  const recipient =
     opts?.guestName && opts.guestName !== "Tamu Undangan"
-      ? `Kepada Yth. *${opts.guestName}*`
-      : null;
+      ? `*${opts.guestName}*`
+      : "*Bapak/Ibu/Saudara/i*";
+  const schedule =
+    primary.sessions?.map((session) => `• *${session.label}:* ${session.time}`).join("\n") ??
+    `• *Waktu:* ${primary.time}`;
+
   return [
     `Assalamu’alaikum Warahmatullahi Wabarakatuh`,
     ``,
-    toLine,
-    `Tanpa mengurangi rasa hormat, kami mengundang untuk menghadiri pernikahan kami:`,
+    `Kepada Yth. ${recipient}`,
     ``,
-    `*${wedding.couple.displayNames}*`,
-    `*${primary.title}*`,
-    primary.dateLabel,
-    primary.sessions?.map((s) => `${s.label}: ${s.time}`).join("\n") ??
-      primary.time,
-    primary.venue,
+    `Dengan hormat, kami mengundang Bapak/Ibu/Saudara/i untuk hadir dan memberikan doa restu pada acara pernikahan kami:`,
     ``,
-    `Undangan digital:`,
+    `💍 *${wedding.couple.displayNames}*`,
+    ``,
+    `📅 *${primary.title}* — ${primary.dateLabel}`,
+    schedule,
+    ``,
+    `📍 *${primary.venue}*`,
+    primary.address,
+    ``,
+    `Kehadiran dan doa restu Bapak/Ibu/Saudara/i akan menjadi kebahagiaan bagi kami.`,
+    ``,
+    `🔗 *Undangan digital:*`,
     url,
+    ``,
+    `Mohon maaf apabila terdapat kesalahan penulisan nama atau gelar. Kami berharap Bapak/Ibu/Saudara/i berkenan membuka tautan undangan di atas.`,
+    ``,
+    `Wassalamu’alaikum Warahmatullahi Wabarakatuh`,
   ]
-    .filter(Boolean)
     .join("\n");
 }
 
 /** WhatsApp share text + link */
 export function getWhatsAppShareUrl(opts?: {
-  code?: string | null;
   side?: InviteSide;
   guestName?: string;
 }): string {

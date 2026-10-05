@@ -1,0 +1,14 @@
+services:
+  postgres-test:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ubaynindi_test
+      POSTGRES_USER: ubaynindi_test
+      POSTGRES_PASSWORD: ubaynindi_test
+    ports:
+      - "55432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ubaynindi_test -d ubaynindi_test"]
+      interval: 2s
+      timeout: 3s
+      retries: 15

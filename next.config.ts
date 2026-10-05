@@ -20,6 +20,7 @@ const contentSecurityPolicy = [
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  serverExternalPackages: ["pg"],
   allowedDevOrigins: ["127.0.0.1"],
   images: {
     qualities: [75, 90],

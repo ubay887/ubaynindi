@@ -137,19 +137,16 @@ export function LocationMap() {
   const [activeId, setActiveId] = useState(firstId);
   const [copied, setCopied] = useState(false);
 
-  if (firstId && !locations.some((l) => l.id === activeId)) {
-    setActiveId(firstId);
-  }
-
   if (!locations.length) return null;
 
-  const active = locations.find((l) => l.id === activeId) ?? locations[0];
+  const effectiveActiveId = locations.some((l) => l.id === activeId) ? activeId : firstId;
+  const active = locations.find((l) => l.id === effectiveActiveId) ?? locations[0];
   const mapsHref =
     active.mapsUrl ??
     `https://www.google.com/maps?q=${active.lat},${active.lng}`;
 
   return (
-    <section id="location" className="section-sage section-pad relative overflow-hidden sm:px-8">
+    <section className="section-sage section-pad relative overflow-hidden sm:px-8">
       <BotanicalBackdrop variant="right" />
       <div className="relative mx-auto max-w-[380px]">
         <SectionHead
@@ -162,7 +159,7 @@ export function LocationMap() {
         {locations.length > 1 ? (
           <InView className="mb-4 flex gap-2">
             {locations.map((loc) => {
-              const on = loc.id === activeId;
+                  const on = loc.id === effectiveActiveId;
               return (
                 <button
                   key={loc.id}
@@ -194,7 +191,7 @@ export function LocationMap() {
               >
                 <MapCanvas
                   locations={locations}
-                  activeId={activeId}
+                  activeId={effectiveActiveId}
                   onSelect={setActiveId}
                 />
               </MapErrorBoundary>

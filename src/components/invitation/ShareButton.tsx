@@ -7,13 +7,13 @@ import { copyToClipboard } from "@/lib/utils";
 import { useInvitationGuest } from "@/hooks/useInvitationGuest";
 
 export function ShareButton() {
-  const { name: guestName, side, code } = useInvitationGuest();
+  const { name: guestName, side } = useInvitationGuest();
   const [copied, setCopied] = useState(false);
   const [open, setOpen] = useState(false);
 
   const shareWa = () => {
     window.open(
-      getWhatsAppShareUrl({ guestName, side, code }),
+      getWhatsAppShareUrl({ guestName, side }),
       "_blank",
       "noopener,noreferrer",
     );
@@ -22,7 +22,7 @@ export function ShareButton() {
 
   const copyLink = async () => {
     const ok = await copyToClipboard(
-      getInviteUrl({ code, side, guestName }),
+      getInviteUrl({ side, guestName }),
     );
     if (ok) {
       setCopied(true);
@@ -37,7 +37,7 @@ export function ShareButton() {
       await navigator.share({
         title: "Undangan Pernikahan Ubay & Nindi",
         text: "Undangan digital pernikahan Ubay & Nindi",
-        url: getInviteUrl({ code, side, guestName }),
+        url: getInviteUrl({ side, guestName }),
       });
       setOpen(false);
     } catch {

@@ -56,7 +56,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
-  // Default OG; page.tsx generateMetadata overrides for ?c= / ?to= / ?side=
+  // Default OG; page.tsx generateMetadata overrides for ?to= / ?side=
   openGraph: {
     type: "website",
     locale: "id_ID",

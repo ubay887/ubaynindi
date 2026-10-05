@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import Image from "next/image";
@@ -86,6 +86,41 @@ function DesktopStickyPane({ guestName }: { guestName: string }) {
   );
 }
 
+function DeferredLocationMap() {
+  const holderRef = useRef<HTMLDivElement | null>(null);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const holder = holderRef.current;
+    if (!holder) return;
+    if (typeof IntersectionObserver === "undefined") {
+      const timer = window.setTimeout(() => setReady(true), 0);
+      return () => window.clearTimeout(timer);
+    }
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry?.isIntersecting) return;
+      setReady(true);
+      observer.disconnect();
+    }, { rootMargin: "500px 0px" });
+    observer.observe(holder);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div id="location" ref={holderRef}>
+      {ready ? (
+        <LocationMap />
+      ) : (
+        <section className="section-cream section-pad sm:px-8" aria-label="Lokasi acara">
+          <div className="mx-auto max-w-[380px]">
+            <div className="h-[280px] animate-pulse rounded-[1.35rem] bg-cream-soft" />
+          </div>
+        </section>
+      )}
+    </div>
+  );
+}
+
 export function InvitationOpened({
   guestName,
   isPlaying,
@@ -119,7 +154,7 @@ export function InvitationOpened({
             <Countdown />
             <Events />
             <LoveStory />
-            <LocationMap />
+            <DeferredLocationMap />
             <Gift />
             <Wishes />
             <Closing />

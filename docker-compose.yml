@@ -1,20 +1,37 @@
-# Opsional: tes lokal atau Coolify Compose.
-# Di Coolify biasanya cukup Build Pack = Dockerfile (lihat DEPLOY.md).
+# Local verification stack. In Coolify, provision PostgreSQL separately when
+# using a Dockerfile deployment and copy the same environment contract.
 
 services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ubaynindi
+      POSTGRES_USER: ubaynindi
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ubaynindi-local-only}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ubaynindi -d ubaynindi"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
   web:
     build: .
     ports:
       - "3000:3000"
     environment:
-      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?set ADMIN_PASSWORD}
+      APP_ORIGIN: ${APP_ORIGIN:-http://localhost:3000}
+      DATABASE_URL: ${DATABASE_URL:-postgres://ubaynindi:ubaynindi-local-only@db:5432/ubaynindi}
+      RATE_LIMIT_HMAC_SECRET: ${RATE_LIMIT_HMAC_SECRET:-local-only-change-this-secret-32-chars}
+      TRUSTED_PROXY_HEADER: ${TRUSTED_PROXY_HEADER:-}
+      TRUSTED_PROXY_VERIFIED: ${TRUSTED_PROXY_VERIFIED:-false}
       SITE_URL: ${SITE_URL:-http://localhost:3000}
-      DATA_DIR: /app/data
       PORT: 3000
       HOSTNAME: 0.0.0.0
-    volumes:
-      - guests-data:/app/data
+    depends_on:
+      db:
+        condition: service_healthy
     restart: unless-stopped
 
 volumes:
-  guests-data:
+  postgres-data:

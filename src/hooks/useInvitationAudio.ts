@@ -8,9 +8,8 @@ export function useInvitationAudio(enabled: boolean) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [ready, setReady] = useState(false);
 
-  useEffect(() => {
-    if (!enabled) return;
-
+  const createAudio = useCallback(() => {
+    if (audioRef.current) return audioRef.current;
     const audio = new Audio(wedding.audio.src);
     audio.loop = true;
     audio.preload = "none";
@@ -25,25 +24,28 @@ export function useInvitationAudio(enabled: boolean) {
     audio.addEventListener("pause", onPause);
     audio.addEventListener("canplaythrough", onCanPlay);
 
-    return () => {
-      audio.pause();
-      audio.removeEventListener("play", onPlay);
-      audio.removeEventListener("pause", onPause);
-      audio.removeEventListener("canplaythrough", onCanPlay);
+    audioRef.current = audio;
+    return audio;
+  }, []);
+
+  useEffect(() => {
+    if (enabled) return;
+    const audio = audioRef.current;
+    audio?.pause();
+    if (audio) {
       audioRef.current = null;
-    };
+    }
   }, [enabled]);
 
   const play = useCallback(async () => {
-    const audio = audioRef.current;
-    if (!audio) return;
+    const audio = createAudio();
     try {
       await audio.play();
     } catch {
       // Autoplay blocked or missing file — ignore silently
       setIsPlaying(false);
     }
-  }, []);
+  }, [createAudio]);
 
   const pause = useCallback(() => {
     audioRef.current?.pause();

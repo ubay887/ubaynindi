@@ -35,14 +35,13 @@ export function Cover({ guestName, onOpen }: CoverProps) {
         src="/ornaments/cover-bg.jpg"
         alt=""
         fill
-        priority
         quality={75}
         sizes="100vw"
         className="object-cover object-center"
       />
       <div className="absolute inset-0 cover-wash" />
 
-      <div className="cover-scroll relative z-10 h-full">
+      <div className="cover-scroll relative z-10 h-full" aria-labelledby="cover-title">
         <div className="cover-stage">
         <div className="cover-card">
           <motion.div
@@ -56,6 +55,7 @@ export function Cover({ guestName, onOpen }: CoverProps) {
 
           <IslamicArchHeader className="mb-1" />
 
+          <h1 id="cover-title" className="sr-only">Undangan pernikahan {guestName}</h1>
           <motion.p
             className="font-script text-[2.15rem] leading-none text-ink"
             initial={{ opacity: 0, y: 8 }}
@@ -86,7 +86,7 @@ export function Cover({ guestName, onOpen }: CoverProps) {
               width={420}
               height={280}
               className="h-auto w-full object-contain drop-shadow-[0_6px_20px_rgba(20,45,32,0.18)]"
-              priority
+              preload
             />
           </motion.div>
 
@@ -94,7 +94,7 @@ export function Cover({ guestName, onOpen }: CoverProps) {
             className="mt-3 text-[11px] font-semibold tracking-[0.22em] text-primary uppercase min-h-[1.2em]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.75, duration: 0.55 }}
+            transition={{ delay: 0.2, duration: 0.3 }}
           >
             {showSchedule ? primary.dateLabel : "\u00a0"}
           </motion.p>
@@ -104,7 +104,7 @@ export function Cover({ guestName, onOpen }: CoverProps) {
             className="cover-guest guest-glass mx-auto mt-3.5 w-full rounded-[1.35rem] px-4 py-3 sm:mt-5 sm:px-5 sm:py-4"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease, delay: 0.9 }}
+            transition={{ duration: 0.3, ease, delay: 0.24 }}
           >
             <p className="text-[10.5px] font-semibold tracking-[0.2em] text-muted uppercase">
               Kepada Yth.
@@ -130,7 +130,7 @@ export function Cover({ guestName, onOpen }: CoverProps) {
             className="cover-cta mt-3.5 sm:mt-5"
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, ease, delay: 1.1 }}
+            transition={{ duration: 0.3, ease, delay: 0.28 }}
           >
             <Button
               size="lg"

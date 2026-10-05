@@ -1,124 +1,116 @@
-# Deploy di Coolify — ubaynindi.love
+# Deployment Coolify — Undangan Ubay & Nindi
 
-Repo: [github.com/ubay887/ubaynindi](https://github.com/ubay887/ubaynindi)  
-Domain: **https://ubaynindi.love**  
-Build Pack: **Dockerfile** · port **3000** · branch **`master`**
+Deployment memakai Dockerfile standalone Next.js dan PostgreSQL. Tidak ada `DATA_DIR`, `guests.json`, auth admin, atau database file lokal.
 
-Ini **bukan** Vercel. Data tamu dari `/admin` disimpan di volume VPS.
+## Topologi
 
-## 0. DNS (sebelum atau bersamaan dengan Coolify)
+```text
+Browser -> Coolify web container -> PostgreSQL service
+              |-- /api/health  (liveness, tanpa query DB)
+              `-- /api/ready   (readiness, SELECT 1 + migration version)
+```
 
-Di registrar domain `ubaynindi.love`, A record ke **IP VPS Coolify**:
+Coolify harus mengarahkan traffic berdasarkan `/api/ready`. Liveness tetap hidup saat database sedang diperbaiki agar container tidak masuk restart loop.
 
-| Type | Name | Value |
-|---|---|---|
-| A | `@` | IP VPS |
-| A | `www` | IP VPS (opsional) |
+## Provisioning
 
-Jangan pakai CNAME di apex kalau registrar tidak mendukung. Tunggu DNS propagate (bisa 5 menit–beberapa jam).
+1. Buat PostgreSQL service di Coolify untuk project yang sama.
+2. Buat application dari repository ini dengan **Build Pack: Dockerfile**.
+3. Exposed port: `3000`.
+4. Domain: `https://ubaynindi.love` dengan HTTPS/Let's Encrypt.
+5. Set environment variables berikut pada application.
 
-## 1. Buat aplikasi di Coolify
-
-1. **Projects** → project → **+ New** → **Resource**
-2. **Private Repository** (GitHub App) atau **Public Repository**
-3. URL: `https://github.com/ubay887/ubaynindi`
-4. Branch: **`master`**
-5. **Build Pack:** **Dockerfile** (jangan Nixpacks)
-6. **Dockerfile Location:** `/Dockerfile`
-7. **Ports Exposes:** `3000`
-8. **Domains:** `ubaynindi.love`  
-   Centang HTTPS / Let’s Encrypt.  
-   Boleh tambah `www.ubaynindi.love` dan redirect ke apex.
-
-App sudah listen `0.0.0.0:3000` (`HOSTNAME` di Dockerfile).
-
-## 2. Environment variables
-
-**Configuration → Environment Variables:**
-
-| Nama | Wajib | Isi |
-|---|---|---|
-| `ADMIN_PASSWORD` | Ya | Password kuat, **bukan** `ubay2026` |
-| `SITE_URL` | Ya | `https://ubaynindi.love` (tanpa slash di akhir) |
-| `DATA_DIR` | Tidak | default `/app/data` |
+| Variable | Wajib | Contoh |
+|---|---:|---|
+| `APP_ORIGIN` | Ya | `https://ubaynindi.love` |
+| `DATABASE_URL` | Ya | Connection string dari PostgreSQL Coolify |
+| `RATE_LIMIT_HMAC_SECRET` | Ya | Secret random minimal 32 karakter |
+| `SITE_URL` | Disarankan | `https://ubaynindi.love` |
+| `TRUSTED_PROXY_HEADER` | Tunda | Kosong sampai proxy test lulus |
+| `TRUSTED_PROXY_VERIFIED` | Tunda | `false` |
 | `PORT` | Tidak | `3000` |
+| `HOSTNAME` | Tidak | `0.0.0.0` |
 
-`SITE_URL` dipakai OG WhatsApp, metadata, dan link yang disalin di `/admin`. Harus sama dengan domain tamu.
+Jangan menaruh `DATABASE_URL`, HMAC secret, atau password PostgreSQL di source code, image build args, client bundle, atau log.
 
-Cadangan di kode: `src/config/wedding.ts` → `meta.siteUrl` sudah `https://ubaynindi.love`. Env Coolify tetap wajib.
+## Release flow
 
-## 3. Persistent storage (wajib untuk admin)
-
-Tanpa ini, daftar tamu **hilang setiap deploy**.
-
-**Configuration → Persistent Storage → Add → Volume Mount:**
-
-| Field | Isi |
-|---|---|
-| Name | `guests-data` |
-| Destination Path | `/app/data` |
-
-Source Path kosong (kecuali bind folder host).
-
-Deploy pertama: volume kosong → container menyalin `data/guests.json` seed (umar / nazar). Deploy berikutnya: file di volume **tidak** ditimpa.
-
-## 4. Deploy
-
-Klik **Deploy**. Build beberapa menit (Next.js + image).
-
-Cek:
-
-- https://ubaynindi.love/ — cover wanita (default)
-- https://ubaynindi.love/?side=pria — sisi pria
-- https://ubaynindi.love/admin — login dengan `ADMIN_PASSWORD`
-- Tambah tamu uji di admin → **Redeploy** → tamu masih ada
-
-Kalau admin error “Tidak bisa menulis data tamu”: volume `/app/data` belum terpasang atau tidak writable.
-
-## 5. Link yang dibagikan
-
-```
-https://ubaynindi.love/?side=wanita
-https://ubaynindi.love/?side=pria
-https://ubaynindi.love/?side=wanita&to=Bapak+Andi
-https://ubaynindi.love/?c=8497
-https://ubaynindi.love/admin
-```
-
-Panduan keluarga: [PANDUAN.md](./PANDUAN.md).
-
-## 6. Update undangan (rekening, teks, dll.)
-
-1. Edit di laptop
-2. `git push` ke `master`
-3. Coolify auto-deploy (webhook Git), atau **Deploy** manual
-
-Daftar tamu di volume **tidak** terhapus.
-
-## 7. Backup tamu
-
-- `/admin` → **Unduh JSON**
-- Atau isi volume Docker `guests-data` di VPS
-
-Simpan JSON di luar server.
-
-## 8. Tes Docker di laptop (opsional)
+1. Buat backup PostgreSQL.
+2. Deploy image baru. Entrypoint menjalankan `node scripts/migrate.mjs` sebelum `node server.js`.
+3. Jika migration gagal atau checksum berubah, container berhenti dan traffic tidak boleh dialihkan.
+4. Cek:
 
 ```bash
-docker compose build
-ADMIN_PASSWORD=rahasia SITE_URL=http://localhost:3000 docker compose up
+curl -i https://ubaynindi.love/api/health
+curl -i https://ubaynindi.love/api/ready
 ```
 
-Buka http://localhost:3000
+5. Smoke-test `/`, `/?side=pria`, `/admin`, submit guestbook, baca dari browser kedua, dan refresh.
+
+Migration bersifat versioned, checksum-validated, transactional, dan memakai PostgreSQL advisory lock sehingga replica concurrent tidak menjalankan schema change bersamaan.
+
+## Trusted proxy verification
+
+Sebelum mengisi `TRUSTED_PROXY_HEADER` dan mengubah `TRUSTED_PROXY_VERIFIED=true`:
+
+1. Pada staging, kirim POST dengan header client-address palsu.
+2. Pastikan Coolify mengganti header tersebut dengan nilai proxy sebenarnya.
+3. Ulangi dari beberapa client dan cek rate limit tidak bisa dilewati dengan header buatan.
+4. Jika belum terbukti, biarkan kedua variable kosong/false. API memakai global limit dan mencatat peringatan teredaksi satu kali.
+
+## Backup dan restore drill
+
+Lakukan selama undangan aktif dan sebelum deploy:
+
+```bash
+pg_dump "$DATABASE_URL" --format=custom --file=guestbook-backup.dump
+createdb ubaynindi_restore_test
+pg_restore --dbname=ubaynindi_restore_test guestbook-backup.dump
+```
+
+Uji satu entry dapat dibaca setelah restore, lalu hapus database disposable. Simpan backup minimal 90 hari setelah acara sebelum retention cleanup disetujui pemilik.
+
+## Owner operations
+
+Perintah berikut hanya dijalankan pada shell terproteksi, bukan melalui `/admin`:
+
+```bash
+npm run guestbook:list
+npm run guestbook:export
+npm run guestbook:delete -- <exact-uuid>
+npm run guestbook:delete -- <exact-uuid> --confirm <exact-uuid>
+```
+
+Delete selalu menampilkan preview terlebih dahulu. Penghapusan irreversible; recovery hanya melalui backup PostgreSQL.
+
+## Rollback
+
+- Jika masalah hanya pada UI/API, rollback application image dan pertahankan schema additive.
+- Jangan rollback ke `localStorage` atau image yang tidak memahami migration baru tanpa smoke test.
+- Jika migration gagal sebelum readiness, perbaiki checksum/statement atau restore backup sesuai runbook; jangan menghapus tabel manual.
+- Setelah rollback, uji `/api/ready`, baca entry lama, dan submit idempotent retry.
+
+## Local Docker verification
+
+```bash
+docker compose up --build
+```
+
+Compose menjalankan PostgreSQL pada service `db`, menunggu health check, lalu menjalankan migration web. Untuk database test terisolasi:
+
+```bash
+docker compose -f docker-compose.test.yml up -d --wait
+$env:TEST_DATABASE_URL = "postgres://ubaynindi_test:ubaynindi_test@127.0.0.1:55432/ubaynindi_test"
+npm run test:integration
+```
 
 ## Troubleshooting
 
-| Gejala | Perbaikan |
+| Gejala | Tindakan |
 |---|---|
-| 502 / gateway | Port Exposes bukan `3000` |
-| Build OOM | Naikkan RAM VPS (2 GB lebih nyaman) |
-| HTTPS gagal | A record belum ke IP VPS; tunggu Let’s Encrypt |
-| OG WhatsApp salah / domain lama | `SITE_URL` harus `https://ubaynindi.love`; redeploy; kirim link ke chat sendiri lagi |
-| Tamu admin hilang | Volume `/app/data` belum ada |
-| Cover lama setelah push | Hard refresh; tunggu deploy selesai |
-| Login admin 503 | `ADMIN_PASSWORD` belum di-set |
+| `/api/health` 503 | Container belum listen; cek startup log dan port 3000 |
+| `/api/ready` 503 | Cek `DATABASE_URL`, network PostgreSQL, dan migration log |
+| Migration checksum mismatch | Jangan lanjut deploy; pulihkan file migration yang benar atau jalankan recovery runbook |
+| Guestbook 503 | Invitation tetap dapat dibaca; pulihkan PostgreSQL lalu gunakan retry |
+| Semua kiriman 429 | Cek global bucket, abuse, dan konfigurasi proxy; jangan mematikan validasi secara permanen |
+| Preview WhatsApp lama | Pastikan `SITE_URL`/`APP_ORIGIN` benar dan kirim ulang URL baru |

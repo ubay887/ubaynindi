@@ -6,14 +6,11 @@ import {
   getShareMeta,
   getSiteUrl,
 } from "@/config/wedding";
-import { findGuestByCode } from "@/lib/guests";
 import { decodeGuestName, parseInviteSide } from "@/lib/utils";
-import { normalizeGuestCode } from "@/lib/guest-code";
 import { resolveInvitationGuest } from "@/lib/resolve-guest";
 
 type PageProps = {
   searchParams: Promise<{
-    c?: string | string[];
     to?: string | string[];
     side?: string | string[];
   }>;
@@ -28,23 +25,17 @@ export async function generateMetadata({
   searchParams,
 }: PageProps): Promise<Metadata> {
   const params = await searchParams;
-  const code = normalizeGuestCode(pick(params.c));
-  const guest = code ? await findGuestByCode(code) : null;
   const directRaw = (pick(params.to) ?? "").trim();
   const directName = directRaw ? decodeGuestName(directRaw) : "";
-  const guestName =
-    guest?.name ??
-    (directName && directName !== "Tamu Undangan" ? directName : null);
+  const guestName = directName && directName !== "Tamu Undangan" ? directName : null;
 
-  const side = guest?.side ?? parseInviteSide(pick(params.side));
+  const side = parseInviteSide(pick(params.side));
   const siteUrl = getSiteUrl();
   const { title, description } = getShareMeta({ side, guestName });
 
-  const pageUrl = guest
-    ? `${siteUrl}/?c=${guest.code}`
-    : guestName
-      ? `${siteUrl}/?side=${side}&to=${encodeURIComponent(guestName)}`
-      : `${siteUrl}/?side=${side}`;
+  const pageUrl = guestName
+    ? `${siteUrl}/?side=${side}&to=${encodeURIComponent(guestName)}`
+    : `${siteUrl}/?side=${side}`;
 
   const imageUrl = getOgImageUrl(side);
 

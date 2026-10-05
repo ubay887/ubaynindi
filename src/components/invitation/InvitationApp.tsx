@@ -34,14 +34,10 @@ function InvitationInner() {
     return () => document.body.classList.remove("invitation-locked");
   }, [opened]);
 
-  useEffect(() => {
-    void import("@/components/invitation/InvitationOpened");
-  }, []);
-
   const handleOpen = useCallback(async () => {
     setOpened(true);
     if (wedding.audio.autoplayOnOpen) {
-      window.setTimeout(() => void play(), 350);
+      void play();
     }
   }, [play]);
 
