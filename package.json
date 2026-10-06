@@ -16,7 +16,9 @@
     "guestbook:list": "node scripts/guestbook.mjs list",
     "guestbook:export": "node scripts/guestbook.mjs export",
     "guestbook:delete": "node scripts/guestbook.mjs delete",
-    "guestbook:cleanup": "node scripts/guestbook.mjs cleanup"
+    "guestbook:cleanup": "node scripts/guestbook.mjs cleanup",
+    "telegram:poll": "node scripts/telegram.mjs poll",
+    "telegram:webhook": "node scripts/telegram.mjs webhook"
   },
   "dependencies": {
     "framer-motion": "^13.0.0",

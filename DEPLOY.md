@@ -27,6 +27,8 @@ Coolify harus mengarahkan traffic berdasarkan `/api/ready`. Liveness tetap hidup
 | `DATABASE_URL` | Ya | Connection string dari PostgreSQL Coolify |
 | `RATE_LIMIT_HMAC_SECRET` | Ya | Secret random minimal 32 karakter |
 | `SITE_URL` | Disarankan | `https://ubaynindi.love` |
+| `TELEGRAM_BOT_TOKEN` | Jika bot dipakai | Token dari BotFather. Jangan dicatat di repo atau log |
+| `TELEGRAM_ADMIN_IDS` | Jika bot dipakai | ID numerik admin, pisahkan dengan koma. Dapat dari perintah `/id` |
 | `TRUSTED_PROXY_HEADER` | Tunda | Kosong sampai proxy test lulus |
 | `TRUSTED_PROXY_VERIFIED` | Tunda | `false` |
 | `PORT` | Tidak | `3000` |
@@ -80,7 +82,10 @@ npm run guestbook:list
 npm run guestbook:export
 npm run guestbook:delete -- <exact-uuid>
 npm run guestbook:delete -- <exact-uuid> --confirm <exact-uuid>
+npm run telegram:webhook
 ```
+
+`telegram:webhook` memasang `POST /api/telegram/webhook` di `APP_ORIGIN`. Entrypoint container juga mencoba memasangnya saat token dan origin HTTPS ada; kegagalan Telegram tidak menghentikan situs. Perintah bot: `/list`, `/list 2`, `/hapus <awalan-id>`, dan `/id`. Hapus dari bot tetap membutuhkan tombol konfirmasi. Hanya chat pribadi milik ID di `TELEGRAM_ADMIN_IDS` yang dapat melihat atau menghapus ucapan.
 
 Delete selalu menampilkan preview terlebih dahulu. Penghapusan irreversible; recovery hanya melalui backup PostgreSQL.
 

@@ -118,6 +118,49 @@ export async function createEntry(input: GuestbookInput, submissionKey: string, 
   }
 }
 
+export async function listEntryPage(page: number, limit: number) {
+  const size = Math.min(Math.max(Math.trunc(limit), 1), 10);
+  const index = Math.min(Math.max(Math.trunc(page), 1), 10_000);
+  const pool = getPool();
+  const totalResult = await pool.query<{ total: number }>("SELECT count(*)::int AS total FROM guestbook_entries");
+  const result = await pool.query(
+    `SELECT id, guest_name, message, attendance, guest_count, side, created_at
+     FROM guestbook_entries
+     ORDER BY created_at DESC, id DESC
+     LIMIT $1 OFFSET $2`,
+    [size, (index - 1) * size],
+  );
+  return {
+    entries: (result.rows as Record<string, unknown>[]).map(toEntry),
+    total: totalResult.rows[0]?.total ?? 0,
+  };
+}
+
+export async function matchEntryPrefix(prefix: string) {
+  if (!/^[0-9a-f-]{4,36}$/i.test(prefix)) return [];
+  const result = await getPool().query(
+    `SELECT id, guest_name, message, attendance, guest_count, side, created_at
+     FROM guestbook_entries
+     WHERE id::text ILIKE $1 || '%'
+     ORDER BY created_at DESC, id DESC
+     LIMIT 6`,
+    [prefix.toLowerCase()],
+  );
+  return (result.rows as Record<string, unknown>[]).map(toEntry);
+}
+
+export async function deleteEntry(id: string) {
+  if (!/^[0-9a-f-]{36}$/i.test(id)) return null;
+  const result = await getPool().query(
+    `DELETE FROM guestbook_entries
+     WHERE id = $1
+     RETURNING id, guest_name, message, attendance, guest_count, side, created_at`,
+    [id],
+  );
+  const row = result.rows[0] as Record<string, unknown> | undefined;
+  return row ? toEntry(row) : null;
+}
+
 export async function cleanupExpiredLimits(batch = 500) {
   const result = await getPool().query(
     `DELETE FROM submission_limits WHERE expires_at < now()

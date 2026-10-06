@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { wedding } from "@/config/wedding";
 import type { Wish } from "@/types/wedding";
 import { Button } from "@/components/ui/Button";
@@ -35,6 +35,44 @@ function errorMessage(payload: unknown, fallback: string) {
   return fallback;
 }
 
+function formatWishTime(value: string) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  return new Intl.DateTimeFormat("id-ID", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }).format(date);
+}
+
+function WishCard({ wish }: { wish: GuestbookEntry }) {
+  const reduceMotion = useReducedMotion();
+  const time = formatWishTime(wish.createdAt);
+  const attending = wish.attendance === "hadir";
+
+  return (
+    <motion.li
+      initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+      className="px-4 py-4 transition-colors sm:px-5 sm:hover:bg-cream-soft/70"
+    >
+      <div className="flex items-start gap-3">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-gold/40 bg-primary/10 font-serif text-base font-semibold text-primary-dark" aria-hidden>
+          {wish.name.charAt(0).toUpperCase()}
+        </div>
+        <div className="min-w-0 flex-1">
+          <div className="flex items-baseline justify-between gap-3">
+            <p className="min-w-0 truncate font-serif text-[1.15rem] leading-tight font-semibold text-ink">{wish.name}</p>
+            {time ? <time dateTime={wish.createdAt} className="shrink-0 text-[10.5px] text-muted">{time}</time> : null}
+          </div>
+          <p className={`mt-1 text-[10.5px] font-bold tracking-[0.12em] uppercase ${attending ? "text-primary" : "text-gold-deep"}`}>
+            {labels[wish.attendance]}
+            {wish.guestCount && attending ? ` · ${wish.guestCount} orang` : ""}
+          </p>
+          <p className="mt-2 text-sm leading-relaxed whitespace-pre-wrap text-ink">{wish.message}</p>
+        </div>
+      </div>
+    </motion.li>
+  );
+}
+
 export function Wishes() {
   const guest = useInvitationGuest();
   const sectionRef = useRef<HTMLElement | null>(null);
@@ -44,6 +82,14 @@ export function Wishes() {
   const loadingRef = useRef(false);
   const loadingMoreRef = useRef(false);
   const loadedRef = useRef(false);
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+  const listScrollRef = useRef<HTMLDivElement | null>(null);
+  const nextCursorRef = useRef<string | null>(null);
+  const pendingMoreRef = useRef(false);
+  const errorCursorRef = useRef<string | null>(null);
+  const loadPageRef = useRef<(cursor: string | null) => Promise<void>>(async () => {});
+  const [listOverflows, setListOverflows] = useState(false);
+  const [scrollBoxReady, setScrollBoxReady] = useState(false);
   const [list, setList] = useState<GuestbookEntry[]>([]);
   const [nextCursor, setNextCursor] = useState<string | null>(null);
   const [name, setName] = useState(() => guest.resolved && guest.name !== "Tamu Undangan" ? guest.name : "");
@@ -61,16 +107,20 @@ export function Wishes() {
   const [sent, setSent] = useState("");
   const [retryAfter, setRetryAfter] = useState<number | null>(null);
 
-  const loadPage = useCallback(async (cursor: string | null = null, replace = false) => {
-    if (cursor ? loadingMoreRef.current : loadingRef.current) return;
-    if (cursor) {
+  const loadPage = useCallback(async (cursor: string | null = null) => {
+    if (loadingRef.current || loadingMoreRef.current) {
+      if (cursor) pendingMoreRef.current = true;
+      return;
+    }
+    const more = cursor !== null;
+    if (more) {
       loadingMoreRef.current = true;
       setLoadingMore(true);
     } else {
       loadingRef.current = true;
       setLoading(true);
     }
-    setLoadError("");
+    let succeeded = false;
     try {
       const query = new URLSearchParams({ limit: "20" });
       if (cursor) query.set("cursor", cursor);
@@ -78,32 +128,54 @@ export function Wishes() {
       const payload = await response.json().catch(() => null);
       if (!response.ok) throw new Error(errorMessage(payload, "Ucapan belum dapat dimuat."));
       const entries = Array.isArray(payload?.entries) ? payload.entries as GuestbookEntry[] : [];
-      setList((current) => replace ? entries : [...current, ...entries.filter((entry) => !current.some((item) => item.id === entry.id))]);
-      setNextCursor(typeof payload?.nextCursor === "string" ? payload.nextCursor : null);
+      const cursorValue = entries.length > 0 && typeof payload?.nextCursor === "string" ? payload.nextCursor : null;
+      if (more) {
+        setList((current) => [...current, ...entries.filter((entry) => !current.some((item) => item.id === entry.id))]);
+      } else {
+        setList(entries);
+      }
+      nextCursorRef.current = cursorValue;
+      setNextCursor(cursorValue);
+      if (more || cursor === errorCursorRef.current) {
+        errorCursorRef.current = null;
+        setLoadError("");
+      }
       loadedRef.current = true;
       setLoaded(true);
+      succeeded = true;
     } catch (reason) {
+      errorCursorRef.current = cursor;
+      pendingMoreRef.current = false;
       setLoadError(reason instanceof Error ? reason.message : "Ucapan belum dapat dimuat.");
     } finally {
       loadingRef.current = false;
       loadingMoreRef.current = false;
       setLoading(false);
       setLoadingMore(false);
+      if (succeeded && pendingMoreRef.current) {
+        pendingMoreRef.current = false;
+        const follow = nextCursorRef.current;
+        if (follow && follow !== cursor) void loadPageRef.current(follow);
+      }
     }
   }, []);
+
+  useEffect(() => {
+    loadPageRef.current = loadPage;
+  }, [loadPage]);
 
   useEffect(() => {
     const element = sectionRef.current;
     if (!element) return;
     if (typeof IntersectionObserver === "undefined") {
       visibleRef.current = true;
-      const timer = window.setTimeout(() => void loadPage(null, true), 450);
+      const timer = window.setTimeout(() => void loadPage(null), 450);
       return () => window.clearTimeout(timer);
     }
     const observer = new IntersectionObserver(([entry]) => {
       if (!entry?.isIntersecting) return;
       visibleRef.current = true;
-      if (!loadedRef.current) void loadPage(null, true);
+      if (!loadedRef.current) void loadPage(null);
       observer.disconnect();
     }, { rootMargin: "360px 0px" });
     observer.observe(element);
@@ -113,10 +185,49 @@ export function Wishes() {
   useEffect(() => {
     const timer = window.setInterval(() => {
       const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
-      if (visibleRef.current && !document.hidden && !connection?.saveData && loadedRef.current) void loadPage(null, true);
+      if (visibleRef.current && !document.hidden && !connection?.saveData && loadedRef.current) void loadPage(null);
     }, 45_000);
     return () => window.clearInterval(timer);
   }, [loadPage]);
+
+  useEffect(() => {
+    const element = listScrollRef.current;
+    if (!element) return;
+    const measure = () => {
+      setListOverflows(element.scrollHeight > element.clientHeight + 4);
+      setScrollBoxReady(element.clientHeight >= 8);
+    };
+    measure();
+    if (typeof ResizeObserver === "undefined") return;
+    const observer = new ResizeObserver(measure);
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [list.length, filter, loaded, loadingMore]);
+
+  useEffect(() => {
+    listScrollRef.current?.scrollTo({ top: 0 });
+  }, [filter]);
+
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    const root = listScrollRef.current;
+    if (!sentinel || !root || !scrollBoxReady || !nextCursor || loadError) return;
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries.some((entry) => entry.isIntersecting);
+      if (!visible) {
+        pendingMoreRef.current = false;
+        return;
+      }
+      if (loadingMoreRef.current || loadingRef.current) {
+        pendingMoreRef.current = true;
+        return;
+      }
+      const cursor = nextCursorRef.current;
+      if (cursor) void loadPage(cursor);
+    }, { root, rootMargin: "160px 0px" });
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [nextCursor, loadError, loadPage, list.length, filter, loaded, scrollBoxReady]);
 
   if (!wedding.wishes.enabled) return null;
 
@@ -204,14 +315,49 @@ export function Wishes() {
           </form>
         </InView>
 
-        <div className="mb-3 flex items-center justify-center gap-1.5 rounded-full border border-gold/35 bg-cream p-1" role="group" aria-label="Filter ucapan">{(["semua", "hadir", "tidak_hadir"] as const).map((value) => <button key={value} type="button" onClick={() => setFilter(value)} aria-pressed={filter === value} className={`min-h-10 flex-1 rounded-full py-1.5 text-[11px] font-bold transition-colors ${filter === value ? "bg-primary-dark text-cream" : "text-muted hover:text-primary-dark"}`}>{value === "semua" ? "Semua" : value === "hadir" ? "Hadir" : "Absen/Ragu"}</button>)}</div>
+        <div className="surface-card overflow-hidden">
+          <div className="flex items-end justify-between gap-3 border-b border-gold/25 px-4 py-3.5 sm:px-5">
+            <div>
+              <p className="font-serif text-[1.45rem] leading-none text-primary-dark">Buku Tamu</p>
+              <p className="mt-1.5 text-[11px] text-muted">{loaded ? `${visibleList.length} ${nextCursor ? "ditampilkan" : "ucapan"}` : "Ucapan tamu"}</p>
+            </div>
+          </div>
 
-        {loading && !loaded ? <div className="space-y-3" aria-label="Memuat ucapan"><div className="h-24 animate-pulse rounded-2xl bg-cream/70" /><div className="h-24 animate-pulse rounded-2xl bg-cream/70" /><div className="h-24 animate-pulse rounded-2xl bg-cream/70" /></div> : null}
-        {loadError ? <div className="rounded-2xl border border-gold/35 bg-cream px-4 py-6 text-center text-sm text-muted" role="alert"><p>{loadError}</p><button type="button" onClick={() => void loadPage(null, true)} className="mt-3 min-h-11 rounded-full bg-primary-dark px-4 py-2 text-xs font-bold text-cream">Coba lagi</button></div> : null}
-        {!loading && !loadError && loaded && visibleList.length === 0 ? <p className="rounded-2xl border border-gold/35 bg-cream px-4 py-8 text-center text-sm text-muted">Belum ada ucapan. Jadilah yang pertama.</p> : null}
-        <div className="space-y-3" aria-live="polite"><AnimatePresence initial={false}>{visibleList.map((wish) => <motion.article key={wish.id} layout initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="surface-card p-4"><div className="flex items-start gap-3"><div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gold/40 bg-gold/20 font-serif text-sm font-bold text-primary-dark" aria-hidden>{wish.name.charAt(0).toUpperCase()}</div><div className="min-w-0 flex-1"><div className="flex items-start justify-between gap-2"><p className="min-w-0 truncate text-sm font-bold text-primary-dark">{wish.name}</p><span className={`shrink-0 rounded-full border px-2.5 py-0.5 text-[10px] font-bold ${wish.attendance === "hadir" ? "border-primary/20 bg-primary/12 text-primary-dark" : "border-gold/40 bg-cream-soft text-gold-deep"}`}>{labels[wish.attendance]}{wish.guestCount && wish.attendance === "hadir" ? ` · ${wish.guestCount} orang` : ""}</span></div><p className="mt-1.5 whitespace-pre-wrap text-[13px] leading-relaxed text-muted">{wish.message}</p></div></div></motion.article>)}</AnimatePresence></div>
-        {nextCursor && !loadError ? <button type="button" onClick={() => void loadPage(nextCursor)} disabled={loadingMore} className="mt-5 min-h-11 w-full rounded-full border border-primary/20 bg-cream px-4 py-2 text-xs font-bold text-primary-dark">{loadingMore ? "Memuat…" : "Tampilkan ucapan lainnya"}</button> : null}
-        {loaded && !nextCursor && list.length > 0 ? <p className="mt-5 text-center text-[11px] text-muted">Semua ucapan sudah ditampilkan.</p> : null}
+          <div className="flex items-center gap-1.5 border-b border-gold/20 px-3 py-2.5 sm:px-4" role="group" aria-label="Filter ucapan">
+            {(["semua", "hadir", "tidak_hadir"] as const).map((value) => (
+              <button key={value} type="button" onClick={() => setFilter(value)} aria-pressed={filter === value} className={`min-h-10 flex-1 rounded-full py-1.5 text-[11px] font-bold transition-colors ${filter === value ? "bg-primary-dark text-cream" : "text-muted hover:bg-cream-soft hover:text-primary-dark"}`}>
+                {value === "semua" ? "Semua" : value === "hadir" ? "Hadir" : "Absen/Ragu"}
+              </button>
+            ))}
+          </div>
+
+          {listOverflows ? <p className="border-b border-gold/15 py-1.5 text-center text-[10.5px] text-muted">Gulir untuk membaca</p> : null}
+
+          <div
+            ref={listScrollRef}
+            id="wish-list"
+            tabIndex={0}
+            aria-label="Daftar ucapan"
+            className="scroll-soft min-h-24 max-h-[min(32rem,calc(100dvh-16rem))] overflow-y-auto overscroll-y-contain"
+          >
+            {loading && !loaded ? <div className="space-y-3 px-4 py-4" aria-label="Memuat ucapan"><div className="h-16 animate-pulse rounded-2xl bg-cream-soft" /><div className="h-16 animate-pulse rounded-2xl bg-cream-soft" /><div className="h-16 animate-pulse rounded-2xl bg-cream-soft" /></div> : null}
+            {loadError ? <div className="px-4 py-5 text-center text-sm text-muted" role="alert"><p>{loadError}</p>{!loading && !loadingMore ? <button type="button" onClick={() => void loadPage(errorCursorRef.current)} className="mt-3 min-h-11 rounded-full bg-primary-dark px-4 py-2 text-xs font-bold text-cream">Coba lagi</button> : null}</div> : null}
+            {!loading && !loadError && loaded && visibleList.length === 0 && !nextCursor ? <p className="px-4 py-8 text-center text-sm text-muted">{list.length === 0 ? "Belum ada ucapan. Jadilah yang pertama." : "Tidak ada ucapan untuk filter ini."}</p> : null}
+            {!loadError && loaded && !loadingMore && visibleList.length === 0 && nextCursor ? <p role="status" className="px-4 py-8 text-center text-sm text-muted">Mencari ucapan yang sesuai…</p> : null}
+
+            {visibleList.length > 0 ? (
+              <ul className="divide-y divide-gold/20">
+                <AnimatePresence initial={false}>
+                  {visibleList.map((wish) => <WishCard key={wish.id} wish={wish} />)}
+                </AnimatePresence>
+              </ul>
+            ) : null}
+
+            <div ref={sentinelRef} className="h-px" aria-hidden />
+            {loadingMore ? <p role="status" className="py-4 text-center text-[11px] font-semibold text-muted">Memuat ucapan…</p> : null}
+            {loaded && !nextCursor && !loadError && list.length > 0 ? <p className="border-t border-gold/15 py-4 text-center text-[11px] text-muted">Semua ucapan sudah tampil.</p> : null}
+          </div>
+        </div>
       </div>
     </section>
   );

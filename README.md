@@ -58,6 +58,8 @@ Kontrak environment:
 | `npm run guestbook:export` | Export timestamped JSON |
 | `npm run guestbook:delete -- <uuid>` | Preview entry; hapus hanya dengan `--confirm <uuid>` |
 | `npm run guestbook:cleanup` | Hapus bucket rate-limit yang sudah kedaluwarsa |
+| `npm run telegram:poll` | Bot lokal untuk melihat dan menghapus ucapan |
+| `npm run telegram:webhook` | Daftarkan webhook bot ke `APP_ORIGIN` HTTPS |
 
 ## Data undangan
 
@@ -71,6 +73,9 @@ Migration ada di `migrations/`. API publik:
 - `POST /api/guestbook` dengan JSON dan header `Idempotency-Key` UUID.
 - `GET /api/health` hanya memeriksa proses Node.
 - `GET /api/ready` memeriksa PostgreSQL dan versi migration.
+- `POST /api/telegram/webhook` menerima perintah admin bot. Orang lain tidak bisa membaca atau menghapus ucapan.
+
+Bot memakai `TELEGRAM_BOT_TOKEN` dan hanya melayani ID di `TELEGRAM_ADMIN_IDS`. Secara lokal jalankan `npm run telegram:poll`, lalu kirim `/id` ke bot. Perintah admin: `/list`, `/list 2`, dan `/hapus <awalan-id>`. Penghapusan menunggu tombol konfirmasi.
 
 Guestbook membatasi body request 4 KiB, menolak origin yang tidak sesuai, tidak menyimpan raw IP, dan tidak menulis nama/ucapan ke log. Detail operasional ada di [DEPLOY.md](./DEPLOY.md).
 
